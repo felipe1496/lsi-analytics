@@ -1,0 +1,13 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:14.4
+    container_name: lsi-db
+    restart: on-failure
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: lsi
+      POSTGRES_PASSWORD: lsi
+      POSTGRES_DB: lsi-db
