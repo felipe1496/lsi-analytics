@@ -3,21 +3,17 @@ export const APP_ROUTER = {
     index: { url: '/' },
   },
   panels: {
-    index: {
-      url: '/paineis',
-    },
+    index: '/paineis',
   },
   panel: {
-    index: {
-      url: '/painel/:id',
-    },
+    index: '/painel/:id',
   },
   auth: {
-    login: {
-      url: '/entrar',
-    },
-    register: {
-      url: '/cadastrar',
-    },
+    login: '/entrar',
+    register: '/cadastrar',
+  },
+  config: {
+    profile: { index: '/config/perfil' },
+    preferences: { index: '/config/preferencias' },
   },
 };

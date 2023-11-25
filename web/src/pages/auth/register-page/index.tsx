@@ -80,7 +80,7 @@ export const RegisterPage: React.FC = () => {
     onError: handleErrorNotify,
     onSuccess: () => {
       toast('Cadastro realizado com sucesso', { type: 'success' });
-      navigate(APP_ROUTER.auth.login.url);
+      navigate(APP_ROUTER.auth.login);
     },
   });
 

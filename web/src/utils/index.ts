@@ -1,25 +1,51 @@
 import { AxiosError } from 'axios';
 import clsx, { ClassValue } from 'clsx';
+import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
 import { twMerge } from 'tailwind-merge';
+
+import { UserWithoutPasswordModel } from '@/services/models/users';
 
 export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
 
 export const handleErrorNotify = (error: AxiosError | Error) => {
-  if (error instanceof AxiosError) {
-    const message = error.response?.data.message;
-
+  const toastError = (message: string | string[]) => {
     if (Array.isArray(message)) {
-      message.forEach((m) => {
-        toast(m, { type: 'error' });
-      });
-    } else if (typeof message === 'string') {
+      message.forEach((m) => toast(m, { type: 'error' }));
+    } else {
       toast(message, { type: 'error' });
     }
-  } else {
-    const { message } = error;
-    if (message) {
-      toast(error.message, { type: 'error' });
-    }
+  };
+
+  if (error instanceof AxiosError) {
+    const message = error.response?.data.message || 'Ocorreu um erro';
+    toastError(message);
+  } else if (error.message) {
+    toastError(error.message);
   }
 };
+
+export const extractTokenFromCookies = () => {
+  const token = Cookies.get('accessToken');
+
+  if (!token) {
+    return null;
+  }
+
+  return token;
+};
+
+export const getUserInfo = () => {
+  const memoizedUser = localStorage.getItem('user');
+
+  if (memoizedUser) {
+    const user = JSON.parse(memoizedUser) as UserWithoutPasswordModel;
+
+    return user;
+  }
+
+  return null;
+};
+
+export const capitalizarFirstLetter = (text: string) =>
+  text.charAt(0).toUpperCase() + text.slice(1);

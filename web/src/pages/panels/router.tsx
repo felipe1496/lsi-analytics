@@ -1,12 +1,17 @@
+import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 
-import { PanelsPage } from './panels-page';
+import { Guard } from '@/components/guard';
+import { AuthGuard } from '@/components/guard/AuthGuard';
 import { APP_ROUTER } from '@/constants/app-routes';
 
-export const PanelsRouter = () => {
-  return (
-    <Routes>
-      <Route path={APP_ROUTER.panels.index.url} Component={PanelsPage} />
-    </Routes>
-  );
-};
+import { PanelsPage } from './panels-page';
+
+export const PanelsRouter: React.FC = () => (
+  <Routes>
+    <Route
+      path={APP_ROUTER.panels.index}
+      element={<Guard guards={[new AuthGuard()]} protect={<PanelsPage />} />}
+    />
+  </Routes>
+);

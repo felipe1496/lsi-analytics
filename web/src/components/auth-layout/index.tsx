@@ -1,4 +1,6 @@
+import { ArrowLeft } from 'lucide-react';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import BluredImage from '@/assets/images/blured.jpg';
 import { cn } from '@/utils';
@@ -9,13 +11,20 @@ import { INFO } from './constants';
 interface AuthLayoutProps {
   children: React.ReactNode;
   className?: string;
+  backButtonTo?: string;
 }
 
 export const AuthLayout: React.FC<AuthLayoutProps> = ({
   children,
   className,
+  backButtonTo,
 }) => (
   <main className="flex">
+    {backButtonTo && (
+      <Link to={backButtonTo} className="">
+        <ArrowLeft />
+      </Link>
+    )}
     <div className={cn('w-1/2', className)}>{children}</div>
     <div
       className="flex h-screen w-1/2 flex-col items-center justify-center text-zinc-50"

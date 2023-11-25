@@ -6,3 +6,5 @@ export type UserModel = {
   birthDay: Date;
   imageURL?: string;
 };
+
+export type UserWithoutPasswordModel = Omit<UserModel, 'password'>;

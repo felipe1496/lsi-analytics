@@ -1,11 +1,14 @@
+import React from 'react';
+import { useParams } from 'react-router-dom';
+
 import {
   Breadcrumb,
+  BreadcrumbHome,
   BreadcrumbLink,
   BreadcrumbNeutral,
 } from '@/components/breadcrumb';
 import { Layout } from '@/components/layout';
 import { APP_ROUTER } from '@/constants/app-routes';
-import { useParams } from 'react-router-dom';
 
 export const PanelPage: React.FC = () => {
   const { id } = useParams();
@@ -14,9 +17,8 @@ export const PanelPage: React.FC = () => {
     <Layout
       breadcrumb={
         <Breadcrumb>
-          <BreadcrumbLink to={APP_ROUTER.panels.index.url}>
-            Paineis
-          </BreadcrumbLink>
+          <BreadcrumbHome />
+          <BreadcrumbLink to={APP_ROUTER.panels.index}>Paineis</BreadcrumbLink>
           <BreadcrumbNeutral>{id}</BreadcrumbNeutral>
         </Breadcrumb>
       }

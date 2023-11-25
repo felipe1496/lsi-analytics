@@ -8,7 +8,7 @@ import { RegisterPage } from './register-page';
 
 export const AuthRouter: React.FC = () => (
   <Routes>
-    <Route path={APP_ROUTER.auth.login.url} Component={LoginPage} />
-    <Route path={APP_ROUTER.auth.register.url} Component={RegisterPage} />
+    <Route path={APP_ROUTER.auth.login} Component={LoginPage} />
+    <Route path={APP_ROUTER.auth.register} Component={RegisterPage} />
   </Routes>
 );

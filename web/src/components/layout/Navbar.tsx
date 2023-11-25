@@ -1,22 +1,46 @@
+import { BarChart3, BookOpen, Home } from 'lucide-react';
 import React from 'react';
-import ReactImage from '../../assets/react.svg';
 import { Link } from 'react-router-dom';
-import { BarChart3, Home } from 'lucide-react';
+
+import LSILogo from '@/assets/images/lsi-brand-background.png';
+
 import { APP_ROUTER } from '../../constants/app-routes';
 import { Separator } from '../ui/separator';
+import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
 
 export const Navbar: React.FC = () => (
-  <nav className="fixed hidden min-h-screen w-16 flex-col items-center gap-4 bg-zinc-800 py-4 md:flex">
-    <img src={ReactImage} />
-
-    <Link to={APP_ROUTER.panels.index.url}>
-      <Home className="text-zinc-50" />
+  <nav className="fixed z-10 hidden min-h-screen w-16 flex-col items-center gap-6 bg-zinc-800 py-4 md:flex">
+    <Link to={APP_ROUTER.panels.index}>
+      <img src={LSILogo} />
     </Link>
+
+    <Tooltip delayDuration={0}>
+      <TooltipTrigger>
+        <Link to={APP_ROUTER.panels.index}>
+          <Home className="text-zinc-50" />
+        </Link>
+      </TooltipTrigger>
+      <TooltipContent side="right">Início</TooltipContent>
+    </Tooltip>
 
     <Separator className="w-8" />
 
-    <Link to={APP_ROUTER.panels.index.url}>
-      <BarChart3 className="text-zinc-50" />
-    </Link>
+    <Tooltip delayDuration={0}>
+      <TooltipTrigger>
+        <Link to={APP_ROUTER.panels.index}>
+          <BarChart3 className="text-zinc-50" />
+        </Link>
+      </TooltipTrigger>
+      <TooltipContent side="right">Paineis</TooltipContent>
+    </Tooltip>
+
+    <Tooltip delayDuration={0}>
+      <TooltipTrigger>
+        <Link to={APP_ROUTER.panels.index}>
+          <BookOpen className="text-zinc-50" />
+        </Link>
+      </TooltipTrigger>
+      <TooltipContent side="right">Documentação</TooltipContent>
+    </Tooltip>
   </nav>
 );

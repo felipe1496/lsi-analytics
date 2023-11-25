@@ -3,7 +3,9 @@ import React from 'react';
 import { ToastContainer } from 'react-toastify';
 
 import { queryClient } from '@/lib/react-query';
+
 import 'react-toastify/dist/ReactToastify.css';
+import { TooltipProvider } from '../ui/tooltip';
 
 interface ProvidersProps {
   children: React.ReactNode;
@@ -11,7 +13,9 @@ interface ProvidersProps {
 
 export const Providers: React.FC<ProvidersProps> = ({ children }) => (
   <QueryClientProvider client={queryClient}>
-    {children}
-    <ToastContainer />
+    <TooltipProvider>
+      {children}
+      <ToastContainer />
+    </TooltipProvider>
   </QueryClientProvider>
 );
