@@ -1,20 +1,21 @@
 import { IsDateString, IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import { DtoMessages } from 'src/utils/dto-messages';
 
 export class CreateUserDto {
-  @IsString({ message: 'Nome deve ser um texto' })
-  @IsNotEmpty({ message: 'Nome não pode ser vazio' })
+  @IsString({ message: DtoMessages.isString('Nome') })
+  @IsNotEmpty({ message: DtoMessages.IsNotEmpty('Nome') })
   name: string;
 
-  @IsEmail({}, { message: 'E-mail deve ser válido' })
-  @IsNotEmpty({ message: 'E-mail não pode ser vazio' })
+  @IsEmail({}, { message: DtoMessages.isEmail('E-mail') })
+  @IsNotEmpty({ message: DtoMessages.IsNotEmpty('E-mail') })
   email: string;
 
-  @IsString({ message: 'Senha deve ser um texto' })
-  @IsNotEmpty({ message: 'Senha não pode ser vazia' })
+  @IsString({ message: DtoMessages.isString('Senha') })
+  @IsNotEmpty({ message: DtoMessages.IsNotEmpty('Senha') })
   password: string;
 
-  @IsDateString({}, { message: 'A data deve ser válida' })
-  @IsNotEmpty({ message: 'Data de nascimento não pode ser vazia' })
+  @IsDateString({}, { message: DtoMessages.isDateString('Data de nascimento') })
+  @IsNotEmpty({ message: DtoMessages.IsNotEmpty('Data de nascimento') })
   birthDay: Date;
 
   imageURL?: string;

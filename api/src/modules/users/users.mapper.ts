@@ -3,10 +3,9 @@ import { User } from './user.entity';
 
 export class UsersMapper {
   public static toDomain(user: PrismaUser) {
-    console.log('prisma user: ', user);
-    const { id, name, email, birthDay, imageURL } = user;
+    const { id, name, email, birthDay, imageURL, password } = user;
 
-    return new User({ id, name, email, birthDay, imageURL });
+    return new User({ id, name, email, birthDay, imageURL, password });
   }
   public static toHTTP(user: User) {
     const { id, name, email, birthDay, imageURL } = user.props;

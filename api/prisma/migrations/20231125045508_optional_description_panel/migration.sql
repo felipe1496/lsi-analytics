@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "PANELS" ALTER COLUMN "description" DROP NOT NULL;
