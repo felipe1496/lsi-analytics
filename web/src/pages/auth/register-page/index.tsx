@@ -7,12 +7,12 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import LSILogo from '@/assets/images/lsi-brand-background.png';
-import { AuthLayout } from '@/components/auth-layout';
-import { FieldError } from '@/components/errors/field-error';
-import { Typography } from '@/components/typography';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { AuthLayout } from '@/components/common/auth-layout';
+import { FieldError } from '@/components/common/errors/field-error';
+import { Typography } from '@/components/common/typography';
+import { Button } from '@/components/common/ui/button';
+import { Input } from '@/components/common/ui/input';
+import { Label } from '@/components/common/ui/label';
 import { APP_ROUTER } from '@/constants/app-routes';
 import { REQUIRED_FIELD } from '@/constants/form-messages';
 import { reactQueryKeys } from '@/constants/react-query-keys';

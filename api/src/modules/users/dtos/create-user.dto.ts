@@ -1,5 +1,5 @@
 import { IsDateString, IsEmail, IsNotEmpty, IsString } from 'class-validator';
-import { DtoMessages } from 'src/utils/dto-messages';
+import { DtoMessages } from 'src/utils/dtos/dto-messages';
 
 export class CreateUserDto {
   @IsString({ message: DtoMessages.isString('Nome') })

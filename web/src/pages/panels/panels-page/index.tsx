@@ -1,19 +1,19 @@
 import { ErrorMessage } from '@hookform/error-message';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { AlignJustify, LayoutGrid, Plus, Search } from 'lucide-react';
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 
-import FireImage from '@/assets/images/fire.jpg';
 import {
   Breadcrumb,
   BreadcrumbHome,
   BreadcrumbNeutral,
-} from '@/components/breadcrumb';
-import { FieldError } from '@/components/errors/field-error';
-import { Layout } from '@/components/layout';
-import { Typography } from '@/components/typography';
-import { Button } from '@/components/ui/button';
+} from '@/components/common/breadcrumb';
+import { FieldError } from '@/components/common/errors/field-error';
+import { Layout } from '@/components/common/layout';
+import { Typography } from '@/components/common/typography';
+import { Button } from '@/components/common/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -21,9 +21,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+} from '@/components/common/ui/dialog';
+import { Input } from '@/components/common/ui/input';
+import { Label } from '@/components/common/ui/label';
 import { APP_ROUTER } from '@/constants/app-routes';
 import { REQUIRED_FIELD } from '@/constants/form-messages';
 import { reactQueryKeys } from '@/constants/react-query-keys';
@@ -34,27 +34,39 @@ import { PanelCard } from '../components/PanelCard';
 
 interface FormData {
   name: string;
-  description?: string;
+  description?: string | null;
 }
 
 export const PanelsPage: React.FC = () => {
   const [layout, setLayout] = React.useState<'grid' | 'list'>('grid');
+
+  const navigate = useNavigate();
 
   const {
     handleSubmit,
     register,
     formState: { errors },
   } = useForm<FormData>({
-    defaultValues: { name: 'Novo painel', description: '' },
+    defaultValues: { name: 'Novo painel', description: null },
   });
 
   const { mutate: createPanel } = useMutation({
     mutationKey: [reactQueryKeys.mutations.createPanelMutation],
     mutationFn: panelsService.create,
+    onSuccess: (response) => {
+      navigate(APP_ROUTER.panel.index.replace(':id', response.data.id));
+    },
   });
 
-  const onSubmit = (data: FormData) => {
-    createPanel({ body: data });
+  const { data } = useQuery({
+    queryKey: [reactQueryKeys.queries.findAllPanelsQuery],
+    queryFn: panelsService.findAll,
+  });
+
+  console.log(data);
+
+  const onSubmit = (formData: FormData) => {
+    createPanel({ body: formData });
   };
 
   return (
@@ -71,7 +83,7 @@ export const PanelsPage: React.FC = () => {
     >
       <div className="flex w-full items-center justify-between">
         <div>
-          <Typography level="h3">Paneis</Typography>
+          <Typography level="h3">Paineis</Typography>
           <Typography level="muted">Todos os paineis</Typography>
         </div>
 
@@ -142,11 +154,15 @@ export const PanelsPage: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-4 gap-6">
-        <PanelCard
-          to={APP_ROUTER.panel.index.replace(':id', '1')}
-          imageURL={FireImage}
-          title="Incêndios na Paraíba"
-        />
+        {data &&
+          data.data.map((p) => (
+            <PanelCard
+              key={p.id}
+              to={APP_ROUTER.panel.index.replace(':id', p.id)}
+              imageURL={p.imageURL}
+              title={p.name}
+            />
+          ))}
       </div>
     </Layout>
   );

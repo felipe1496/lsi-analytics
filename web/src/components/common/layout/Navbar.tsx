@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import LSILogo from '@/assets/images/lsi-brand-background.png';
 
-import { APP_ROUTER } from '../../constants/app-routes';
+import { APP_ROUTER } from '../../../constants/app-routes';
 import { Separator } from '../ui/separator';
 import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
 

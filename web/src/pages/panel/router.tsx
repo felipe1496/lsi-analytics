@@ -1,10 +1,12 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 
-import { Guard } from '@/components/guard';
-import { AuthGuard } from '@/components/guard/AuthGuard';
+import { Guard } from '@/components/common/guard';
+import { AuthGuard } from '@/components/common/guard/AuthGuard';
 import { APP_ROUTER } from '@/constants/app-routes';
 
+import { PanelAuditPage } from './panel-audit-page';
+import { PanelEditPage } from './panel-edit-page';
 import { PanelPage } from './panel-page';
 
 export const PanelRouter: React.FC = () => (
@@ -12,6 +14,16 @@ export const PanelRouter: React.FC = () => (
     <Route
       path={APP_ROUTER.panel.index}
       element={<Guard guards={[new AuthGuard()]} protect={<PanelPage />} />}
+    />
+    <Route
+      path={APP_ROUTER.panel.edit}
+      element={<Guard guards={[new AuthGuard()]} protect={<PanelEditPage />} />}
+    />
+    <Route
+      path={APP_ROUTER.panel.audit}
+      element={
+        <Guard guards={[new AuthGuard()]} protect={<PanelAuditPage />} />
+      }
     />
   </Routes>
 );

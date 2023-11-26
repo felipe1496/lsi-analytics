@@ -5,9 +5,9 @@ import {
   BreadcrumbHome,
   BreadcrumbLink,
   BreadcrumbNeutral,
-} from '@/components/breadcrumb';
-import { ConfigBar } from '@/components/config-bar';
-import { Layout } from '@/components/layout';
+} from '@/components/common/breadcrumb';
+import { ConfigBar } from '@/components/common/config-bar';
+import { Layout } from '@/components/common/layout';
 import { APP_ROUTER } from '@/constants/app-routes';
 
 export const ProfilePage: React.FC = () => (

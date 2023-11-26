@@ -16,9 +16,13 @@ import {
 
 interface TopbarProps {
   breadcrumb?: React.ReactNode;
+  rightContent?: React.ReactNode;
 }
 
-export const Topbar: React.FC<TopbarProps> = ({ breadcrumb = null }) => {
+export const Topbar: React.FC<TopbarProps> = ({
+  breadcrumb = null,
+  rightContent = null,
+}) => {
   const user = getUserInfo();
 
   const navigate = useNavigate();
@@ -27,6 +31,8 @@ export const Topbar: React.FC<TopbarProps> = ({ breadcrumb = null }) => {
     Cookies.remove('accessToken');
     navigate(APP_ROUTER.auth.login);
   };
+
+  const UserBoxWrapper = rightContent ? 'div' : React.Fragment;
 
   const renderUserBox = () => {
     if (user) {
@@ -77,13 +83,18 @@ export const Topbar: React.FC<TopbarProps> = ({ breadcrumb = null }) => {
   return (
     <header
       className={cn(
-        'b fixed flex h-14 w-full items-center border-b bg-white px-4 md:w-[calc(100vw-3rem)] md:px-12',
+        'b fixed z-10 flex h-14 w-full items-center border-b bg-white px-4 md:w-[calc(100vw-3rem)] md:px-12',
         breadcrumb ? 'justify-between' : 'justify-end',
       )}
     >
       {breadcrumb}
 
-      {renderUserBox()}
+      <UserBoxWrapper
+        className={cn(rightContent && 'flex gap-6 border-red-500')}
+      >
+        {rightContent}
+        {renderUserBox()}
+      </UserBoxWrapper>
     </header>
   );
 };

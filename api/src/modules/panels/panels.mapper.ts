@@ -3,15 +3,24 @@ import { Panel } from './panel.entity';
 
 export class PanelsMapper {
   public static toDomain(panel: PrismaPanel) {
-    const { id, name, description, createdAt, updatedAt } = panel;
+    const { id, name, description, imageURL, userId, createdAt, updatedAt } =
+      panel;
 
-    return new Panel({ id, name, description, createdAt, updatedAt });
+    return new Panel({
+      id,
+      name,
+      description,
+      imageURL,
+      userId,
+      createdAt,
+      updatedAt,
+    });
   }
 
   public static toHTTP(panel: Panel) {
     const {
       id,
-      props: { name, description },
+      props: { name, description, imageURL, userId },
       createdAt,
       updatedAt,
     } = panel;
@@ -20,6 +29,8 @@ export class PanelsMapper {
       id,
       name,
       description,
+      imageURL,
+      userId,
       createdAt,
       updatedAt,
     };

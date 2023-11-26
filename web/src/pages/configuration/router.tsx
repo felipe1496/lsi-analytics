@@ -1,8 +1,8 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 
-import { Guard } from '@/components/guard';
-import { AuthGuard } from '@/components/guard/AuthGuard';
+import { Guard } from '@/components/common/guard';
+import { AuthGuard } from '@/components/common/guard/AuthGuard';
 import { APP_ROUTER } from '@/constants/app-routes';
 
 import { PreferencesPage } from './preferences-page';

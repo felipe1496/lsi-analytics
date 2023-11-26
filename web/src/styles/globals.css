@@ -80,3 +80,18 @@
     @apply h-[calc(100vh-3.5rem)] p-4 md:px-12 md:py-8;
   }
 }
+
+.bottomBar {
+  position: relative;
+}
+
+.bottomBar::after {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 2px;
+  background-color: #3b82f6;
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+}

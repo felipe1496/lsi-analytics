@@ -9,7 +9,7 @@ interface ConfigBarProps {
 }
 
 export const ConfigBar: React.FC<ConfigBarProps> = ({ active }) => (
-  <div className="flex flex-col gap-4">
+  <div className="flex flex-col gap-4 p-4">
     <h1 className="text-lg font-semibold">Configurações e privacidade</h1>
 
     <div className="flex flex-col">

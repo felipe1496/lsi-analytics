@@ -2,19 +2,19 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/services/prisma/prisma.service';
 import { UsersMapper } from './users.mapper';
 
-interface SaveUserProps {
+type CreateUserProps = {
   name: string;
   email: string;
   password: string;
   birthDay: Date;
   imageURL?: string;
-}
+};
 
 @Injectable()
 export class UsersRepository {
   constructor(private prisma: PrismaService) {}
 
-  public async save(props: SaveUserProps) {
+  public async save(props: CreateUserProps) {
     const user = await this.prisma.user.upsert({
       where: {
         email: props.email,
