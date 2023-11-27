@@ -6,6 +6,11 @@ export const APP_ROUTER = {
     index: '/painel/:id',
     edit: '/painel/:id/editar',
     audit: '/painel/:id/auditoria',
+    new: {
+      view: {
+        pieChart: '/panel/:id/novo/view/pie',
+      },
+    },
   },
   auth: {
     login: '/entrar',
@@ -17,10 +22,13 @@ export const APP_ROUTER = {
   },
   misc: {
     landing: {
-      index: { url: '/' },
+      index: '/',
     },
     notFound: {
       index: '/404',
     },
+  },
+  docs: {
+    index: '/docs',
   },
 };

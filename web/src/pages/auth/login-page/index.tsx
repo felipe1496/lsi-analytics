@@ -3,7 +3,8 @@ import { useMutation } from '@tanstack/react-query';
 import Cookies from 'js-cookie';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import LSILogo from '@/assets/images/lsi-brand-background.png';
 import { AuthLayout } from '@/components/common/auth-layout';
@@ -16,7 +17,9 @@ import { Label } from '@/components/common/ui/label';
 import { APP_ROUTER } from '@/constants/app-routes';
 import { REQUIRED_FIELD } from '@/constants/form-messages';
 import { reactQueryKeys } from '@/constants/react-query-keys';
+import { updateAxiosInstance } from '@/services/api';
 import { sessionsService } from '@/services/sessions';
+import { handleErrorNotify } from '@/utils';
 
 interface FormData {
   email: string;
@@ -39,22 +42,30 @@ export const LoginPage: React.FC = () => {
     },
   });
 
-  const { mutate, isPending } = useMutation({
+  const { mutate, isPending, error } = useMutation({
     mutationKey: [reactQueryKeys.mutations.createSessionMutation],
     mutationFn: sessionsService.create,
     onSuccess: (response) => {
       Cookies.set('accessToken', response.data.accessToken);
       localStorage.setItem('user', JSON.stringify(response.data.user));
+      toast('Login realizado com sucesso', { type: 'success' });
+      updateAxiosInstance();
       navigate(APP_ROUTER.panels.index);
     },
+    onError: handleErrorNotify,
   });
+
+  console.log(error);
 
   const onSubmit = (data: FormData) => {
     mutate({ body: data });
   };
 
   return (
-    <AuthLayout className="flex items-center justify-center">
+    <AuthLayout
+      className="flex items-center justify-center"
+      backButtonTo={APP_ROUTER.misc.landing.index}
+    >
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col items-center justify-center gap-8"
@@ -73,6 +84,7 @@ export const LoginPage: React.FC = () => {
           <div>
             <Input
               error={!!errors.email}
+              type="email"
               {...register('email', { required: REQUIRED_FIELD })}
               placeholder="Digite seu email"
             />
@@ -107,6 +119,12 @@ export const LoginPage: React.FC = () => {
             Entrar
           </Button>
         </div>
+        <Typography level="muted">
+          Não tem uma conta?{' '}
+          <Link to={APP_ROUTER.auth.register} className="hover:underline">
+            Cadastre-se aqui
+          </Link>
+        </Typography>
       </form>
     </AuthLayout>
   );

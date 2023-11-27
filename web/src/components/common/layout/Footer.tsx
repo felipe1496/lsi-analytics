@@ -1,13 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import { APP_ROUTER } from '@/constants/app-routes';
+
 export const Footer: React.FC = () => (
   <footer className="mt-24 flex flex-col items-center justify-center gap-2 text-sm text-zinc-500">
     <div className="flex flex-wrap gap-4">
       <Link to="#" className="hover:underline">
         Sobre
       </Link>
-      <Link to="#" className="hover:underline">
+      <Link to={APP_ROUTER.docs.index} className="hover:underline">
         Documentação
       </Link>
       <Link to="#" className="hover:underline">
@@ -20,6 +22,6 @@ export const Footer: React.FC = () => (
         Política de privacidade
       </Link>
     </div>
-    <span>© 2023 LSI Analytics from LSI</span>
+    <span>© 2023 LSI Analytics</span>
   </footer>
 );

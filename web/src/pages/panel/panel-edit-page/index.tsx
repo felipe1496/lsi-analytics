@@ -1,5 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
-import { History } from 'lucide-react';
+import {
+  ChevronDown,
+  History,
+  Monitor,
+  Smartphone,
+  Tablet,
+} from 'lucide-react';
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 
@@ -11,6 +17,12 @@ import {
 } from '@/components/common/breadcrumb';
 import { Layout } from '@/components/common/layout';
 import { Button } from '@/components/common/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/common/ui/dropdown-menu';
 import {
   Tooltip,
   TooltipContent,
@@ -24,7 +36,11 @@ import { panelsService } from '@/services/panels';
 import { PanelPageLoading } from '../panel-page/loading';
 import { EditBar } from './components/EditBar';
 
+type ResponsiveType = 'mobile' | 'tablet' | 'desktop';
+
 export const PanelEditPage: React.FC = () => {
+  const [responsive, setResponsive] = React.useState<ResponsiveType>('desktop');
+
   const { id } = useParams();
 
   const { data, error, isLoading } = useQuery({
@@ -45,6 +61,19 @@ export const PanelEditPage: React.FC = () => {
     return <NotFoundPage />;
   }
 
+  const renderResponsiveContentIcon = (_responsive: ResponsiveType) => {
+    switch (_responsive) {
+      case 'desktop':
+        return <Monitor size={18} />;
+      case 'tablet':
+        return <Tablet size={18} />;
+      case 'mobile':
+        return <Smartphone size={18} />;
+      default:
+        return null;
+    }
+  };
+
   if (data) {
     return (
       <Layout
@@ -63,21 +92,65 @@ export const PanelEditPage: React.FC = () => {
         rightBar={<EditBar data={data.data} />}
         className="layout-page"
         rightContent={
-          <Tooltip delayDuration={0}>
-            <TooltipTrigger>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="rounded-full"
-                asChild
-              >
-                <Link to={APP_ROUTER.panel.audit.replace(':id', data.data.id)}>
-                  <History className="text-zinc-600" />
-                </Link>
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>Registro de auditoria</TooltipContent>
-          </Tooltip>
+          <div className="flex items-center gap-2">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="gap-2">
+                  {renderResponsiveContentIcon(responsive)}
+                  <ChevronDown size={18} />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem asChild>
+                  <button
+                    className="flex w-full items-center gap-1"
+                    onClick={() => setResponsive('mobile')}
+                  >
+                    <Smartphone size={18} />
+                    Mobile
+                  </button>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <button
+                    className="flex w-full items-center gap-1"
+                    onClick={() => setResponsive('tablet')}
+                  >
+                    <Tablet size={18} />
+                    Tablet
+                  </button>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <button
+                    className="flex w-full items-center gap-1"
+                    onClick={() => setResponsive('desktop')}
+                  >
+                    <Monitor size={18} />
+                    Desktop
+                  </button>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <Button variant="positive" disabled>
+              Salvar
+            </Button>
+            <Tooltip delayDuration={0}>
+              <TooltipTrigger>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="rounded-full"
+                  asChild
+                >
+                  <Link
+                    to={APP_ROUTER.panel.audit.replace(':id', data.data.id)}
+                  >
+                    <History className="text-zinc-600" />
+                  </Link>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Registro de auditoria</TooltipContent>
+            </Tooltip>
+          </div>
         }
       ></Layout>
     );

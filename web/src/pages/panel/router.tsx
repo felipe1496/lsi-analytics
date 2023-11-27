@@ -7,6 +7,7 @@ import { APP_ROUTER } from '@/constants/app-routes';
 
 import { PanelAuditPage } from './panel-audit-page';
 import { PanelEditPage } from './panel-edit-page';
+import { PanelNewViewPie } from './panel-new-view/pie';
 import { PanelPage } from './panel-page';
 
 export const PanelRouter: React.FC = () => (
@@ -23,6 +24,12 @@ export const PanelRouter: React.FC = () => (
       path={APP_ROUTER.panel.audit}
       element={
         <Guard guards={[new AuthGuard()]} protect={<PanelAuditPage />} />
+      }
+    />
+    <Route
+      path={APP_ROUTER.panel.new.view.pieChart}
+      element={
+        <Guard guards={[new AuthGuard()]} protect={<PanelNewViewPie />} />
       }
     />
   </Routes>

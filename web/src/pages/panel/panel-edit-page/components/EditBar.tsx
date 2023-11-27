@@ -1,12 +1,16 @@
+import { PieChart, Plus } from 'lucide-react';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import { Input } from '@/components/common/ui/input';
 import { Label } from '@/components/common/ui/label';
 import { Textarea } from '@/components/common/ui/textarea';
+import { APP_ROUTER } from '@/constants/app-routes';
 import { PanelModel } from '@/services/models/panel';
+import { ViewsType } from '@/types/common';
 import { cn } from '@/utils';
 
-type MenuOption = 'general' | 'graphs';
+type MenuOption = 'general' | 'views';
 
 interface EditBarProps {
   data: PanelModel;
@@ -15,6 +19,9 @@ interface EditBarProps {
 export const EditBar: React.FC<EditBarProps> = ({ data }) => {
   const [activeMenuOption, setActiveMenuOption] =
     React.useState<MenuOption>('general');
+  const [selectedView, setSelectedView] = React.useState<ViewsType | null>(
+    null,
+  );
 
   const activeClassName =
     'bottomBar relative rounded-full font-semibold text-blue-500';
@@ -23,7 +30,7 @@ export const EditBar: React.FC<EditBarProps> = ({ data }) => {
     switch (option) {
       case 'general':
         return (
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 p-4">
             <div>
               <Label>Nome</Label>
               <Input defaultValue={data.name} placeholder="Nome" />
@@ -41,13 +48,54 @@ export const EditBar: React.FC<EditBarProps> = ({ data }) => {
           </div>
         );
 
+      case 'views':
+        return (
+          <div className="flex h-full flex-col justify-between">
+            <div className="p-4">
+              <button
+                className={cn(
+                  selectedView === 'pie-chart' && 'rounded-sm border',
+                )}
+                onClick={() =>
+                  setSelectedView((prevState) => {
+                    if (prevState === 'pie-chart') {
+                      return null;
+                    }
+
+                    return 'pie-chart';
+                  })
+                }
+              >
+                <PieChart />
+              </button>
+            </div>
+
+            <div className="border-t bg-white p-4">
+              <Link
+                className={cn(
+                  'flex w-full items-center justify-center gap-1 rounded-sm bg-blue-500 py-2 text-sm text-zinc-50',
+                  !selectedView && 'cursor-default opacity-50',
+                )}
+                to={
+                  selectedView
+                    ? APP_ROUTER.panel.new.view.pieChart.replace(':id', data.id)
+                    : '#'
+                }
+              >
+                <Plus size={18} />
+                Visualização
+              </Link>
+            </div>
+          </div>
+        );
+
       default:
         return null;
     }
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="flex h-full flex-col">
       <span className="p-4 text-lg font-semibold">Editar painel</span>
 
       <div className="mt-4 flex w-full gap-6 border-b px-4 py-2">
@@ -58,14 +106,14 @@ export const EditBar: React.FC<EditBarProps> = ({ data }) => {
           Geral
         </button>
         <button
-          onClick={() => setActiveMenuOption('graphs')}
-          className={cn(activeMenuOption === 'graphs' && activeClassName)}
+          onClick={() => setActiveMenuOption('views')}
+          className={cn(activeMenuOption === 'views' && activeClassName)}
         >
-          Gráficos
+          Visualizações
         </button>
       </div>
 
-      <div className="p-4">{handleRenderEditContent(activeMenuOption)}</div>
+      <div className="h-full">{handleRenderEditContent(activeMenuOption)}</div>
     </div>
   );
 };

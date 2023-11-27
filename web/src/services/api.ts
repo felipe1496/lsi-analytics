@@ -1,15 +1,23 @@
+/* eslint-disable import/no-mutable-exports */
 import axios from 'axios';
 
 import { Config } from '@/config';
 import { extractTokenFromCookies } from '@/utils';
 
-const token = extractTokenFromCookies();
+const createAxiosInstance = () => {
+  const token = extractTokenFromCookies();
+  const Authorization = token ? `Bearer ${token}` : undefined;
 
-const Authorization = token ? `Bearer ${token}` : undefined;
+  return axios.create({
+    baseURL: Config.getBaseURL,
+    headers: {
+      Authorization,
+    },
+  });
+};
 
-export const api = axios.create({
-  baseURL: Config.getBaseURL,
-  headers: {
-    Authorization,
-  },
-});
+export let api = createAxiosInstance();
+
+export const updateAxiosInstance = () => {
+  api = createAxiosInstance();
+};

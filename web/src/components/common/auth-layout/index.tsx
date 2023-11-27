@@ -19,10 +19,10 @@ export const AuthLayout: React.FC<AuthLayoutProps> = ({
   className,
   backButtonTo,
 }) => (
-  <main className="flex">
+  <main className="relative flex">
     {backButtonTo && (
-      <Link to={backButtonTo} className="">
-        <ArrowLeft />
+      <Link to={backButtonTo} className="absolute left-4 top-4">
+        <ArrowLeft size={32} />
       </Link>
     )}
     <div className={cn('w-1/2', className)}>{children}</div>

@@ -70,7 +70,14 @@ export const Layout: React.FC<LayoutProps> = ({
           <div className="w-full md:ml-16">
             <Topbar breadcrumb={breadcrumb} rightContent={rightContent} />
             {leftBar && <LeftBar>{leftBar}</LeftBar>}
-            <main className={cn('mt-14', leftBar && 'ml-80', className)}>
+            <main
+              className={cn(
+                'mt-14',
+                leftBar && 'ml-80',
+                rightBar && 'mr-80',
+                className,
+              )}
+            >
               {children}
               <Footer />
             </main>

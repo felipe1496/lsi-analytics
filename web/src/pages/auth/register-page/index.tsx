@@ -98,7 +98,10 @@ export const RegisterPage: React.FC = () => {
   };
 
   return (
-    <AuthLayout className="flex items-center justify-center">
+    <AuthLayout
+      className="flex items-center justify-center"
+      backButtonTo={APP_ROUTER.auth.login}
+    >
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col items-center justify-center gap-8"

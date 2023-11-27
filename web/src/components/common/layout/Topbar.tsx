@@ -4,6 +4,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { APP_ROUTER } from '@/constants/app-routes';
+import { queryClient } from '@/lib/react-query';
 import { capitalizarFirstLetter, cn, getUserInfo } from '@/utils';
 
 import {
@@ -29,6 +30,8 @@ export const Topbar: React.FC<TopbarProps> = ({
 
   const logout = () => {
     Cookies.remove('accessToken');
+    localStorage.removeItem('user');
+    queryClient.clear();
     navigate(APP_ROUTER.auth.login);
   };
 
@@ -61,7 +64,7 @@ export const Topbar: React.FC<TopbarProps> = ({
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem>Ajuda e suporte</DropdownMenuItem>
-            <DropdownMenuItem>Dar feedback</DropdownMenuItem>
+            <DropdownMenuItem>Feedback</DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
               <button
