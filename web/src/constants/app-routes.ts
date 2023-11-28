@@ -7,9 +7,7 @@ export const APP_ROUTER = {
     edit: '/painel/:id/editar',
     audit: '/painel/:id/auditoria',
     new: {
-      view: {
-        pieChart: '/panel/:id/novo/view/pie',
-      },
+      view: '/painel/:id/novo/visualizacao',
     },
   },
   auth: {

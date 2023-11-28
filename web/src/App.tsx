@@ -1,4 +1,5 @@
 import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
 
 import { Providers } from './components/common/providers';
 import { AuthRouter } from './pages/auth/router';
@@ -12,12 +13,14 @@ import './styles/globals.css';
 
 const App: React.FC = () => (
   <Providers>
-    <PanelRouter />
-    <PanelsRouter />
-    <AuthRouter />
-    <AccountRouter />
-    <MiscellaneousRouter />
-    <DocsRouter />
+    <BrowserRouter>
+      <PanelRouter />
+      <PanelsRouter />
+      <AuthRouter />
+      <AccountRouter />
+      <MiscellaneousRouter />
+      <DocsRouter />
+    </BrowserRouter>
   </Providers>
 );
 

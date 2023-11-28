@@ -21,6 +21,7 @@ export const PasswordInput = React.forwardRef<
       rigthAdornment={
         visible ? (
           <button
+            type="button"
             onClick={() => {
               if (onVisibilityChange) {
                 onVisibilityChange(false);
@@ -31,6 +32,7 @@ export const PasswordInput = React.forwardRef<
           </button>
         ) : (
           <button
+            type="button"
             onClick={() => {
               if (onVisibilityChange) {
                 onVisibilityChange(true);

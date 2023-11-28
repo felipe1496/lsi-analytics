@@ -7,7 +7,7 @@ import {
   Tablet,
 } from 'lucide-react';
 import React from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 
 import {
   Breadcrumb,
@@ -42,6 +42,9 @@ export const PanelEditPage: React.FC = () => {
   const [responsive, setResponsive] = React.useState<ResponsiveType>('desktop');
 
   const { id } = useParams();
+
+  const location = useLocation();
+  console.log(location.state);
 
   const { data, error, isLoading } = useQuery({
     queryKey: [reactQueryKeys.queries.findPanelQuery, id],
@@ -104,10 +107,10 @@ export const PanelEditPage: React.FC = () => {
                 <DropdownMenuItem asChild>
                   <button
                     className="flex w-full items-center gap-1"
-                    onClick={() => setResponsive('mobile')}
+                    onClick={() => setResponsive('desktop')}
                   >
-                    <Smartphone size={18} />
-                    Mobile
+                    <Monitor size={18} />
+                    Desktop
                   </button>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
@@ -122,10 +125,10 @@ export const PanelEditPage: React.FC = () => {
                 <DropdownMenuItem asChild>
                   <button
                     className="flex w-full items-center gap-1"
-                    onClick={() => setResponsive('desktop')}
+                    onClick={() => setResponsive('mobile')}
                   >
-                    <Monitor size={18} />
-                    Desktop
+                    <Smartphone size={18} />
+                    Mobile
                   </button>
                 </DropdownMenuItem>
               </DropdownMenuContent>

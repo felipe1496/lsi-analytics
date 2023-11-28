@@ -1,5 +1,6 @@
 import { QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
+import { HelmetProvider } from 'react-helmet-async';
 import { ToastContainer } from 'react-toastify';
 
 import { queryClient } from '@/lib/react-query';
@@ -12,10 +13,12 @@ interface ProvidersProps {
 }
 
 export const Providers: React.FC<ProvidersProps> = ({ children }) => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      {children}
-      <ToastContainer />
-    </TooltipProvider>
-  </QueryClientProvider>
+  <HelmetProvider>
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        {children}
+        <ToastContainer />
+      </TooltipProvider>
+    </QueryClientProvider>
+  </HelmetProvider>
 );

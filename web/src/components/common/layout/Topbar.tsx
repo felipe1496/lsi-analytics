@@ -36,6 +36,9 @@ export const Topbar: React.FC<TopbarProps> = ({
   };
 
   const UserBoxWrapper = rightContent ? 'div' : React.Fragment;
+  const userBoxProps = rightContent
+    ? { className: cn(rightContent && 'flex gap-6 border-red-500') }
+    : undefined;
 
   const renderUserBox = () => {
     if (user) {
@@ -92,9 +95,7 @@ export const Topbar: React.FC<TopbarProps> = ({
     >
       {breadcrumb}
 
-      <UserBoxWrapper
-        className={cn(rightContent && 'flex gap-6 border-red-500')}
-      >
+      <UserBoxWrapper {...userBoxProps}>
         {rightContent}
         {renderUserBox()}
       </UserBoxWrapper>

@@ -16,7 +16,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/common/ui/dropdown-menu';
@@ -82,10 +81,17 @@ export const PanelPage: React.FC = () => {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="mr-6">
-              <DropdownMenuLabel>Configurações do painel</DropdownMenuLabel>
-              <DropdownMenuSeparator />
               <DropdownMenuItem>Copiar link</DropdownMenuItem>
               <DropdownMenuItem>Compartilhar</DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem asChild>
+                <Link
+                  to={APP_ROUTER.panel.edit.replace(':id', id)}
+                  state={{ tab: 'views' }}
+                >
+                  Nova visualização
+                </Link>
+              </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link to={APP_ROUTER.panel.edit.replace(':id', id)}>
                   Editar

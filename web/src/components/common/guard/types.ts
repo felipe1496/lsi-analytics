@@ -1,5 +1,7 @@
 import { toast } from 'react-toastify';
 
+import { GuardContext } from '.';
+
 type RedirectActionType = {
   action: 'redirect';
   url: string;
@@ -13,7 +15,7 @@ type ToastActionType = {
 export type ActionType = RedirectActionType | ToastActionType;
 
 export abstract class CanActivate {
-  public abstract canActivate(): boolean | Promise<boolean>;
+  public abstract canActivate(ctx?: GuardContext): boolean | Promise<boolean>;
 
   public abstract onDenied?(): ActionType | ActionType[];
 }

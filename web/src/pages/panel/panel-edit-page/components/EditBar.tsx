@@ -1,6 +1,6 @@
 import { PieChart, Plus } from 'lucide-react';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import { Input } from '@/components/common/ui/input';
 import { Label } from '@/components/common/ui/label';
@@ -17,8 +17,11 @@ interface EditBarProps {
 }
 
 export const EditBar: React.FC<EditBarProps> = ({ data }) => {
-  const [activeMenuOption, setActiveMenuOption] =
-    React.useState<MenuOption>('general');
+  const location = useLocation();
+
+  const [activeMenuOption, setActiveMenuOption] = React.useState<MenuOption>(
+    location.state?.tab ?? 'general',
+  );
   const [selectedView, setSelectedView] = React.useState<ViewsType | null>(
     null,
   );
@@ -78,7 +81,7 @@ export const EditBar: React.FC<EditBarProps> = ({ data }) => {
                 )}
                 to={
                   selectedView
-                    ? APP_ROUTER.panel.new.view.pieChart.replace(':id', data.id)
+                    ? APP_ROUTER.panel.new.view.replace(':id', data.id)
                     : '#'
                 }
               >

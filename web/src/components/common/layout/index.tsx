@@ -1,6 +1,6 @@
 import { AlertTriangle } from 'lucide-react';
 import React from 'react';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 
 import { APP_DESCRIPTION } from '@/constants/meta';
 import { cn } from '@/utils';
