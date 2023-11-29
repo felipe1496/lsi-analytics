@@ -198,9 +198,11 @@ export const RegisterPage: React.FC = () => {
           </div>
 
           <Button loading={isPending} className="mt-6 w-full" type="submit">
-            Registrar
+            Cadastrar
           </Button>
         </div>
+
+        <Typography level="muted">© 2023 LSI Analytics</Typography>
       </form>
     </AuthLayout>
   );

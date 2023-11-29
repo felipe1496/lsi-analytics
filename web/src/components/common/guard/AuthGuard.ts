@@ -13,7 +13,7 @@ export class AuthGuard implements CanActivate {
       if (token) {
         await sessionsService.verify(token);
       } else {
-        throw new Error('Acesso negado');
+        throw new Error();
       }
 
       return true;

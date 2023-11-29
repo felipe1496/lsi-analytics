@@ -14,7 +14,7 @@ export const LandingPage: React.FC = () => (
           to={APP_ROUTER.auth.register}
           className="rounded border px-2 py-1 transition-all hover:bg-zinc-50 hover:text-zinc-800"
         >
-          Registrar
+          Cadastrar
         </Link>
       </div>
     </nav>

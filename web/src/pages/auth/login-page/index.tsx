@@ -76,7 +76,7 @@ export const LoginPage: React.FC = () => {
             alt="Information Systems Laboratory logo"
             className="w-24 object-cover"
           />
-          <Typography level="h4">Seja bem-bindo!</Typography>
+          <Typography level="h4">Seja bem-vindo!</Typography>
           <Typography level="muted">Faça Log In para iniciar</Typography>
         </div>
         <div className="flex w-96 flex-col gap-2">
@@ -125,6 +125,8 @@ export const LoginPage: React.FC = () => {
             Cadastre-se aqui
           </Link>
         </Typography>
+
+        <Typography level="muted">© 2023 LSI Analytics</Typography>
       </form>
     </AuthLayout>
   );

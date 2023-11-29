@@ -18,6 +18,7 @@ model User {
   birthDay DateTime
   imageURL String?
   panels Panel[]
+  dataFonts DataFont[]
   @@map("USERS")
 }
 
@@ -31,4 +32,64 @@ model Panel {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   @@map("PANELS")
+}
+
+enum TypeOfStorage {
+  DATABASE
+  FILE
+}
+
+enum DataProvider {
+  POSTGRESQL
+  CSV
+}
+
+model DataFont {
+  id String @default(nanoid()) @id
+  name String
+  typeOfStorage TypeOfStorage
+  provider DataProvider
+  accessKey String?
+  user   User @relation(fields: [userId], references: [id])
+  userId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@map("DATAFONTS")
+}
+
+enum ViewTypeEnum {
+  PIECHART
+}
+
+enum ViewContentUpdate {
+  STATIC
+  DYNAMIC
+}
+
+model View {
+  id String @default(nanoid()) @id
+  config Json
+  type ViewTypeEnum
+  contentUpdate ViewContentUpdate
+  sql String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@map("VIEWS")
+}
+
+model StaticViewData {
+  id String @default(nanoid()) @id
+  data Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@map("STATIC_VIEW_DATA")
+}
+
+model DataSet {
+  id String @default(nanoid()) @id
+  sql String
+  columnsMetadata Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@map("DATASET")
 }

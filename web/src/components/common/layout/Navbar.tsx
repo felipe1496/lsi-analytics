@@ -1,4 +1,4 @@
-import { BarChart3, BookOpen, Home } from 'lucide-react';
+import { BarChart3, BookOpen, Braces, Home } from 'lucide-react';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -32,6 +32,15 @@ export const Navbar: React.FC = () => (
         </Link>
       </TooltipTrigger>
       <TooltipContent side="right">Paineis</TooltipContent>
+    </Tooltip>
+
+    <Tooltip delayDuration={0}>
+      <TooltipTrigger>
+        <Link to={APP_ROUTER.dataFont.index}>
+          <Braces className="text-zinc-50" />
+        </Link>
+      </TooltipTrigger>
+      <TooltipContent side="right">Fontes de dados</TooltipContent>
     </Tooltip>
 
     <Tooltip delayDuration={0}>

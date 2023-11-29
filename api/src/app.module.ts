@@ -7,6 +7,7 @@ import { ConfigModule } from '@nestjs/config';
 import { config } from './config';
 import { SessionsModule } from './modules/sessions/sessions.module';
 import { PanelsModule } from './modules/panels/panels.module';
+import { DataFontsModule } from './modules/datafonts/datafonts.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { PanelsModule } from './modules/panels/panels.module';
     UsersModule,
     SessionsModule,
     ServicesModule,
+    DataFontsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

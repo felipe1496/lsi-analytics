@@ -14,4 +14,8 @@ export class DtoMessages {
   public static isDateString(field: string) {
     return `${field ?? 'Data'} deve ser válido`;
   }
+
+  public static invalid(field: string) {
+    return `${field} inválido`;
+  }
 }

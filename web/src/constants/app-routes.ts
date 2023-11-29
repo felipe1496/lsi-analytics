@@ -10,6 +10,9 @@ export const APP_ROUTER = {
       view: '/painel/:id/novo/visualizacao',
     },
   },
+  dataFont: {
+    index: '/fontes',
+  },
   auth: {
     login: '/entrar',
     register: '/cadastrar',
