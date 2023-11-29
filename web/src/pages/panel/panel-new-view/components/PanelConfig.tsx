@@ -84,9 +84,9 @@ export const PanelConfig: React.FC = () => {
         </form>
       </CardContent>
       <CardFooter className="flex justify-end gap-2">
-        <Link to={APP_ROUTER.panel.edit.replace(':id', id)}>
-          <Button variant="outline">Cancelar</Button>
-        </Link>
+        <Button variant="outline" asChild>
+          <Link to={APP_ROUTER.panel.edit.replace(':id', id)}>Voltar</Link>
+        </Button>
         <Button>Próximo</Button>
       </CardFooter>
     </Card>

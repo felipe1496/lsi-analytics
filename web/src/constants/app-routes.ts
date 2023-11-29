@@ -12,6 +12,7 @@ export const APP_ROUTER = {
   },
   dataFont: {
     index: '/fontes',
+    new: '/fontes/novo',
   },
   auth: {
     login: '/entrar',

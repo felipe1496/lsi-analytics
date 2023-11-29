@@ -1,10 +1,12 @@
 import { api } from '../api';
 import { DataFontModel } from '../models/datafont';
-import { PostRequest } from '../types';
+import { GetRequest, PostRequest } from '../types';
 
 export type CreateDataFontProps = PostRequest<
-  Pick<DataFontModel, 'name' | 'typeOfStorage' | 'accessKey' | 'userId'>
+  Pick<DataFontModel, 'name' | 'typeOfStorage' | 'provider' | 'accessKey'>
 >;
+
+export type FindAllDataFontsProps = GetRequest<null>;
 
 class DataFontsService {
   public async create(props: CreateDataFontProps) {
@@ -13,6 +15,12 @@ class DataFontsService {
       props.body,
       props.config,
     );
+
+    return response;
+  }
+
+  public async findAll() {
+    const response = await api.get<DataFontModel[]>('/datafonts');
 
     return response;
   }

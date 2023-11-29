@@ -29,12 +29,4 @@ export class CreateDataFontDto {
     message: DtoMessages.IsNotEmpty('Provedor'),
   })
   provider: DataFontProviderEnum;
-
-  @IsNotEmpty({
-    message: DtoMessages.IsNotEmpty('Id do Usuário'),
-  })
-  @IsString({
-    message: DtoMessages.isString('Id do Usuário'),
-  })
-  userId: string;
 }
