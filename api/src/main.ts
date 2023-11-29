@@ -5,12 +5,12 @@ import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const configService = app.get(ConfigService);
   app.enableCors({
-    origin: 'http://localhost:3000',
+    origin: configService.get('frontendURL'),
     methods: 'GET, PUT, PATCH, POST, DELETE',
     credentials: true,
   });
-  const configService = app.get(ConfigService);
   const port = configService.get('port');
   app.useGlobalPipes(new ValidationPipe());
   app.setGlobalPrefix('/api');
