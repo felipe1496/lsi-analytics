@@ -28,8 +28,10 @@ export class AuthGuard implements CanActivate {
       // 💡 We're assigning the payload to the request object here
       // so that we can access it in our route handlers
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { password: _, ...user } = payload.user.props;
-      request.user = user;
+      const { id: userId } = payload.user.props;
+
+      request.userId = userId;
+      console.log('request: ', request);
     } catch {
       throw new UnauthorizedException();
     }

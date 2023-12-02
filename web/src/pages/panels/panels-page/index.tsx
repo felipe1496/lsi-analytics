@@ -16,6 +16,7 @@ import { Typography } from '@/components/common/typography';
 import { Button } from '@/components/common/ui/button';
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogFooter,
   DialogHeader,
@@ -132,6 +133,11 @@ export const PanelsPage: React.FC = () => {
                   </div>
                 </div>
                 <DialogFooter>
+                  <DialogClose>
+                    <Button type="button" variant="outline">
+                      Cancelar
+                    </Button>
+                  </DialogClose>
                   <Button type="submit">Criar</Button>
                 </DialogFooter>
               </form>

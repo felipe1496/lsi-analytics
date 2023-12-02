@@ -11,6 +11,17 @@ import {
 } from '@/components/common/breadcrumb';
 import { Layout } from '@/components/common/layout';
 import { Typography } from '@/components/common/typography';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/common/ui/alert-dialog/alert-dialog';
 import { Button } from '@/components/common/ui/button';
 import { DataTable } from '@/components/common/ui/data-table';
 import { APP_ROUTER } from '@/constants/app-routes';
@@ -76,13 +87,38 @@ export const columns: ColumnDef<DataFontModel>[] = [
     accessorKey: 'actions',
     header: 'Ações',
     cell: () => (
-      <Button
-        variant="outline"
-        size="icon"
-        className="rounded-full border-red-300 text-red-500 hover:bg-red-50 hover:text-red-500"
-      >
-        <Trash2 size={18} />
-      </Button>
+      <AlertDialog>
+        <AlertDialogTrigger asChild>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="text-red-500 hover:bg-red-50 hover:text-red-500"
+          >
+            <Trash2 size={18} />
+          </Button>
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              Você tem certeza que deseja remover?
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              Essa ação não pode ser desfeita. Isso vai deletar permanentemente
+              a sua Fonte de dados e seus conjuntos de dados relacionados a essa
+              fonte.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogAction
+              variant="destructive"
+              onClick={() => console.log('remove')}
+            >
+              Remover
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     ),
   },
 ];

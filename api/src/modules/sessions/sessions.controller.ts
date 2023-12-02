@@ -5,7 +5,6 @@ import {
   HttpCode,
   HttpStatus,
   Post,
-  Req,
   UseGuards,
 } from '@nestjs/common';
 import { UsersRepository } from '../users/users.repository';
@@ -15,7 +14,6 @@ import { JwtService } from '@nestjs/jwt';
 
 import { UsersMapper } from '../users/users.mapper';
 import { AuthGuard } from 'src/guards/auth/auth.guard';
-import { Request } from 'express';
 
 @Controller('/sessions')
 export class SessionsController {
@@ -39,7 +37,7 @@ export class SessionsController {
       throw new EmailOrPasswordIncorrectError();
     }
 
-    const payload = { sub: user.props.id, user };
+    const payload = { sub: user.props.id };
     const accessToken = await this.jwtService.signAsync(payload);
 
     return {
@@ -51,8 +49,7 @@ export class SessionsController {
   @Get()
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
-  public async verify(@Req() request: Request) {
-    const user = request['user'];
-    return { user };
+  public async verify() {
+    return true;
   }
 }

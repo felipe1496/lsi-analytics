@@ -3,6 +3,7 @@ import { PrismaService } from 'src/services/prisma/prisma.service';
 import {
   CreateDataFontProps,
   DataFontsRepository,
+  DeleteDataFontProps,
 } from '../abstract/datafonts.repository';
 import { DataFont } from '../../entities/datafont.entity';
 import { DataFontsMapper } from '../../mappers/datafonts.mapper';
@@ -13,7 +14,7 @@ export class PrismaDataFontsRepository implements DataFontsRepository {
 
   public async create(props: CreateDataFontProps): Promise<DataFont> {
     const dataFont = await this.prisma.dataFont.create({
-      data: { ...props.data, userId: props.userId },
+      data: { ...props },
     });
 
     return DataFontsMapper.toDomain(dataFont);
@@ -27,5 +28,14 @@ export class PrismaDataFontsRepository implements DataFontsRepository {
     });
 
     return dataFonts.map(DataFontsMapper.toDomain);
+  }
+
+  public async delete(props: DeleteDataFontProps): Promise<void> {
+    await this.prisma.dataFont.delete({
+      where: {
+        id: props.dataFontId,
+        userId: props.userId,
+      },
+    });
   }
 }

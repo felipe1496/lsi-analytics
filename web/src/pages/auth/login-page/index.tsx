@@ -76,7 +76,7 @@ export const LoginPage: React.FC = () => {
             alt="Information Systems Laboratory logo"
             className="w-24 object-cover"
           />
-          <Typography level="h4">Seja bem-vindo!</Typography>
+          <Typography level="h4">Bem-vindo!</Typography>
           <Typography level="muted">Faça Log In para iniciar</Typography>
         </div>
         <div className="flex w-96 flex-col gap-2">

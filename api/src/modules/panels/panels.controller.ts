@@ -27,7 +27,7 @@ export class PanelsController {
     @Req() request: Request,
     @Body() createPanelDto: CreatePanelDto,
   ) {
-    const userId = request['user'].id;
+    const userId = request.userId;
     const panel = await this.panelsRepository.create({
       ...createPanelDto,
       userId,
@@ -42,7 +42,7 @@ export class PanelsController {
   public async find(@Req() request: Request, @Param() param: IdDto) {
     const panel = await this.panelsRepository.find({
       id: param.id,
-      userId: request['user'].id,
+      userId: request.userId,
     });
 
     return PanelsMapper.toHTTP(panel);
@@ -53,7 +53,7 @@ export class PanelsController {
   @HttpCode(HttpStatus.OK)
   public async findAll(@Req() request: Request) {
     const panels = await this.panelsRepository.findAll({
-      userId: request['user'].id,
+      userId: request.userId,
     });
 
     return panels.map(PanelsMapper.toHTTP);
