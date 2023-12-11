@@ -2,7 +2,8 @@ import { BarChart3, BookOpen, Braces, Home } from 'lucide-react';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import { APP_ROUTES } from '../../../constants/app-routes';
+import { APP_ROUTES } from '@/constants/app-routes';
+
 import { Separator } from '../ui/separator';
 import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
 

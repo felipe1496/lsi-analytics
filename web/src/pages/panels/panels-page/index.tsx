@@ -9,11 +9,11 @@ import {
   Breadcrumb,
   BreadcrumbHome,
   BreadcrumbNeutral,
-} from '@/components/common/breadcrumb';
-import { FieldError } from '@/components/common/errors/field-error';
-import { Layout } from '@/components/common/layout';
-import { Typography } from '@/components/common/typography';
-import { Button } from '@/components/common/ui/button';
+} from '@/components/breadcrumb';
+import { FieldError } from '@/components/errors/field-error';
+import { Layout } from '@/components/layout';
+import { Typography } from '@/components/typography';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogClose,
@@ -22,9 +22,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/common/ui/dialog';
-import { Input } from '@/components/common/ui/input';
-import { Label } from '@/components/common/ui/label';
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { APP_ROUTES } from '@/constants/app-routes';
 import { REQUIRED_FIELD } from '@/constants/form-messages';
 import { reactQueryKeys } from '@/constants/react-query-keys';

@@ -2,7 +2,7 @@ import './styles/globals.css';
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 
-import { Providers } from './components/common/providers';
+import { Providers } from './components/providers';
 import { LoginPage } from './pages/auth/login-page';
 import { RegisterPage } from './pages/auth/register-page';
 import { ConfigRoutes } from './pages/configuration/routes';

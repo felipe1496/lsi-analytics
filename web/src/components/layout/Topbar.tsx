@@ -1,12 +1,5 @@
 import Cookies from 'js-cookie';
-import {
-  BarChart3,
-  ChevronDown,
-  Home,
-  LogOut,
-  Plus,
-  Settings,
-} from 'lucide-react';
+import { ChevronDown, LogOut, Settings, User } from 'lucide-react';
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -64,28 +57,22 @@ export const Topbar: React.FC<TopbarProps> = ({
           </DropdownMenuTrigger>
           <DropdownMenuContent className="mr-6">
             <DropdownMenuItem asChild>
-              <Link to="#" className="flex items-center gap-2">
-                <Home size={18} className="text-zinc-500" />
+              <Link
+                to={APP_ROUTES.config.profile}
+                className="flex items-center gap-2"
+              >
+                <User size={18} className="text-zinc-500" />
                 {capitalizarFirstLetter(user.name)}
               </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <Link to="#" className="flex items-center gap-2">
-                <Plus size={16} className="text-zinc-500" />
-                Novo painel
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link to="#" className="flex items-center gap-2">
-                <BarChart3 size={16} className="text-zinc-500" />
-                Meus paineis
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link to="#" className="flex items-center gap-2">
+              <Link
+                to={APP_ROUTES.config.index}
+                className="flex items-center gap-2"
+              >
                 <Settings size={16} className="text-zinc-500" />
-                Editar perfil
+                Configurações
               </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Skeleton } from '@/components/common/ui/skeleton';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export const LoadingPanelsPage: React.FC = () => (
   <div className="flex flex-col gap-4">

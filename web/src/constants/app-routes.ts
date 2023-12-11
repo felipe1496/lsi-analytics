@@ -7,7 +7,7 @@ export const APP_ROUTES = {
     edit: '/painel/:id/editar',
     audit: '/painel/:id/auditoria',
     new: {
-      view: '/painel/:id/novo/visualizacao',
+      index: '/painel/:id/novo/visualizacao',
       font: '/painel/:id/novo/visualizacao/fonte',
       object: '/painel/:id/novo/visualizacao/objeto',
     },
@@ -21,16 +21,11 @@ export const APP_ROUTES = {
     register: '/cadastrar',
   },
   config: {
-    profile: { index: '/config/perfil' },
-    preferences: { index: '/config/preferencias' },
+    index: '/config',
+    profile: '/config/perfil',
   },
   misc: {
-    landing: {
-      index: '/',
-    },
-    notFound: {
-      index: '/404',
-    },
+    landing: '/',
   },
   docs: {
     index: '/docs',

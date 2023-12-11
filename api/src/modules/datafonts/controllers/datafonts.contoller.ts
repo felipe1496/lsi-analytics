@@ -16,6 +16,8 @@ import { CreateDataFontDto } from '../dtos/create-datafont.dto';
 import { DataFontsRepository } from '../respositories/abstract/datafonts.repository';
 import { DataFontsMapper } from '../mappers/datafonts.mapper';
 import { IdDto } from 'src/utils/dtos/id.dto';
+import { PostgresqlService } from 'src/services/databases/postgresql.service';
+import { InvalidDataFontError } from '../errors/invalid-datafont.error';
 
 @Controller('/datafonts')
 export class DataFontsController {
@@ -57,5 +59,33 @@ export class DataFontsController {
       dataFontId: param.id,
       userId,
     });
+  }
+
+  @Get('/schemas/:id')
+  @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.OK)
+  public async schemas(@Req() request: Request, @Param() param: IdDto) {
+    const userId = request.userId;
+
+    const datafont = await this.dataFontsRepository.find({
+      userId,
+      dataFontId: param.id,
+    });
+
+    if (!datafont) {
+      throw new InvalidDataFontError();
+    }
+
+    const postgresqlService = new PostgresqlService({
+      accessKey: datafont.props.accessKey,
+    });
+
+    const _schemas: { schema_name: string }[] =
+      await postgresqlService.schemas();
+    const schemas = _schemas.map((item) => item.schema_name);
+
+    return {
+      schemas,
+    };
   }
 }

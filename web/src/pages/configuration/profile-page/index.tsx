@@ -5,10 +5,11 @@ import {
   BreadcrumbHome,
   BreadcrumbLink,
   BreadcrumbNeutral,
-} from '@/components/common/breadcrumb';
-import { ConfigBar } from '@/components/common/config-bar';
-import { Layout } from '@/components/common/layout';
+} from '@/components/breadcrumb';
+import { Layout } from '@/components/layout';
 import { APP_ROUTES } from '@/constants/app-routes';
+
+import { ConfigBar } from '../components/config-bar';
 
 export const ProfilePage: React.FC = () => (
   <Layout
@@ -17,7 +18,7 @@ export const ProfilePage: React.FC = () => (
     breadcrumb={
       <Breadcrumb>
         <BreadcrumbHome />
-        <BreadcrumbLink to={APP_ROUTES.config.profile.index}>
+        <BreadcrumbLink to={APP_ROUTES.config.profile}>
           Configurações
         </BreadcrumbLink>
         <BreadcrumbNeutral>Perfil</BreadcrumbNeutral>

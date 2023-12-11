@@ -15,4 +15,5 @@ export type ViewModel = {
   name: string;
   type: ViewsType;
   contentUpdate: ContentType;
+  datafontId: string;
 };

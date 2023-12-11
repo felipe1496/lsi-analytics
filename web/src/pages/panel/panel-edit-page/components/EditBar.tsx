@@ -2,9 +2,9 @@ import { PieChart, Plus } from 'lucide-react';
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
-import { Input } from '@/components/common/ui/input';
-import { Label } from '@/components/common/ui/label';
-import { Textarea } from '@/components/common/ui/textarea';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 import { APP_ROUTES } from '@/constants/app-routes';
 import { PanelModel, ViewsType } from '@/services/models/panel';
 import { cn } from '@/utils';
@@ -80,7 +80,7 @@ export const EditBar: React.FC<EditBarProps> = ({ data }) => {
                 )}
                 to={
                   selectedView
-                    ? APP_ROUTES.panel.new.view.replace(':id', data.id)
+                    ? APP_ROUTES.panel.new.index.replace(':id', data.id)
                     : '#'
                 }
                 state={{ view: 'PIE_CHART' }}

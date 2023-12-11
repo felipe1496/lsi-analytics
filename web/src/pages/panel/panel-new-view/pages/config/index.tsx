@@ -10,23 +10,23 @@ import {
   BreadcrumbHome,
   BreadcrumbLink,
   BreadcrumbNeutral,
-} from '@/components/common/breadcrumb';
-import { FieldError } from '@/components/common/errors/field-error';
-import { Layout } from '@/components/common/layout';
-import { NotFoundPage } from '@/components/common/not-found-page';
-import { SimpleStepper } from '@/components/common/simple-stepper';
-import { Typography } from '@/components/common/typography';
-import { Button } from '@/components/common/ui/button';
-import { Input } from '@/components/common/ui/input';
-import { Label } from '@/components/common/ui/label';
-import { RadioGroup, RadioGroupItem } from '@/components/common/ui/radio-group';
+} from '@/components/breadcrumb';
+import { FieldError } from '@/components/errors/field-error';
+import { Layout } from '@/components/layout';
+import { NotFoundPage } from '@/components/not-found-page';
+import { SimpleStepper } from '@/components/simple-stepper';
+import { Typography } from '@/components/typography';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/common/ui/select';
+} from '@/components/ui/select';
 import { APP_ROUTES } from '@/constants/app-routes';
 import { REQUIRED_FIELD } from '@/constants/form-messages';
 import { reactQueryKeys } from '@/constants/react-query-keys';

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Layout } from '@/components/common/layout';
+import { Layout } from '@/components/layout';
 
 export const PanelAuditPage: React.FC = () => (
   <Layout

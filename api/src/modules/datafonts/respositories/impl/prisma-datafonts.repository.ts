@@ -4,6 +4,7 @@ import {
   CreateDataFontProps,
   DataFontsRepository,
   DeleteDataFontProps,
+  FindDataFontProps,
 } from '../abstract/datafonts.repository';
 import { DataFont } from '../../entities/datafont.entity';
 import { DataFontsMapper } from '../../mappers/datafonts.mapper';
@@ -37,5 +38,20 @@ export class PrismaDataFontsRepository implements DataFontsRepository {
         userId: props.userId,
       },
     });
+  }
+
+  public async find(props: FindDataFontProps): Promise<DataFont | null> {
+    const dataFont = await this.prisma.dataFont.findFirst({
+      where: {
+        userId: props.userId,
+        id: props.dataFontId,
+      },
+    });
+
+    if (!dataFont) {
+      return null;
+    }
+
+    return DataFontsMapper.toDomain(dataFont);
   }
 }

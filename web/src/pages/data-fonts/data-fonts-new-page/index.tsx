@@ -10,11 +10,11 @@ import {
   BreadcrumbHome,
   BreadcrumbLink,
   BreadcrumbNeutral,
-} from '@/components/common/breadcrumb';
-import { FieldError } from '@/components/common/errors/field-error';
-import { Layout } from '@/components/common/layout';
-import { Typography } from '@/components/common/typography';
-import { Button } from '@/components/common/ui/button';
+} from '@/components/breadcrumb';
+import { FieldError } from '@/components/errors/field-error';
+import { Layout } from '@/components/layout';
+import { Typography } from '@/components/typography';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -22,10 +22,10 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/common/ui/card';
-import { Input } from '@/components/common/ui/input';
-import { PasswordInput } from '@/components/common/ui/input/PasswordInput';
-import { Label } from '@/components/common/ui/label';
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { PasswordInput } from '@/components/ui/input/PasswordInput';
+import { Label } from '@/components/ui/label';
 import { APP_ROUTES } from '@/constants/app-routes';
 import { AVAILABLE_DATA_FONTS } from '@/constants/data-fonts';
 import { REQUIRED_FIELD } from '@/constants/form-messages';

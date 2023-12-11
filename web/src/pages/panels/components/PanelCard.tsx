@@ -2,9 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import ImagePlaceholder from '@/assets/images/image-placeholder.jpg';
-import { Typography } from '@/components/common/typography';
-import { AspectRatio } from '@/components/common/ui/aspect-ratio';
-import { Separator } from '@/components/common/ui/separator';
+import { Typography } from '@/components/typography';
+import { AspectRatio } from '@/components/ui/aspect-ratio';
+import { Separator } from '@/components/ui/separator';
 
 interface PanelCardProps {
   imageURL?: string;

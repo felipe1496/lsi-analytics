@@ -13,7 +13,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/common/ui/table';
+} from '@/components/ui/table';
 
 import { NoData } from '../../no-data';
 

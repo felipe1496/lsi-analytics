@@ -49,3 +49,11 @@ export const getUserInfo = () => {
 
 export const capitalizarFirstLetter = (text: string) =>
   text.charAt(0).toUpperCase() + text.slice(1);
+
+export const isDifferentOfUndefinedAndNull = (value: unknown) => {
+  if (value !== undefined && value !== null) {
+    return true;
+  }
+
+  return false;
+};

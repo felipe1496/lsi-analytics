@@ -14,21 +14,21 @@ import {
   BreadcrumbHome,
   BreadcrumbLink,
   BreadcrumbNeutral,
-} from '@/components/common/breadcrumb';
-import { Layout } from '@/components/common/layout';
-import { NotFoundPage } from '@/components/common/not-found-page';
-import { Button } from '@/components/common/ui/button';
+} from '@/components/breadcrumb';
+import { Layout } from '@/components/layout';
+import { NotFoundPage } from '@/components/not-found-page';
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/common/ui/dropdown-menu';
+} from '@/components/ui/dropdown-menu';
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from '@/components/common/ui/tooltip';
+} from '@/components/ui/tooltip';
 import { APP_ROUTES } from '@/constants/app-routes';
 import { reactQueryKeys } from '@/constants/react-query-keys';
 import { panelsService } from '@/services/panels';

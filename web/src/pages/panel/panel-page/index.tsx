@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { Settings, Trash2 } from 'lucide-react';
+import { Plus, Settings, Share2, Trash2 } from 'lucide-react';
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 
@@ -8,18 +8,18 @@ import {
   BreadcrumbHome,
   BreadcrumbLink,
   BreadcrumbNeutral,
-} from '@/components/common/breadcrumb';
-import { Layout } from '@/components/common/layout';
-import { NotFoundPage } from '@/components/common/not-found-page';
-import { Typography } from '@/components/common/typography';
-import { Button } from '@/components/common/ui/button';
+} from '@/components/breadcrumb';
+import { Layout } from '@/components/layout';
+import { NotFoundPage } from '@/components/not-found-page';
+import { Typography } from '@/components/typography';
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/common/ui/dropdown-menu';
+} from '@/components/ui/dropdown-menu';
 import { APP_ROUTES } from '@/constants/app-routes';
 import { reactQueryKeys } from '@/constants/react-query-keys';
 import { panelsService } from '@/services/panels';
@@ -68,44 +68,52 @@ export const PanelPage: React.FC = () => {
               <Typography level="muted">{data.data.description}</Typography>
             )}
           </div>
-
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="outline"
-                color="danger"
-                size="icon"
-                className="rounded-full"
-              >
-                <Settings />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="mr-6">
-              <DropdownMenuItem>Copiar link</DropdownMenuItem>
-              <DropdownMenuItem>Compartilhar</DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem asChild>
-                <Link
-                  to={APP_ROUTES.panel.edit.replace(':id', id)}
-                  state={{ tab: 'views' }}
+          <div className="flex items-center gap-4">
+            <Button variant="outline" className="gap-2 rounded-full">
+              <Share2 size={18} />
+              Compartilhar
+            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="outline"
+                  color="danger"
+                  size="icon"
+                  className="rounded-full"
                 >
-                  Nova visualização
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link to={APP_ROUTES.panel.edit.replace(':id', id)}>
-                  Editar
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem asChild>
-                <button className="group flex w-full items-center gap-2 text-red-500">
-                  <Trash2 size={18} className="group-hover:text-red-500" />
-                  <span className="group-hover:text-red-500">Remover</span>
-                </button>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+                  <Settings />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="mr-6">
+                <DropdownMenuItem asChild>
+                  <Link
+                    to={APP_ROUTES.panel.edit.replace(':id', id)}
+                    state={{ tab: 'views' }}
+                    className="flex items-center gap-2"
+                  >
+                    <Plus size={16} className="text-zinc-500" />
+                    Nova visualização
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link
+                    to={APP_ROUTES.panel.edit.replace(':id', id)}
+                    className="flex items-center gap-2"
+                  >
+                    <Settings size={16} className="text-zinc-500" />
+                    Editar painel
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <button className="group flex w-full items-center gap-2 text-red-500">
+                    <Trash2 size={18} className="group-hover:text-red-500" />
+                    <span className="group-hover:text-red-500">Remover</span>
+                  </button>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
       </Layout>
     );

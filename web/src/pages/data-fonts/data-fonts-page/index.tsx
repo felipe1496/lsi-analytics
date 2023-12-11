@@ -8,10 +8,10 @@ import {
   Breadcrumb,
   BreadcrumbHome,
   BreadcrumbNeutral,
-} from '@/components/common/breadcrumb';
-import { Layout } from '@/components/common/layout';
-import { LoadingTable } from '@/components/common/loading-table';
-import { Typography } from '@/components/common/typography';
+} from '@/components/breadcrumb';
+import { Layout } from '@/components/layout';
+import { LoadingTable } from '@/components/loading-table';
+import { Typography } from '@/components/typography';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -22,10 +22,10 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '@/components/common/ui/alert-dialog/alert-dialog';
-import { Button } from '@/components/common/ui/button';
-import { DataTable } from '@/components/common/ui/data-table';
-import { Skeleton } from '@/components/common/ui/skeleton';
+} from '@/components/ui/alert-dialog/alert-dialog';
+import { Button } from '@/components/ui/button';
+import { DataTable } from '@/components/ui/data-table';
+import { Skeleton } from '@/components/ui/skeleton';
 import { APP_ROUTES } from '@/constants/app-routes';
 import {
   PROVIDER_MAPPER_DB_IMAGEURL,

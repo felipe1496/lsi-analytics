@@ -5,25 +5,24 @@ import {
   BreadcrumbHome,
   BreadcrumbLink,
   BreadcrumbNeutral,
-} from '@/components/common/breadcrumb';
-import { ConfigBar } from '@/components/common/config-bar';
-import { Layout } from '@/components/common/layout';
+} from '@/components/breadcrumb';
+import { Layout } from '@/components/layout';
 import { APP_ROUTES } from '@/constants/app-routes';
 
-export const PreferencesPage: React.FC = () => (
+import { ConfigBar } from '../components/config-bar';
+
+export const ConfigPage: React.FC = () => (
   <Layout
-    title="Preferências | Configurações"
+    title="Preferências"
     leftBar={<ConfigBar active="preferences" />}
     breadcrumb={
       <Breadcrumb>
         <BreadcrumbHome />
-        <BreadcrumbLink to={APP_ROUTES.config.profile.index}>
+        <BreadcrumbLink to={APP_ROUTES.config.profile}>
           Configurações
         </BreadcrumbLink>
         <BreadcrumbNeutral>Preferências</BreadcrumbNeutral>
       </Breadcrumb>
     }
-  >
-    Preferências
-  </Layout>
+  ></Layout>
 );

@@ -4,9 +4,9 @@ import {
   Breadcrumb,
   BreadcrumbHome,
   BreadcrumbLink,
-} from '@/components/common/breadcrumb';
-import { Layout } from '@/components/common/layout';
-import { Skeleton } from '@/components/common/ui/skeleton';
+} from '@/components/breadcrumb';
+import { Layout } from '@/components/layout';
+import { Skeleton } from '@/components/ui/skeleton';
 import { APP_ROUTES } from '@/constants/app-routes';
 
 export const PanelPageLoading: React.FC = () => (
