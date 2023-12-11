@@ -33,10 +33,12 @@ export class PostgresqlService {
     }
   }
 
-  public async schemas(): Promise<any> {
+  public async schemas() {
     try {
       await this.prisma.$connect();
-      const result = await this.prisma.$queryRaw`SELECT schema_name
+      const result = await this.prisma.$queryRaw<
+        { schema_name: string }[]
+      >`SELECT schema_name
       FROM information_schema.schemata;`;
       return result;
     } catch (error) {
@@ -47,6 +49,24 @@ export class PostgresqlService {
       );
     } finally {
       this.prisma.$disconnect();
+    }
+  }
+
+  public async tables(schema: string) {
+    try {
+      await this.prisma.$connect();
+      const result = await this.prisma.$queryRaw<
+        { table_name: string }[]
+      >`SELECT table_name FROM information_schema.tables WHERE table_schema = ${schema}`;
+      return result;
+    } catch (error) {
+      throw new Error(
+        `Erro ao executar consulta SQL: ${
+          error?.message ?? 'Erro desconhecido'
+        }`,
+      );
+    } finally {
+      await this.prisma.$disconnect();
     }
   }
 }

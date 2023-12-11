@@ -18,6 +18,7 @@ import { DataFontsMapper } from '../mappers/datafonts.mapper';
 import { IdDto } from 'src/utils/dtos/id.dto';
 import { PostgresqlService } from 'src/services/databases/postgresql.service';
 import { InvalidDataFontError } from '../errors/invalid-datafont.error';
+import { TablesDto } from '../dtos/tables.dto';
 
 @Controller('/datafonts')
 export class DataFontsController {
@@ -82,10 +83,57 @@ export class DataFontsController {
 
     const _schemas: { schema_name: string }[] =
       await postgresqlService.schemas();
-    const schemas = _schemas.map((item) => item.schema_name);
+    const schemas = _schemas.map((s) => s.schema_name);
 
     return {
       schemas,
     };
+  }
+
+  @Get('/tables/:id/:schema')
+  @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.OK)
+  public async tables(@Req() request: Request, @Param() param: TablesDto) {
+    const userId = request.userId;
+
+    const datafont = await this.dataFontsRepository.find({
+      userId,
+      dataFontId: param.id,
+    });
+
+    if (!datafont) {
+      throw new InvalidDataFontError();
+    }
+
+    const postgresqlService = new PostgresqlService({
+      accessKey: datafont.props.accessKey,
+    });
+
+    const _tables = await postgresqlService.tables(param.schema);
+    const tables = _tables.map((t) => t.table_name);
+
+    return {
+      tables,
+    };
+  }
+
+  @Get('/sql/:id')
+  @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.OK)
+  public async sql(@Req() request: Request, @Param() param: IdDto) {
+    const userId = request.userId;
+
+    const datafont = await this.dataFontsRepository.find({
+      userId,
+      dataFontId: param.id,
+    });
+
+    if (!datafont) {
+      throw new InvalidDataFontError();
+    }
+
+    const postgresqlService = new PostgresqlService({
+      accessKey: datafont.props.accessKey,
+    });
   }
 }

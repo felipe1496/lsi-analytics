@@ -17,6 +17,7 @@ import {
   CommandInput,
   CommandItem,
 } from '../command';
+import { ScrollArea } from '../scroll-area';
 
 interface ComboboxProps {
   data: { label: string; value: string }[];
@@ -24,6 +25,7 @@ interface ComboboxProps {
   className?: string;
   slotProps?: {
     popoverContent?: React.ComponentProps<typeof PopoverContent>;
+    scrollArea?: React.ComponentProps<typeof ScrollArea>;
   };
   onChange?: (value: string) => void;
 }
@@ -40,6 +42,9 @@ export const Combobox: React.FC<ComboboxProps> = ({
 
   const { className: popoverContentClassName, ...popoverContentProps } =
     slotProps.popoverContent || {};
+
+  const { className: scrollAreaClassName, ...scrollAreaProps } =
+    slotProps.scrollArea || {};
 
   return (
     <div>
@@ -65,29 +70,34 @@ export const Combobox: React.FC<ComboboxProps> = ({
             <CommandInput placeholder={placeholder} />
             <CommandEmpty>Nenhum dado encontrado.</CommandEmpty>
             <CommandGroup>
-              {data.map((framework) => (
-                <CommandItem
-                  className="cursor-pointer"
-                  key={framework.value}
-                  value={framework.value}
-                  onSelect={(currentValue: any) => {
-                    setValue(currentValue === value ? '' : currentValue);
-                    setOpen(false);
+              <ScrollArea
+                className={cn('w-full', scrollAreaClassName)}
+                {...scrollAreaProps}
+              >
+                {data.map((item, index) => (
+                  <CommandItem
+                    className="cursor-pointer"
+                    key={`${item.value}-${index}`}
+                    value={item.value}
+                    onSelect={(currentValue: any) => {
+                      setValue(currentValue === value ? '' : currentValue);
+                      setOpen(false);
 
-                    if (onChange) {
-                      onChange(currentValue);
-                    }
-                  }}
-                >
-                  <Check
-                    className={cn(
-                      'mr-2 h-4 w-4',
-                      value === framework.value ? 'opacity-100' : 'opacity-0',
-                    )}
-                  />
-                  {framework.label}
-                </CommandItem>
-              ))}
+                      if (onChange) {
+                        onChange(currentValue);
+                      }
+                    }}
+                  >
+                    <Check
+                      className={cn(
+                        'mr-2 h-4 w-4',
+                        value === item.value ? 'opacity-100' : 'opacity-0',
+                      )}
+                    />
+                    {item.label}
+                  </CommandItem>
+                ))}
+              </ScrollArea>
             </CommandGroup>
           </Command>
         </PopoverContent>

@@ -1,4 +1,6 @@
+import Editor from '@monaco-editor/react';
 import { useQuery } from '@tanstack/react-query';
+import { Sheet } from 'lucide-react';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -9,20 +11,54 @@ import {
   BreadcrumbNeutral,
 } from '@/components/breadcrumb';
 import { Layout } from '@/components/layout';
+import { NoData } from '@/components/no-data';
 import { NotFoundPage } from '@/components/not-found-page';
 import { SimpleStepper } from '@/components/simple-stepper';
 import { Combobox } from '@/components/ui/combobox';
+import { Label } from '@/components/ui/label';
 import { APP_ROUTES } from '@/constants/app-routes';
 import { reactQueryKeys } from '@/constants/react-query-keys';
+import { dataFontsService } from '@/services/data-fonts';
 import { panelsService } from '@/services/panels';
 
 import { usePanelNewViewContext } from '../../hooks/usePanelNewViewContext';
 
 export const PanelNewViewObject: React.FC = () => {
+  const [schemaName, setSchemaName] = React.useState<string | null>(null);
+
   const { id } = useParams();
 
   const { panelCreation } = usePanelNewViewContext();
-  console.log(panelCreation);
+
+  const { data: schemasData } = useQuery({
+    queryKey: [reactQueryKeys.queries.findSchemasQuery, panelCreation],
+    queryFn: () =>
+      dataFontsService.findSchemas({
+        path: { datafontId: panelCreation.datafontId },
+      }),
+  });
+
+  const { data: tablesData, refetch } = useQuery({
+    queryKey: [
+      reactQueryKeys.queries.findTablesQuery,
+      panelCreation,
+      schemaName,
+    ],
+    queryFn: () => {
+      if (schemaName) {
+        return dataFontsService.findTables({
+          path: { datafontId: panelCreation.datafontId, schemaName },
+        });
+      }
+      return null;
+    },
+    enabled: false,
+  });
+
+  React.useEffect(() => {
+    refetch();
+  }, [schemaName, refetch]);
+  console.log('tablesData', tablesData);
 
   const { data, error } = useQuery({
     queryKey: [reactQueryKeys.queries.findPanelQuery, id],
@@ -34,11 +70,35 @@ export const PanelNewViewObject: React.FC = () => {
     },
   });
 
+  const getComboData = () => {
+    if (schemasData) {
+      return schemasData.data.schemas.map((s) => ({ label: s, value: s }));
+    }
+    return [];
+  };
+
+  const renderTables = () => {
+    if (tablesData) {
+      if (tablesData?.data.tables.length > 0) {
+        return (
+          <button className="flex flex-col">
+            {tablesData?.data.tables.map((t, index) => (
+              <div className="flex items-center gap-2" key={`${t}-${index}`}>
+                <Sheet className="text-green-500" />
+                <span>{t}</span>
+              </div>
+            ))}
+          </button>
+        );
+      }
+    }
+
+    return <NoData />;
+  };
+
   if (error || !id) {
     return <NotFoundPage />;
   }
-
-  const combodata = [{ label: 'public', value: 'public' }];
 
   if (data) {
     return (
@@ -67,18 +127,36 @@ export const PanelNewViewObject: React.FC = () => {
               </h1>
             </div>
 
-            <div className="p-4">
-              <Combobox
-                slotProps={{ popoverContent: { className: 'w-[287px]' } }}
-                className="w-full"
-                data={combodata}
-                onChange={(value) => console.log(value)}
-              />
+            <div className="flex flex-col gap-4 p-4">
+              <div>
+                <Label>Schema</Label>
+                <Combobox
+                  className="w-full"
+                  data={getComboData()}
+                  slotProps={{
+                    scrollArea: { className: 'h-40' },
+                  }}
+                  onChange={setSchemaName}
+                />
+              </div>
+
+              <span>Tabelas</span>
+
+              {renderTables()}
             </div>
           </div>
         }
       >
-        Objeto de banco
+        <div>
+          <Editor
+            height={400}
+            width="100%"
+            defaultLanguage="sql"
+            language="sql"
+            options={{ minimap: { enabled: false } }}
+            className="border-b"
+          />
+        </div>
       </Layout>
     );
   }

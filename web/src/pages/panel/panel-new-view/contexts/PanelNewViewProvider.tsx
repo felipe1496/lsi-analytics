@@ -23,8 +23,6 @@ export const PanelNewViewProvider: React.FC<PanelNewViewContextProps> = ({
     {} as ViewModel,
   );
 
-  console.log(panelCreation);
-
   const getWrongSteps = React.useCallback(
     (currentStep: number) => {
       switch (currentStep) {

@@ -3,6 +3,8 @@ export const reactQueryKeys = {
     findPanelQuery: 'findPanelQuery',
     findAllPanelsQuery: 'findAllPanelsQuery',
     findAllDataFontsQuery: 'findAllDataFontsQuery',
+    findSchemasQuery: 'findSchemasQuery',
+    findTablesQuery: 'findTablesQuery',
   },
   mutations: {
     createUserMutation: 'createUserMutation',
