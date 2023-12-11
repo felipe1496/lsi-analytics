@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import { APP_ROUTER } from '@/constants/app-routes';
+import { APP_ROUTES } from '@/constants/app-routes';
 import { cn } from '@/utils';
 
 interface ConfigBarProps {
@@ -14,7 +14,7 @@ export const ConfigBar: React.FC<ConfigBarProps> = ({ active }) => (
 
     <div className="flex flex-col">
       <Link
-        to={APP_ROUTER.config.profile.index}
+        to={APP_ROUTES.config.profile.index}
         className={cn(
           'w-full rounded-md px-4 py-4',
           active === 'profile' && 'bg-zinc-100',
@@ -24,7 +24,7 @@ export const ConfigBar: React.FC<ConfigBarProps> = ({ active }) => (
       </Link>
 
       <Link
-        to={APP_ROUTER.config.preferences.index}
+        to={APP_ROUTES.config.preferences.index}
         className={cn(
           'w-full rounded-md px-4 py-4',
           active === 'preferences' && 'bg-zinc-100',

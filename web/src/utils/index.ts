@@ -1,4 +1,4 @@
-import { AxiosError } from 'axios';
+import axios, { AxiosError } from 'axios';
 import clsx, { ClassValue } from 'clsx';
 import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
@@ -17,7 +17,7 @@ export const handleErrorNotify = (error: AxiosError | Error) => {
     }
   };
 
-  if (error instanceof AxiosError) {
+  if (axios.isAxiosError(error)) {
     const message = error.response?.data.message || 'Ocorreu um erro';
     toastError(message);
   } else if (error.message) {

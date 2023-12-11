@@ -10,6 +10,7 @@ import {
   BreadcrumbNeutral,
 } from '@/components/common/breadcrumb';
 import { Layout } from '@/components/common/layout';
+import { NotFoundPage } from '@/components/common/not-found-page';
 import { Typography } from '@/components/common/typography';
 import { Button } from '@/components/common/ui/button';
 import {
@@ -19,9 +20,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/common/ui/dropdown-menu';
-import { APP_ROUTER } from '@/constants/app-routes';
+import { APP_ROUTES } from '@/constants/app-routes';
 import { reactQueryKeys } from '@/constants/react-query-keys';
-import { NotFoundPage } from '@/pages/miscellaneous/not-found-page';
 import { panelsService } from '@/services/panels';
 
 import { PanelPageLoading } from './loading';
@@ -53,7 +53,7 @@ export const PanelPage: React.FC = () => {
         breadcrumb={
           <Breadcrumb>
             <BreadcrumbHome />
-            <BreadcrumbLink to={APP_ROUTER.panels.index}>
+            <BreadcrumbLink to={APP_ROUTES.panels.index}>
               Paineis
             </BreadcrumbLink>
             <BreadcrumbNeutral>{data.data.name}</BreadcrumbNeutral>
@@ -86,14 +86,14 @@ export const PanelPage: React.FC = () => {
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
                 <Link
-                  to={APP_ROUTER.panel.edit.replace(':id', id)}
+                  to={APP_ROUTES.panel.edit.replace(':id', id)}
                   state={{ tab: 'views' }}
                 >
                   Nova visualização
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link to={APP_ROUTER.panel.edit.replace(':id', id)}>
+                <Link to={APP_ROUTES.panel.edit.replace(':id', id)}>
                   Editar
                 </Link>
               </DropdownMenuItem>

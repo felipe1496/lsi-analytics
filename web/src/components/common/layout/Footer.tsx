@@ -1,8 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import { APP_ROUTER } from '@/constants/app-routes';
-
 export const Footer: React.FC = () => (
   <footer className="mt-24 flex flex-col items-center justify-center gap-2 text-sm text-zinc-500">
     <div className="flex flex-wrap justify-center gap-4">
@@ -12,11 +10,11 @@ export const Footer: React.FC = () => (
       <Link to="#" className="hover:underline">
         Github
       </Link>
-      <Link to={APP_ROUTER.docs.index} className="hover:underline">
-        Documentação
+      <Link to="#" className="hover:underline">
+        Status
       </Link>
       <Link to="#" className="hover:underline">
-        Localização
+        Contato
       </Link>
       <Link to="#" className="hover:underline">
         Termos de uso

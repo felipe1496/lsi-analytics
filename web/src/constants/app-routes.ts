@@ -1,4 +1,4 @@
-export const APP_ROUTER = {
+export const APP_ROUTES = {
   panels: {
     index: '/paineis',
   },
@@ -8,6 +8,8 @@ export const APP_ROUTER = {
     audit: '/painel/:id/auditoria',
     new: {
       view: '/painel/:id/novo/visualizacao',
+      font: '/painel/:id/novo/visualizacao/fonte',
+      object: '/painel/:id/novo/visualizacao/objeto',
     },
   },
   dataFont: {

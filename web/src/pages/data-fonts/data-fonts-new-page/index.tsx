@@ -26,15 +26,15 @@ import {
 import { Input } from '@/components/common/ui/input';
 import { PasswordInput } from '@/components/common/ui/input/PasswordInput';
 import { Label } from '@/components/common/ui/label';
-import { APP_ROUTER } from '@/constants/app-routes';
+import { APP_ROUTES } from '@/constants/app-routes';
 import { AVAILABLE_DATA_FONTS } from '@/constants/data-fonts';
 import { REQUIRED_FIELD } from '@/constants/form-messages';
 import { reactQueryKeys } from '@/constants/react-query-keys';
-import { dataFontsService } from '@/services/datafonts';
+import { dataFontsService } from '@/services/data-fonts';
 import {
   DataFontProviderEnum,
   TypeOfStorageEnum,
-} from '@/services/models/types/common';
+} from '@/services/models/datafont';
 import { cn, handleErrorNotify } from '@/utils';
 
 export type FormData = {
@@ -74,7 +74,6 @@ export const DataFontsNewPage: React.FC = () => {
         provider: data.font.provider,
       },
     });
-    console.log(data);
   };
 
   return (
@@ -82,7 +81,7 @@ export const DataFontsNewPage: React.FC = () => {
       breadcrumb={
         <Breadcrumb>
           <BreadcrumbHome />
-          <BreadcrumbLink to={APP_ROUTER.dataFont.index}>
+          <BreadcrumbLink to={APP_ROUTES.dataFont.index}>
             Fontes de dados
           </BreadcrumbLink>
           <BreadcrumbNeutral>Novo</BreadcrumbNeutral>
@@ -175,7 +174,7 @@ export const DataFontsNewPage: React.FC = () => {
           </CardContent>
           <CardFooter className="flex justify-end gap-2">
             <Button variant="outline" asChild>
-              <Link to={APP_ROUTER.dataFont.index}>Voltar</Link>
+              <Link to={APP_ROUTES.dataFont.index}>Voltar</Link>
             </Button>
             <Button type="submit" loading={isPending} disabled={isPending}>
               Criar

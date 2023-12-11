@@ -47,9 +47,14 @@ export class SessionsController {
   }
 
   @Get()
-  @UseGuards(AuthGuard)
+  /* @UseGuards(AuthGuard) */
   @HttpCode(HttpStatus.OK)
   public async verify() {
-    return true;
+    await this.delay(5000);
+    return { a: true };
+  }
+
+  private delay(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 }

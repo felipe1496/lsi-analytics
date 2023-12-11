@@ -1,12 +1,8 @@
-import {
-  CanActivate,
-  ExecutionContext,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
+import { InvalidTokenError } from './errors/invalid-token.error';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -19,21 +15,18 @@ export class AuthGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const token = this.extractTokenFromHeader(request);
     if (!token) {
-      throw new UnauthorizedException();
+      throw new InvalidTokenError();
     }
     try {
       const payload = await this.jwtService.verifyAsync(token, {
         secret: this.configService.get('secret.jwt'),
       });
-      // 💡 We're assigning the payload to the request object here
-      // so that we can access it in our route handlers
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { id: userId } = payload.user.props;
+
+      const { sub: userId } = payload;
 
       request.userId = userId;
-      console.log('request: ', request);
     } catch {
-      throw new UnauthorizedException();
+      throw new InvalidTokenError();
     }
     return true;
   }

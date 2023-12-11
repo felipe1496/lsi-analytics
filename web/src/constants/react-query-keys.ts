@@ -9,5 +9,6 @@ export const reactQueryKeys = {
     createSessionMutation: 'createSessionMutation',
     createPanelMutation: 'createPanelMutation',
     createDataFontMutation: 'createDataFontMutation',
+    deleteDataFontMutation: 'deleteDataFontMutation',
   },
 };

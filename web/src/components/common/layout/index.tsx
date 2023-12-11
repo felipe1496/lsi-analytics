@@ -11,7 +11,7 @@ import { Navbar } from './Navbar';
 import { RightBar } from './RightBar';
 import { Topbar } from './Topbar';
 
-type TopMessage = {
+type AlertMessage = {
   message: string;
   type: 'warning' | 'danger' | 'info';
 };
@@ -25,7 +25,8 @@ interface LayoutProps {
   leftBar?: React.ReactNode;
   rightBar?: React.ReactNode;
   rightContent?: React.ReactNode;
-  topMessage?: TopMessage;
+  alert?: AlertMessage;
+  Guards?: (() => Promise<boolean> | boolean)[];
 }
 
 export const Layout: React.FC<LayoutProps> = ({
@@ -37,18 +38,18 @@ export const Layout: React.FC<LayoutProps> = ({
   leftBar,
   rightBar,
   rightContent,
-  topMessage,
+  alert,
 }) => {
   const title = _title ? `${_title} | LSI Analytics` : 'LSI Analytics';
   const description = _description ?? APP_DESCRIPTION;
 
-  const renderTopMessage = (_topMessage: TopMessage) => {
-    switch (_topMessage.type) {
+  const renderAlertMessage = (_alert: AlertMessage) => {
+    switch (_alert.type) {
       case 'warning':
         return (
           <div className="flex w-full items-center justify-center gap-2 bg-amber-500 py-3 text-zinc-50">
             <AlertTriangle />
-            {_topMessage.message}
+            {_alert.message}
           </div>
         );
 
@@ -64,7 +65,7 @@ export const Layout: React.FC<LayoutProps> = ({
         <meta name="description" content={description} />
       </Helmet>
       <div className="flex flex-col">
-        {topMessage && renderTopMessage(topMessage)}
+        {alert && renderAlertMessage(alert)}
         <div className="flex">
           <Navbar />
           <div className="w-full md:ml-16">

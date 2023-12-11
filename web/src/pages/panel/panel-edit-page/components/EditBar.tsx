@@ -5,9 +5,8 @@ import { Link, useLocation } from 'react-router-dom';
 import { Input } from '@/components/common/ui/input';
 import { Label } from '@/components/common/ui/label';
 import { Textarea } from '@/components/common/ui/textarea';
-import { APP_ROUTER } from '@/constants/app-routes';
-import { PanelModel } from '@/services/models/panel';
-import { ViewsType } from '@/types/common';
+import { APP_ROUTES } from '@/constants/app-routes';
+import { PanelModel, ViewsType } from '@/services/models/panel';
 import { cn } from '@/utils';
 
 type MenuOption = 'general' | 'views';
@@ -57,15 +56,15 @@ export const EditBar: React.FC<EditBarProps> = ({ data }) => {
             <div className="p-4">
               <button
                 className={cn(
-                  selectedView === 'pie-chart' && 'rounded-sm border',
+                  selectedView === 'PIE_CHART' && 'rounded-sm border',
                 )}
                 onClick={() =>
                   setSelectedView((prevState) => {
-                    if (prevState === 'pie-chart') {
+                    if (prevState === 'PIE_CHART') {
                       return null;
                     }
 
-                    return 'pie-chart';
+                    return 'PIE_CHART';
                   })
                 }
               >
@@ -81,9 +80,10 @@ export const EditBar: React.FC<EditBarProps> = ({ data }) => {
                 )}
                 to={
                   selectedView
-                    ? APP_ROUTER.panel.new.view.replace(':id', data.id)
+                    ? APP_ROUTES.panel.new.view.replace(':id', data.id)
                     : '#'
                 }
+                state={{ view: 'PIE_CHART' }}
               >
                 <Plus size={18} />
                 Visualização

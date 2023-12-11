@@ -2,7 +2,7 @@ import { ChevronRight, Home } from 'lucide-react';
 import React from 'react';
 import { Link, LinkProps } from 'react-router-dom';
 
-import { APP_ROUTER } from '@/constants/app-routes';
+import { APP_ROUTES } from '@/constants/app-routes';
 
 import { Typography } from '../typography';
 
@@ -36,7 +36,7 @@ export const BreadcrumbNeutral: React.FC<BreadcrumbNeutralProps> = ({
 );
 
 export const BreadcrumbHome: React.FC = () => (
-  <Link to={APP_ROUTER.panels.index}>
+  <Link to={APP_ROUTES.panels.index}>
     <Home size={14} />
   </Link>
 );

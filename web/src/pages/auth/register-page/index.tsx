@@ -13,7 +13,7 @@ import { Typography } from '@/components/common/typography';
 import { Button } from '@/components/common/ui/button';
 import { Input } from '@/components/common/ui/input';
 import { Label } from '@/components/common/ui/label';
-import { APP_ROUTER } from '@/constants/app-routes';
+import { APP_ROUTES } from '@/constants/app-routes';
 import { REQUIRED_FIELD } from '@/constants/form-messages';
 import { reactQueryKeys } from '@/constants/react-query-keys';
 import { usersService } from '@/services/users';
@@ -80,7 +80,7 @@ export const RegisterPage: React.FC = () => {
     onError: handleErrorNotify,
     onSuccess: () => {
       toast('Cadastro realizado com sucesso', { type: 'success' });
-      navigate(APP_ROUTER.auth.login);
+      navigate(APP_ROUTES.auth.login);
     },
   });
 
@@ -100,7 +100,7 @@ export const RegisterPage: React.FC = () => {
   return (
     <AuthLayout
       className="flex items-center justify-center"
-      backButtonTo={APP_ROUTER.auth.login}
+      backButtonTo={APP_ROUTES.auth.login}
     >
       <form
         onSubmit={handleSubmit(onSubmit)}

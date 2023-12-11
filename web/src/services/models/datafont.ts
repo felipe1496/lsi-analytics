@@ -1,4 +1,6 @@
-import { DataFontProviderEnum, TypeOfStorageEnum } from './types/common';
+export type TypeOfStorageEnum = 'DATABASE' | 'FILE';
+
+export type DataFontProviderEnum = 'POSTGRESQL' | 'CSV';
 
 export type DataFontModel = {
   id: string;

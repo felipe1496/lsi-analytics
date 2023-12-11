@@ -25,13 +25,14 @@ import {
 } from '@/components/common/ui/dialog';
 import { Input } from '@/components/common/ui/input';
 import { Label } from '@/components/common/ui/label';
-import { APP_ROUTER } from '@/constants/app-routes';
+import { APP_ROUTES } from '@/constants/app-routes';
 import { REQUIRED_FIELD } from '@/constants/form-messages';
 import { reactQueryKeys } from '@/constants/react-query-keys';
 import { panelsService } from '@/services/panels';
 import { cn } from '@/utils';
 
 import { PanelCard } from '../components/PanelCard';
+import { LoadingPanelsPage } from './loading';
 
 interface FormData {
   name: string;
@@ -55,19 +56,121 @@ export const PanelsPage: React.FC = () => {
     mutationKey: [reactQueryKeys.mutations.createPanelMutation],
     mutationFn: panelsService.create,
     onSuccess: (response) => {
-      navigate(APP_ROUTER.panel.index.replace(':id', response.data.id));
+      navigate(APP_ROUTES.panel.index.replace(':id', response.data.id));
     },
   });
 
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: [reactQueryKeys.queries.findAllPanelsQuery],
     queryFn: panelsService.findAll,
   });
 
-  console.log(data);
-
   const onSubmit = (formData: FormData) => {
     createPanel({ body: formData });
+  };
+
+  const render = () => {
+    if (isLoading) {
+      return <LoadingPanelsPage />;
+    }
+
+    if (data) {
+      return (
+        <>
+          <div className="flex w-full items-center justify-between">
+            <div>
+              <Typography level="h3">Paineis</Typography>
+              <Typography level="muted">Todos os paineis</Typography>
+            </div>
+
+            <div className="flex items-center gap-4">
+              <Input
+                className="w-96"
+                placeholder="Buscar painel..."
+                rigthAdornment={<Search size={20} className="text-zinc-400" />}
+              />
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button
+                    type="submit"
+                    variant="outline"
+                    className="gap-1 rounded-full border-blue-500 text-blue-500 hover:bg-blue-100 hover:text-blue-500"
+                  >
+                    <Plus size={18} />
+                    Painel
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[425px]">
+                  <form onSubmit={handleSubmit(onSubmit)}>
+                    <DialogHeader>
+                      <DialogTitle>Criar novo painel</DialogTitle>
+                    </DialogHeader>
+                    <div className="grid gap-4 py-4">
+                      <div className="flex flex-col gap-2">
+                        <Label htmlFor="name">Nome</Label>
+                        <Input
+                          error={!!errors.name}
+                          {...register('name', { required: REQUIRED_FIELD })}
+                          className="col-span-3"
+                        />
+                        <ErrorMessage
+                          errors={errors}
+                          name="name"
+                          render={({ message }) => (
+                            <FieldError message={message} />
+                          )}
+                        />
+                      </div>
+                      <div className="flex flex-col gap-2">
+                        <Label htmlFor="username">Descrição</Label>
+                        <Input
+                          {...register('description')}
+                          className="col-span-3"
+                        />
+                      </div>
+                    </div>
+                    <DialogFooter>
+                      <DialogClose>
+                        <Button type="button" variant="outline">
+                          Cancelar
+                        </Button>
+                      </DialogClose>
+                      <Button type="submit">Criar</Button>
+                    </DialogFooter>
+                  </form>
+                </DialogContent>
+              </Dialog>
+
+              <button onClick={() => setLayout('grid')}>
+                <LayoutGrid
+                  size={18}
+                  className={cn(layout === 'grid' && 'text-blue-500')}
+                />
+              </button>
+              <button onClick={() => setLayout('list')}>
+                <AlignJustify
+                  size={18}
+                  className={cn(layout === 'list' && 'text-blue-500')}
+                />
+              </button>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-4 gap-6">
+            {data.data.map((p) => (
+              <PanelCard
+                key={p.id}
+                to={APP_ROUTES.panel.index.replace(':id', p.id)}
+                imageURL={p.imageURL}
+                title={p.name}
+              />
+            ))}
+          </div>
+        </>
+      );
+    }
+
+    return null;
   };
 
   return (
@@ -82,94 +185,7 @@ export const PanelsPage: React.FC = () => {
         </Breadcrumb>
       }
     >
-      <div className="flex w-full items-center justify-between">
-        <div>
-          <Typography level="h3">Paineis</Typography>
-          <Typography level="muted">Todos os paineis</Typography>
-        </div>
-
-        <div className="flex items-center gap-4">
-          <Input
-            className="w-96"
-            placeholder="Buscar painel..."
-            rigthAdornment={<Search size={20} className="text-zinc-400" />}
-          />
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button
-                type="submit"
-                variant="outline"
-                className="gap-1 rounded-full border-blue-500 text-blue-500 hover:bg-blue-100 hover:text-blue-500"
-              >
-                <Plus size={18} />
-                Painel
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-              <form onSubmit={handleSubmit(onSubmit)}>
-                <DialogHeader>
-                  <DialogTitle>Criar novo painel</DialogTitle>
-                </DialogHeader>
-                <div className="grid gap-4 py-4">
-                  <div className="flex flex-col gap-2">
-                    <Label htmlFor="name">Nome</Label>
-                    <Input
-                      error={!!errors.name}
-                      {...register('name', { required: REQUIRED_FIELD })}
-                      className="col-span-3"
-                    />
-                    <ErrorMessage
-                      errors={errors}
-                      name="name"
-                      render={({ message }) => <FieldError message={message} />}
-                    />
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <Label htmlFor="username">Descrição</Label>
-                    <Input
-                      {...register('description')}
-                      className="col-span-3"
-                    />
-                  </div>
-                </div>
-                <DialogFooter>
-                  <DialogClose>
-                    <Button type="button" variant="outline">
-                      Cancelar
-                    </Button>
-                  </DialogClose>
-                  <Button type="submit">Criar</Button>
-                </DialogFooter>
-              </form>
-            </DialogContent>
-          </Dialog>
-
-          <button onClick={() => setLayout('grid')}>
-            <LayoutGrid
-              size={18}
-              className={cn(layout === 'grid' && 'text-blue-500')}
-            />
-          </button>
-          <button onClick={() => setLayout('list')}>
-            <AlignJustify
-              size={18}
-              className={cn(layout === 'list' && 'text-blue-500')}
-            />
-          </button>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-4 gap-6">
-        {data &&
-          data.data.map((p) => (
-            <PanelCard
-              key={p.id}
-              to={APP_ROUTER.panel.index.replace(':id', p.id)}
-              imageURL={p.imageURL}
-              title={p.name}
-            />
-          ))}
-      </div>
+      {render()}
     </Layout>
   );
 };

@@ -1,27 +1,30 @@
+import './styles/globals.css';
 import React from 'react';
-import { BrowserRouter } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
 import { Providers } from './components/common/providers';
-import { AuthRouter } from './pages/auth/router';
-import { AccountRouter } from './pages/configuration/router';
+import { LoginPage } from './pages/auth/login-page';
+import { RegisterPage } from './pages/auth/register-page';
+import { ConfigRoutes } from './pages/configuration/routes';
 import { DataFontRoutes } from './pages/data-fonts/routes';
-import { DocsRouter } from './pages/docs/router';
-import { MiscellaneousRouter } from './pages/miscellaneous/router';
-import { PanelRouter } from './pages/panel/router';
-import { PanelsRouter } from './pages/panels/router';
-import './styles/globals.css';
+import { DocsRoutes } from './pages/docs/routes';
+import { LandingPage } from './pages/misc/landing-page';
+import { PanelRoutes } from './pages/panel/routes';
+import { PanelsRoutes } from './pages/panels/routes';
 
 const App: React.FC = () => (
   <Providers>
-    <BrowserRouter>
-      <PanelRouter />
-      <PanelsRouter />
-      <DataFontRoutes />
-      <AuthRouter />
-      <AccountRouter />
-      <MiscellaneousRouter />
-      <DocsRouter />
-    </BrowserRouter>
+    <Routes>
+      <Route path="/" index element={<LandingPage />} />
+      <Route path="/entrar" element={<LoginPage />} />
+      <Route path="/cadastrar" element={<RegisterPage />} />
+
+      <Route path="/fontes/*" element={<DataFontRoutes />} />
+      <Route path="/config/*" element={<ConfigRoutes />} />
+      <Route path="/paineis/*" element={<PanelsRoutes />} />
+      <Route path="/painel/*" element={<PanelRoutes />} />
+      <Route path="/docs/*" element={<DocsRoutes />} />
+    </Routes>
   </Providers>
 );
 

@@ -1,76 +1,60 @@
+/* eslint-disable no-await-in-loop */
+/* eslint-disable no-restricted-syntax */
 import React from 'react';
-import { Location, useLocation, useNavigate } from 'react-router-dom';
 
-import { UnauthorizedPage } from '../unauthorized-page';
-import { ActionType, CanActivate } from './types';
-
-export type GuardContext = {
-  location: Location;
-};
+import { LoadingPage } from '../loading-page';
 
 interface GuardProps {
-  guards?: CanActivate[];
-  protect?: React.ReactNode;
+  guards?: {
+    guardFn: () => boolean | Promise<boolean>;
+    onDenied?: () => void;
+  }[];
+  loadingElement?: React.ReactNode;
+  canActivate?: boolean;
+  children?: React.ReactNode;
+  initialLoading?: boolean;
 }
 
-export const Guard: React.FC<GuardProps> = ({ guards, protect }) => {
+export const Guard: React.FC<GuardProps> = ({
+  guards = [],
+  loadingElement = <LoadingPage />,
+  canActivate,
+  children,
+  initialLoading = true,
+}) => {
+  const [loading, setLoading] = React.useState<boolean>(initialLoading);
   const [denied, setDenied] = React.useState<boolean>(false);
-
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const ctx = React.useMemo(
-    () => ({
-      location,
-    }),
-    [location],
-  );
-
-  const executeAction = React.useCallback(
-    (action: ActionType) => {
-      switch (action.action) {
-        case 'redirect':
-          navigate(action.url);
-          break;
-        case 'toast':
-          action.fn();
-          break;
-        default:
-          setDenied(true);
-          break;
-      }
-    },
-    [navigate],
-  );
 
   React.useEffect(() => {
     (async () => {
-      if (guards) {
-        await Promise.all(
-          guards.map(async (guard) => {
-            const canActivate = await guard.canActivate(ctx);
-
-            if (!canActivate) {
-              if (guard.onDenied) {
-                const action = guard.onDenied();
-                if (Array.isArray(action)) {
-                  action.forEach(executeAction);
-                } else {
-                  executeAction(action);
-                }
-              } else {
-                setDenied(true);
-              }
-            }
-          }),
-        );
+      for (const g of guards) {
+        const _canActivate = await g.guardFn();
+        if (!_canActivate) {
+          if (g.onDenied) {
+            g.onDenied();
+          }
+          setDenied(true);
+        }
       }
+      setLoading(false);
     })();
-  }, [guards, navigate, executeAction, ctx]);
+  }, [guards]);
 
-  if (denied) {
-    return <UnauthorizedPage />;
+  if (loading) {
+    return <>{loadingElement}</>;
   }
 
-  return <>{protect}</>;
+  if (denied) {
+    return <>Acesso negado!</>;
+  }
+
+  if (canActivate !== undefined || canActivate !== null) {
+    if (canActivate) {
+      return <>{children}</>;
+    }
+
+    return <>{loadingElement}</>;
+  }
+
+  return <>{children}</>;
 };

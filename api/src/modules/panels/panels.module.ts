@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { PanelsController } from './panels.controller';
-import { PanelsRepository } from './panels.repository';
+import { PanelsController } from './controllers/panels.controller';
+import { PanelsRepository } from './repositories/panels.repository';
 
 @Module({
   controllers: [PanelsController],

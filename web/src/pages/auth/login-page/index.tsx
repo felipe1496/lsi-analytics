@@ -14,10 +14,10 @@ import { Button } from '@/components/common/ui/button';
 import { Input } from '@/components/common/ui/input';
 import { PasswordInput } from '@/components/common/ui/input/PasswordInput';
 import { Label } from '@/components/common/ui/label';
-import { APP_ROUTER } from '@/constants/app-routes';
+import { APP_ROUTES } from '@/constants/app-routes';
 import { REQUIRED_FIELD } from '@/constants/form-messages';
 import { reactQueryKeys } from '@/constants/react-query-keys';
-import { updateAxiosInstance } from '@/services/api';
+/* import { updateAxiosInstance } from '@/services/api'; */
 import { sessionsService } from '@/services/sessions';
 import { handleErrorNotify } from '@/utils';
 
@@ -42,20 +42,18 @@ export const LoginPage: React.FC = () => {
     },
   });
 
-  const { mutate, isPending, error } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationKey: [reactQueryKeys.mutations.createSessionMutation],
     mutationFn: sessionsService.create,
     onSuccess: (response) => {
       Cookies.set('accessToken', response.data.accessToken);
       localStorage.setItem('user', JSON.stringify(response.data.user));
       toast('Login realizado com sucesso', { type: 'success' });
-      updateAxiosInstance();
-      navigate(APP_ROUTER.panels.index);
+      /* updateAxiosInstance(); */
+      navigate(APP_ROUTES.panels.index);
     },
     onError: handleErrorNotify,
   });
-
-  console.log(error);
 
   const onSubmit = (data: FormData) => {
     mutate({ body: data });
@@ -64,7 +62,7 @@ export const LoginPage: React.FC = () => {
   return (
     <AuthLayout
       className="flex items-center justify-center"
-      backButtonTo={APP_ROUTER.misc.landing.index}
+      backButtonTo={APP_ROUTES.misc.landing.index}
     >
       <form
         onSubmit={handleSubmit(onSubmit)}
@@ -121,7 +119,7 @@ export const LoginPage: React.FC = () => {
         </div>
         <Typography level="muted">
           Não tem uma conta?{' '}
-          <Link to={APP_ROUTER.auth.register} className="hover:underline">
+          <Link to={APP_ROUTES.auth.register} className="hover:underline">
             Cadastre-se aqui
           </Link>
         </Typography>

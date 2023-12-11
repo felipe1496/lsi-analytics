@@ -7,14 +7,14 @@ import {
 } from '@/components/common/breadcrumb';
 import { Layout } from '@/components/common/layout';
 import { Skeleton } from '@/components/common/ui/skeleton';
-import { APP_ROUTER } from '@/constants/app-routes';
+import { APP_ROUTES } from '@/constants/app-routes';
 
 export const PanelPageLoading: React.FC = () => (
   <Layout
     breadcrumb={
       <Breadcrumb>
         <BreadcrumbHome />
-        <BreadcrumbLink to={APP_ROUTER.panels.index}>Paineis</BreadcrumbLink>
+        <BreadcrumbLink to={APP_ROUTES.panels.index}>Paineis</BreadcrumbLink>
       </Breadcrumb>
     }
     className="layout-page"

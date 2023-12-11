@@ -1,9 +1,16 @@
 import Cookies from 'js-cookie';
-import { ChevronDown, Home, LogOut } from 'lucide-react';
+import {
+  BarChart3,
+  ChevronDown,
+  Home,
+  LogOut,
+  Plus,
+  Settings,
+} from 'lucide-react';
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { APP_ROUTER } from '@/constants/app-routes';
+import { APP_ROUTES } from '@/constants/app-routes';
 import { queryClient } from '@/lib/react-query';
 import { capitalizarFirstLetter, cn, getUserInfo } from '@/utils';
 
@@ -32,7 +39,7 @@ export const Topbar: React.FC<TopbarProps> = ({
     Cookies.remove('accessToken');
     localStorage.removeItem('user');
     queryClient.clear();
-    navigate(APP_ROUTER.auth.login);
+    navigate(APP_ROUTES.auth.login);
   };
 
   const UserBoxWrapper = rightContent ? 'div' : React.Fragment;
@@ -56,18 +63,31 @@ export const Topbar: React.FC<TopbarProps> = ({
             <ChevronDown size={16} />
           </DropdownMenuTrigger>
           <DropdownMenuContent className="mr-6">
-            <DropdownMenuItem className="flex items-center gap-2">
-              <Home size={18} />
-              {capitalizarFirstLetter(user.name)}
+            <DropdownMenuItem asChild>
+              <Link to="#" className="flex items-center gap-2">
+                <Home size={18} className="text-zinc-500" />
+                {capitalizarFirstLetter(user.name)}
+              </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <Link to={APP_ROUTER.config.profile.index}>
-                Configurações e privacidade
+              <Link to="#" className="flex items-center gap-2">
+                <Plus size={16} className="text-zinc-500" />
+                Novo painel
               </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem>Ajuda e suporte</DropdownMenuItem>
-            <DropdownMenuItem>Feedback</DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link to="#" className="flex items-center gap-2">
+                <BarChart3 size={16} className="text-zinc-500" />
+                Meus paineis
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link to="#" className="flex items-center gap-2">
+                <Settings size={16} className="text-zinc-500" />
+                Editar perfil
+              </Link>
+            </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
               <button

@@ -8,7 +8,7 @@ import {
 } from '@/components/common/breadcrumb';
 import { ConfigBar } from '@/components/common/config-bar';
 import { Layout } from '@/components/common/layout';
-import { APP_ROUTER } from '@/constants/app-routes';
+import { APP_ROUTES } from '@/constants/app-routes';
 
 export const ProfilePage: React.FC = () => (
   <Layout
@@ -17,7 +17,7 @@ export const ProfilePage: React.FC = () => (
     breadcrumb={
       <Breadcrumb>
         <BreadcrumbHome />
-        <BreadcrumbLink to={APP_ROUTER.config.profile.index}>
+        <BreadcrumbLink to={APP_ROUTES.config.profile.index}>
           Configurações
         </BreadcrumbLink>
         <BreadcrumbNeutral>Perfil</BreadcrumbNeutral>

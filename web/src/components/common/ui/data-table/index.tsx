@@ -15,6 +15,8 @@ import {
   TableRow,
 } from '@/components/common/ui/table';
 
+import { NoData } from '../../no-data';
+
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
@@ -66,7 +68,7 @@ export function DataTable<TData, TValue>({
           ) : (
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
+                <NoData />
               </TableCell>
             </TableRow>
           )}

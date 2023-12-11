@@ -16,6 +16,7 @@ import {
   BreadcrumbNeutral,
 } from '@/components/common/breadcrumb';
 import { Layout } from '@/components/common/layout';
+import { NotFoundPage } from '@/components/common/not-found-page';
 import { Button } from '@/components/common/ui/button';
 import {
   DropdownMenu,
@@ -28,9 +29,8 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/common/ui/tooltip';
-import { APP_ROUTER } from '@/constants/app-routes';
+import { APP_ROUTES } from '@/constants/app-routes';
 import { reactQueryKeys } from '@/constants/react-query-keys';
-import { NotFoundPage } from '@/pages/miscellaneous/not-found-page';
 import { panelsService } from '@/services/panels';
 
 import { PanelPageLoading } from '../panel-page/loading';
@@ -43,8 +43,7 @@ export const PanelEditPage: React.FC = () => {
 
   const { id } = useParams();
 
-  const location = useLocation();
-  console.log(location.state);
+  useLocation();
 
   const { data, error, isLoading } = useQuery({
     queryKey: [reactQueryKeys.queries.findPanelQuery, id],
@@ -83,10 +82,10 @@ export const PanelEditPage: React.FC = () => {
         breadcrumb={
           <Breadcrumb>
             <BreadcrumbHome />
-            <BreadcrumbLink to={APP_ROUTER.panels.index}>
+            <BreadcrumbLink to={APP_ROUTES.panels.index}>
               Paineis
             </BreadcrumbLink>
-            <BreadcrumbLink to={APP_ROUTER.panel.index.replace(':id', id)}>
+            <BreadcrumbLink to={APP_ROUTES.panel.index.replace(':id', id)}>
               {data.data.name}
             </BreadcrumbLink>
             <BreadcrumbNeutral>Editar</BreadcrumbNeutral>
@@ -145,7 +144,7 @@ export const PanelEditPage: React.FC = () => {
                   asChild
                 >
                   <Link
-                    to={APP_ROUTER.panel.audit.replace(':id', data.data.id)}
+                    to={APP_ROUTES.panel.audit.replace(':id', data.data.id)}
                   >
                     <History className="text-zinc-600" />
                   </Link>
