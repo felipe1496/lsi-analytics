@@ -1,7 +1,7 @@
 import {
   DataFontProviderEnum,
   TypeOfStorageEnum,
-} from '@/services/models/types/common';
+} from '@/services/models/datafont';
 
 export const AVAILABLE_DATA_FONTS: {
   label: string;
