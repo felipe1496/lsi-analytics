@@ -28,7 +28,7 @@ import { PasswordInput } from '@/components/ui/input/PasswordInput';
 import { Label } from '@/components/ui/label';
 import { APP_ROUTES } from '@/constants/app-routes';
 import { AVAILABLE_DATA_FONTS } from '@/constants/data-fonts';
-import { REQUIRED_FIELD } from '@/constants/form-messages';
+import { REQUIRED_FIELD } from '@/constants/messages';
 import { reactQueryKeys } from '@/constants/react-query-keys';
 import { dataFontsService } from '@/services/data-fonts';
 import {

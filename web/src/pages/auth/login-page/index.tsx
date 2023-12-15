@@ -15,7 +15,7 @@ import { Input } from '@/components/ui/input';
 import { PasswordInput } from '@/components/ui/input/PasswordInput';
 import { Label } from '@/components/ui/label';
 import { APP_ROUTES } from '@/constants/app-routes';
-import { REQUIRED_FIELD } from '@/constants/form-messages';
+import { REQUIRED_FIELD } from '@/constants/messages';
 import { reactQueryKeys } from '@/constants/react-query-keys';
 /* import { updateAxiosInstance } from '@/services/api'; */
 import { sessionsService } from '@/services/sessions';
@@ -46,10 +46,12 @@ export const LoginPage: React.FC = () => {
     mutationKey: [reactQueryKeys.mutations.createSessionMutation],
     mutationFn: sessionsService.create,
     onSuccess: (response) => {
-      Cookies.set('accessToken', response.data.accessToken);
-      localStorage.setItem('user', JSON.stringify(response.data.user));
-      toast('Login realizado com sucesso', { type: 'success' });
-      /* updateAxiosInstance(); */
+      Cookies.set('accessToken', response.accessToken);
+      localStorage.setItem('user', JSON.stringify(response.user));
+      toast('Login realizado com sucesso', {
+        type: 'success',
+        position: 'bottom-right',
+      });
       navigate(APP_ROUTES.panels.index);
     },
     onError: handleErrorNotify,

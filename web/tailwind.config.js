@@ -19,6 +19,9 @@ module.exports = {
       },
     },
     extend: {
+      height: {
+        'layout-page': 'calc(100vh - 3.5rem)',
+      },
       colors: {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',

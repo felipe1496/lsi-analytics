@@ -79,6 +79,7 @@ export const PanelEditPage: React.FC = () => {
   if (data) {
     return (
       <Layout
+        title="Editar"
         breadcrumb={
           <Breadcrumb>
             <BreadcrumbHome />
@@ -86,12 +87,12 @@ export const PanelEditPage: React.FC = () => {
               Paineis
             </BreadcrumbLink>
             <BreadcrumbLink to={APP_ROUTES.panel.index.replace(':id', id)}>
-              {data.data.name}
+              {data.name}
             </BreadcrumbLink>
             <BreadcrumbNeutral>Editar</BreadcrumbNeutral>
           </Breadcrumb>
         }
-        rightBar={<EditBar data={data.data} />}
+        rightBar={<EditBar data={data} />}
         className="layout-page"
         rightContent={
           <div className="flex items-center gap-2">
@@ -143,9 +144,7 @@ export const PanelEditPage: React.FC = () => {
                   className="rounded-full"
                   asChild
                 >
-                  <Link
-                    to={APP_ROUTES.panel.audit.replace(':id', data.data.id)}
-                  >
+                  <Link to={APP_ROUTES.panel.audit.replace(':id', data.id)}>
                     <History className="text-zinc-600" />
                   </Link>
                 </Button>

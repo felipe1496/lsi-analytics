@@ -14,3 +14,9 @@ export type DeleteRequest<T = unknown> = {
   path: T;
   config?: AxiosRequestConfig;
 };
+
+export type ApiError = {
+  statusCode: number;
+  message: string | string[];
+  error: string;
+};

@@ -14,6 +14,7 @@ import { Request } from 'express';
 import { AuthGuard } from 'src/guards/auth/auth.guard';
 import { CreateDataFontDto } from '../dtos/create-datafont.dto';
 import { DataFontsRepository } from '../respositories/abstract/datafonts.repository';
+import { SqlDto } from '../dtos/sql.dto';
 import { DataFontsMapper } from '../mappers/datafonts.mapper';
 import { IdDto } from 'src/utils/dtos/id.dto';
 import { PostgresqlService } from 'src/services/databases/postgresql.service';
@@ -62,7 +63,7 @@ export class DataFontsController {
     });
   }
 
-  @Get('/schemas/:id')
+  @Get('/:id/schemas')
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   public async schemas(@Req() request: Request, @Param() param: IdDto) {
@@ -81,16 +82,14 @@ export class DataFontsController {
       accessKey: datafont.props.accessKey,
     });
 
-    const _schemas: { schema_name: string }[] =
-      await postgresqlService.schemas();
-    const schemas = _schemas.map((s) => s.schema_name);
+    const schemas = await postgresqlService.schemas();
 
     return {
       schemas,
     };
   }
 
-  @Get('/tables/:id/:schema')
+  @Get('/:id/:schema/tables')
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   public async tables(@Req() request: Request, @Param() param: TablesDto) {
@@ -109,23 +108,20 @@ export class DataFontsController {
       accessKey: datafont.props.accessKey,
     });
 
-    const _tables = await postgresqlService.tables(param.schema);
-    const tables = _tables.map((t) => t.table_name);
+    const tables = await postgresqlService.tables(param.schema);
 
-    return {
-      tables,
-    };
+    return { tables };
   }
 
-  @Get('/sql/:id')
+  @Post('/sql')
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
-  public async sql(@Req() request: Request, @Param() param: IdDto) {
+  public async sql(@Req() request: Request, @Body() sqlDto: SqlDto) {
     const userId = request.userId;
 
     const datafont = await this.dataFontsRepository.find({
       userId,
-      dataFontId: param.id,
+      dataFontId: sqlDto.datafontId,
     });
 
     if (!datafont) {
@@ -135,5 +131,9 @@ export class DataFontsController {
     const postgresqlService = new PostgresqlService({
       accessKey: datafont.props.accessKey,
     });
+
+    const result = await postgresqlService.query(sqlDto.sql);
+
+    return result;
   }
 }

@@ -7,6 +7,9 @@ import { extractTokenFromCookies } from '@/utils';
 
 export const api = axios.create({
   baseURL: Config.getBaseURL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
 
 api.interceptors.request.use(
@@ -25,13 +28,13 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (
-      error.response.status === 401 &&
-      error.response.data?.message === 'Token inválido'
+      error.response?.status === 401 &&
+      error.response?.data?.message === 'Token inválido'
     ) {
       Cookies.remove('accessToken');
       window.location.href = APP_ROUTES.auth.login;
       return Promise.reject();
     }
-    return Promise.reject();
+    return Promise.reject(error);
   },
 );

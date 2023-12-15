@@ -16,7 +16,7 @@ class PanelsService {
       props.config,
     );
 
-    return response;
+    return response.data;
   }
 
   public async find(props: FindPanelProps) {
@@ -25,13 +25,13 @@ class PanelsService {
       props.config,
     );
 
-    return response;
+    return response.data;
   }
 
   public async findAll() {
     const response = await api.get<PanelModel[]>('/panels');
 
-    return response;
+    return response.data;
   }
 }
 

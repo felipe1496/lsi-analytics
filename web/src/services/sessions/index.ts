@@ -20,7 +20,7 @@ class SessionsService {
       props.body,
     );
 
-    return response;
+    return response.data;
   }
 
   public async verify(token: string) {
@@ -30,7 +30,7 @@ class SessionsService {
       },
     });
 
-    return response;
+    return response.data;
   }
 }
 

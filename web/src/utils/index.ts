@@ -4,11 +4,12 @@ import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
 import { twMerge } from 'tailwind-merge';
 
+import { UNEXPECTED_ERROR } from '@/constants/messages';
 import { UserWithoutPasswordModel } from '@/services/models/users';
 
 export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
 
-export const handleErrorNotify = (error: AxiosError | Error) => {
+export const handleErrorNotify = (error?: AxiosError | Error) => {
   const toastError = (message: string | string[]) => {
     if (Array.isArray(message)) {
       message.forEach((m) => toast(m, { type: 'error' }));
@@ -18,10 +19,12 @@ export const handleErrorNotify = (error: AxiosError | Error) => {
   };
 
   if (axios.isAxiosError(error)) {
-    const message = error.response?.data.message || 'Ocorreu um erro';
+    const message = error?.response?.data.message ?? UNEXPECTED_ERROR;
     toastError(message);
-  } else if (error.message) {
-    toastError(error.message);
+  } else if (error?.message) {
+    toastError(error?.message);
+  } else {
+    toastError(UNEXPECTED_ERROR);
   }
 };
 

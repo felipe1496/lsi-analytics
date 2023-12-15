@@ -16,7 +16,7 @@ class UsersService {
       props.config,
     );
 
-    return response;
+    return response.data;
   }
 }
 

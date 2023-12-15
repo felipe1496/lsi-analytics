@@ -27,6 +27,7 @@ interface LayoutProps {
   rightContent?: React.ReactNode;
   alert?: AlertMessage;
   Guards?: (() => Promise<boolean> | boolean)[];
+  footer?: string | React.ReactNode | null;
 }
 
 export const Layout: React.FC<LayoutProps> = ({
@@ -39,9 +40,18 @@ export const Layout: React.FC<LayoutProps> = ({
   rightBar,
   rightContent,
   alert,
+  footer,
 }) => {
   const title = _title ? `${_title} | LSI Analytics` : 'LSI Analytics';
   const description = _description ?? APP_DESCRIPTION;
+
+  const renderFooter = () => {
+    if (footer === null) {
+      return null;
+    }
+
+    return footer ? <>{footer}</> : <Footer />;
+  };
 
   const renderAlertMessage = (_alert: AlertMessage) => {
     switch (_alert.type) {
@@ -80,7 +90,7 @@ export const Layout: React.FC<LayoutProps> = ({
               )}
             >
               {children}
-              <Footer />
+              {renderFooter()}
             </main>
             {rightBar && <RightBar>{rightBar}</RightBar>}
           </div>

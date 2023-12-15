@@ -71,7 +71,7 @@ export const PanelNewViewDataFont: React.FC = () => {
         Object.assign(newState, { datafontId: checkedDataFont });
         return newState;
       });
-      navigate(APP_ROUTES.panel.new.object.replace(':id', data?.data.id));
+      navigate(APP_ROUTES.panel.new.object.replace(':id', data.id));
     }
   };
 
@@ -82,6 +82,7 @@ export const PanelNewViewDataFont: React.FC = () => {
   if (data && dataFontsData) {
     return (
       <Layout
+        title="Selecionar fonte"
         breadcrumb={
           <Breadcrumb>
             <BreadcrumbHome />
@@ -89,7 +90,7 @@ export const PanelNewViewDataFont: React.FC = () => {
               Paineis
             </BreadcrumbLink>
             <BreadcrumbLink to={APP_ROUTES.panel.index.replace(':id', id)}>
-              {data.data.name}
+              {data.name}
             </BreadcrumbLink>
             <BreadcrumbLink to={APP_ROUTES.panel.edit.replace(':id', id)}>
               Editar
@@ -107,7 +108,9 @@ export const PanelNewViewDataFont: React.FC = () => {
           />
 
           <div className="flex flex-col gap-1">
-            <h1 className="text-2xl font-semibold">Fonte de dados</h1>
+            <h1 className="text-2xl font-semibold">
+              Selecionar fonte de dados
+            </h1>
 
             <Typography level="muted">
               selecione uma fonte de dados para criar a visualização
@@ -127,14 +130,14 @@ export const PanelNewViewDataFont: React.FC = () => {
 
           {checkError && <FieldError message={checkError} />}
 
-          {dataFontsData.data.length > 0 ? (
+          {dataFontsData.length > 0 ? (
             <div
               className={cn(
                 'flex flex-col gap-4 rounded-sm',
                 checkError && 'border border-red-500 p-4',
               )}
             >
-              {dataFontsData.data.map((d) => (
+              {dataFontsData.map((d) => (
                 <button
                   className="flex w-full items-center justify-between"
                   key={d.id}
@@ -164,7 +167,7 @@ export const PanelNewViewDataFont: React.FC = () => {
 
           <div className="flex justify-between">
             <Link
-              to={APP_ROUTES.panel.new.index.replace(':id', data.data.id)}
+              to={APP_ROUTES.panel.new.index.replace(':id', data.id)}
               state={{ tab: 'views' }}
             >
               <Button variant="outline" type="button">

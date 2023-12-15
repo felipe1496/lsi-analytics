@@ -215,7 +215,7 @@ export const DataFontsPage: React.FC = () => {
             </Button>
           </div>
 
-          <DataTable columns={columns} data={data.data} />
+          <DataTable columns={columns} data={data} />
         </>
       );
     }

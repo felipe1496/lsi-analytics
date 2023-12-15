@@ -28,7 +28,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { APP_ROUTES } from '@/constants/app-routes';
-import { REQUIRED_FIELD } from '@/constants/form-messages';
+import { REQUIRED_FIELD } from '@/constants/messages';
 import { reactQueryKeys } from '@/constants/react-query-keys';
 import { ViewModel } from '@/services/models/panel';
 import { panelsService } from '@/services/panels';
@@ -80,7 +80,7 @@ export const PanelNewViewConfig: React.FC = () => {
         Object.assign(newState, formData);
         return newState;
       });
-      navigate(APP_ROUTES.panel.new.font.replace(':id', data.data.id));
+      navigate(APP_ROUTES.panel.new.font.replace(':id', data.id));
     }
   };
 
@@ -93,8 +93,9 @@ export const PanelNewViewConfig: React.FC = () => {
         >
           <SimpleStepper active={1} numberOfSteps={4} />
           <div className="flex flex-col gap-2">
-            <Typography level="h3">Configuração geral</Typography>
-            {data?.data.description && (
+            <Typography level="h3">Nova visualização</Typography>
+            <Typography level="muted">Configuração geral</Typography>
+            {data.description && (
               <Typography level="muted">
                 Configure as preferências na nova visualização
               </Typography>
@@ -177,7 +178,7 @@ export const PanelNewViewConfig: React.FC = () => {
 
           <div className="flex justify-between">
             <Link
-              to={APP_ROUTES.panel.edit.replace(':id', data.data.id)}
+              to={APP_ROUTES.panel.edit.replace(':id', data.id)}
               state={{ tab: 'views' }}
             >
               <Button variant="outline" type="button">
@@ -204,6 +205,7 @@ export const PanelNewViewConfig: React.FC = () => {
   if (data) {
     return (
       <Layout
+        title="Novo"
         breadcrumb={
           <Breadcrumb>
             <BreadcrumbHome />
@@ -211,7 +213,7 @@ export const PanelNewViewConfig: React.FC = () => {
               Paineis
             </BreadcrumbLink>
             <BreadcrumbLink to={APP_ROUTES.panel.index.replace(':id', id)}>
-              {data.data.name}
+              {data.name}
             </BreadcrumbLink>
             <BreadcrumbLink to={APP_ROUTES.panel.edit.replace(':id', id)}>
               Editar

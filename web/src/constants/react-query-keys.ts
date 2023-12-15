@@ -12,5 +12,6 @@ export const reactQueryKeys = {
     createPanelMutation: 'createPanelMutation',
     createDataFontMutation: 'createDataFontMutation',
     deleteDataFontMutation: 'deleteDataFontMutation',
+    executeSqlMutation: 'executeSqlMutation',
   },
 };

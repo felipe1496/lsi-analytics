@@ -28,6 +28,7 @@ interface ComboboxProps {
     scrollArea?: React.ComponentProps<typeof ScrollArea>;
   };
   onChange?: (value: string) => void;
+  value: string;
 }
 
 export const Combobox: React.FC<ComboboxProps> = ({
@@ -36,9 +37,10 @@ export const Combobox: React.FC<ComboboxProps> = ({
   className,
   slotProps = {},
   onChange,
+  value,
 }) => {
   const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState('');
+  /* const [value, setValue] = React.useState(''); */
 
   const { className: popoverContentClassName, ...popoverContentProps } =
     slotProps.popoverContent || {};
@@ -80,12 +82,14 @@ export const Combobox: React.FC<ComboboxProps> = ({
                     key={`${item.value}-${index}`}
                     value={item.value}
                     onSelect={(currentValue: any) => {
-                      setValue(currentValue === value ? '' : currentValue);
+                      if (onChange) {
+                        onChange(currentValue === value ? '' : currentValue);
+                      }
                       setOpen(false);
 
-                      if (onChange) {
+                      /* if (onChange) {
                         onChange(currentValue);
-                      }
+                      } */
                     }}
                   >
                     <Check

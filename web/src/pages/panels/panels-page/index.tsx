@@ -12,6 +12,7 @@ import {
 } from '@/components/breadcrumb';
 import { FieldError } from '@/components/errors/field-error';
 import { Layout } from '@/components/layout';
+import { NoData } from '@/components/no-data';
 import { Typography } from '@/components/typography';
 import { Button } from '@/components/ui/button';
 import {
@@ -26,7 +27,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { APP_ROUTES } from '@/constants/app-routes';
-import { REQUIRED_FIELD } from '@/constants/form-messages';
+import { REQUIRED_FIELD } from '@/constants/messages';
 import { reactQueryKeys } from '@/constants/react-query-keys';
 import { panelsService } from '@/services/panels';
 import { cn } from '@/utils';
@@ -56,7 +57,7 @@ export const PanelsPage: React.FC = () => {
     mutationKey: [reactQueryKeys.mutations.createPanelMutation],
     mutationFn: panelsService.create,
     onSuccess: (response) => {
-      navigate(APP_ROUTES.panel.index.replace(':id', response.data.id));
+      navigate(APP_ROUTES.panel.index.replace(':id', response.id));
     },
   });
 
@@ -156,16 +157,23 @@ export const PanelsPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-4 gap-6">
-            {data.data.map((p) => (
-              <PanelCard
-                key={p.id}
-                to={APP_ROUTES.panel.index.replace(':id', p.id)}
-                imageURL={p.imageURL}
-                title={p.name}
-              />
-            ))}
-          </div>
+          {data.length > 0 ? (
+            <div className="grid grid-cols-4 gap-6">
+              {data.map((p) => (
+                <PanelCard
+                  key={p.id}
+                  to={APP_ROUTES.panel.index.replace(':id', p.id)}
+                  imageURL={p.imageURL}
+                  title={p.name}
+                />
+              ))}
+            </div>
+          ) : (
+            <NoData
+              message="Crie um novo painel para começar"
+              className="mt-16"
+            />
+          )}
         </>
       );
     }

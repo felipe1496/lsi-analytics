@@ -50,22 +50,23 @@ export const PanelPage: React.FC = () => {
   if (data) {
     return (
       <Layout
+        title={data.name}
         breadcrumb={
           <Breadcrumb>
             <BreadcrumbHome />
             <BreadcrumbLink to={APP_ROUTES.panels.index}>
               Paineis
             </BreadcrumbLink>
-            <BreadcrumbNeutral>{data.data.name}</BreadcrumbNeutral>
+            <BreadcrumbNeutral>{data.name}</BreadcrumbNeutral>
           </Breadcrumb>
         }
         className="layout-page"
       >
         <div className="flex items-center justify-between">
           <div className="flex flex-col gap-1">
-            <h1 className="text-2xl font-semibold">{data.data.name}</h1>
-            {data.data.description && (
-              <Typography level="muted">{data.data.description}</Typography>
+            <h1 className="text-2xl font-semibold">{data.name}</h1>
+            {data.description && (
+              <Typography level="muted">{data.description}</Typography>
             )}
           </div>
           <div className="flex items-center gap-4">

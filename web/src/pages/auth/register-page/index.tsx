@@ -14,7 +14,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { APP_ROUTES } from '@/constants/app-routes';
-import { REQUIRED_FIELD } from '@/constants/form-messages';
+import { REQUIRED_FIELD } from '@/constants/messages';
 import { reactQueryKeys } from '@/constants/react-query-keys';
 import { usersService } from '@/services/users';
 import { handleErrorNotify } from '@/utils';

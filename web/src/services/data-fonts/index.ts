@@ -1,5 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/ban-types */
 import { api } from '../api';
 import { DataFontModel } from '../models/datafont';
+import { ColumnType } from '../models/panel';
 import { DeleteRequest, GetRequest, PostRequest } from '../types';
 
 export type CreateDataFontProps = PostRequest<
@@ -21,6 +24,13 @@ export type FindTablesProps = GetRequest<{
 
 export type FindTablesResponse = { tables: string[] };
 
+export type ExecuteSqlProps = PostRequest<{ datafontId: string; sql: string }>;
+
+export type ExecuteSqlResponse = {
+  rows: any[];
+  metadata: { columns: { name: string; dataType: ColumnType | 'undefined' }[] };
+};
+
 class DataFontsService {
   public async create(props: CreateDataFontProps) {
     const response = await api.post<DataFontModel>(
@@ -29,36 +39,46 @@ class DataFontsService {
       props.config,
     );
 
-    return response;
+    return response.data;
   }
 
   public async findAll() {
     const response = await api.get<DataFontModel[]>('/datafonts');
 
-    return response;
+    return response.data;
   }
 
   public async delete(props: DeleteDataFontProps) {
     const response = await api.delete(`/datafonts/${props.path.id}`);
 
-    return response;
+    return response.data;
   }
 
   public async findSchemas(props: FindSchemasProps) {
     const response = await api.get<FindSchemasResponse>(
-      `/datafonts/schemas/${props.path.datafontId}`,
+      `/datafonts/${props.path.datafontId}/schemas`,
       props.config,
     );
 
-    return response;
+    return response.data;
   }
 
   public async findTables(props: FindTablesProps) {
     const response = await api.get<FindTablesResponse>(
-      `/datafonts/tables/${props.path.datafontId}/${props.path.schemaName}`,
+      `/datafonts/${props.path.datafontId}/${props.path.schemaName}/tables`,
     );
 
-    return response;
+    return response.data;
+  }
+
+  public async executeSql(props: ExecuteSqlProps) {
+    const response = await api.post<ExecuteSqlResponse>(
+      '/datafonts/sql',
+      props.body,
+      props.config,
+    );
+
+    return response.data;
   }
 }
 
