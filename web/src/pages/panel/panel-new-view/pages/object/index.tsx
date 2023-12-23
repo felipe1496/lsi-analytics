@@ -1,10 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import Editor, { OnMount } from '@monaco-editor/react';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
-import { CornerDownLeft, Sheet } from 'lucide-react';
+import { ChevronLeft, ChevronRight, CornerDownLeft, Sheet } from 'lucide-react';
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import {
   Breadcrumb,
@@ -24,13 +22,8 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { APP_ROUTES } from '@/constants/app-routes';
 import { UNEXPECTED_ERROR } from '@/constants/messages';
 import { reactQueryKeys } from '@/constants/react-query-keys';
-import {
-  ExecuteSqlProps,
-  ExecuteSqlResponse,
-  dataFontsService,
-} from '@/services/data-fonts';
+import { dataFontsService } from '@/services/data-fonts';
 import { panelsService } from '@/services/panels';
-import { ApiError } from '@/services/types';
 
 import { usePanelNewViewContext } from '../../hooks/usePanelNewViewContext';
 
@@ -44,9 +37,9 @@ export const PanelNewViewObject: React.FC = () => {
 
   const { id } = useParams();
 
-  const { panelCreation } = usePanelNewViewContext();
+  const { panelCreation, setPanelCreation } = usePanelNewViewContext();
 
-  const { data: schemasData } = useQuery({
+  const { data: schemasData, isSuccess } = useQuery({
     queryKey: [reactQueryKeys.queries.findSchemasQuery, panelCreation],
     queryFn: () =>
       dataFontsService.findSchemas({
@@ -81,14 +74,21 @@ export const PanelNewViewObject: React.FC = () => {
     isPending,
     isError: sqlIsError,
     error: sqlError,
-  } = useMutation<ExecuteSqlResponse, AxiosError<ApiError>, ExecuteSqlProps>({
+  } = useMutation({
     mutationKey: [reactQueryKeys.mutations.executeSqlMutation],
     mutationFn: dataFontsService.executeSql,
   });
 
   React.useEffect(() => {
+    if (!hasRunFirstSchemaQuery) {
+      if (isSuccess && schemasData && schemasData.schemas.includes('public')) {
+        setSchemaName('public');
+        setHasRunFirstSchemaQuery(true);
+      }
+    }
+
     refetch();
-  }, [schemaName, refetch]);
+  }, [schemaName, refetch, schemasData, isSuccess, hasRunFirstSchemaQuery]);
 
   const { data, error } = useQuery({
     queryKey: [reactQueryKeys.queries.findPanelQuery, id],
@@ -109,22 +109,39 @@ export const PanelNewViewObject: React.FC = () => {
 
   const renderTables = () => {
     if (tablesData) {
-      if (tablesData?.tables.length > 0) {
+      if (tablesData.tables.length > 0) {
         return (
-          <button className="flex flex-col text-sm">
-            {tablesData?.tables.map((t, index) => (
-              <div className="flex items-center gap-2" key={`${t}-${index}`}>
+          <div className="flex flex-col text-sm">
+            {tablesData.tables.map((t, index) => (
+              <button
+                className="flex items-center gap-2"
+                key={`${t}-${index}`}
+                onClick={() =>
+                  executeSql({
+                    body: {
+                      sql: `SELECT * FROM ${t} LIMIT 100`,
+                      datafontId: panelCreation.datafontId,
+                    },
+                  })
+                }
+              >
                 <Sheet className="text-green-500" />
                 <span>{t}</span>
-              </div>
+              </button>
             ))}
-          </button>
+          </div>
         );
       }
     }
 
     if (tablesIsLoading) {
-      <Skeleton className="h-4 w-72" />;
+      return (
+        <div className="flex flex-col gap-1">
+          <Skeleton className="h-4 w-52" />
+          <Skeleton className="h-4 w-40" />
+          <Skeleton className="h-4 w-32" />
+        </div>
+      );
     }
 
     return <NoData />;
@@ -183,7 +200,12 @@ export const PanelNewViewObject: React.FC = () => {
                   key={`th-${c.name}-${c.dataType}-${index}`}
                   className="border bg-zinc-200/40 p-2 font-semibold"
                 >
-                  {c.name}
+                  <div className="flex gap-1">
+                    <span>{c.name}</span>
+                    <span className="text-[12px] font-medium text-muted-foreground">
+                      {c.dataType}
+                    </span>
+                  </div>
                 </th>
               ))}
             </tr>
@@ -219,6 +241,21 @@ export const PanelNewViewObject: React.FC = () => {
     }
 
     return null;
+  };
+
+  const handleNext = () => {
+    if (sqlData) {
+      setPanelCreation((prevState) => {
+        const newState = { ...prevState };
+        if (newState.contentUpdate === 'STATIC') {
+          Object.assign(newState, { staticData: sqlData, sql: sqlData.sql });
+          return newState;
+        }
+
+        Object.assign(newState, { sql: sqlData.sql });
+        return newState;
+      });
+    }
   };
 
   if (error || !id) {
@@ -276,7 +313,7 @@ export const PanelNewViewObject: React.FC = () => {
           </div>
         }
         footer={null}
-        className="h-layout-page flex flex-col"
+        className="flex h-layout-page flex-col"
       >
         <Editor
           height={400}
@@ -292,7 +329,7 @@ export const PanelNewViewObject: React.FC = () => {
         />
 
         <div className="flex items-center justify-between bg-zinc-100 px-4 py-2">
-          <span>{`Resultados${
+          <span className="text-sm">{`Resultados${
             sqlData ? ` (${sqlData.rows.length})` : ' (0)'
           }`}</span>
 
@@ -332,6 +369,19 @@ export const PanelNewViewObject: React.FC = () => {
           </div>
         </div>
         {renderSqlResult()}
+        <div className="mt-auto flex justify-end gap-4 border-t px-4 py-2">
+          <Link to={APP_ROUTES.panel.new.font}>
+            <Button variant="outline">
+              <ChevronLeft size={18} />
+              Voltar
+            </Button>
+          </Link>
+
+          <Button onClick={handleNext} disabled={!sqlData}>
+            Próximo
+            <ChevronRight size={18} />
+          </Button>
+        </div>
       </Layout>
     );
   }

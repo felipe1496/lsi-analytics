@@ -19,7 +19,11 @@ import { REQUIRED_FIELD } from '@/constants/messages';
 import { reactQueryKeys } from '@/constants/react-query-keys';
 /* import { updateAxiosInstance } from '@/services/api'; */
 import { sessionsService } from '@/services/sessions';
-import { handleErrorNotify } from '@/utils';
+import {
+  extractTokenFromCookies,
+  getUserInfo,
+  handleErrorNotify,
+} from '@/utils';
 
 interface FormData {
   email: string;
@@ -30,6 +34,12 @@ export const LoginPage: React.FC = () => {
   const [passwordIsVisible, setPasswordIsVisible] = React.useState(false);
 
   const navigate = useNavigate();
+
+  React.useEffect(() => {
+    if (extractTokenFromCookies() && getUserInfo()) {
+      navigate(APP_ROUTES.panels.index);
+    }
+  }, [navigate]);
 
   const {
     handleSubmit,

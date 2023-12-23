@@ -6,6 +6,7 @@ import { OnDemandDatabase } from './abstract/OnDemandDatabase';
 import { PG_DOMAIN_TYPES } from 'src/constants/pg-domain-types';
 import { PG_DATABASE_TYPES } from 'src/constants/pg-database-types';
 import { ColumnType } from 'src/core/domain/types/common';
+import { IncompatibleTypesError } from './errors/incompatible-types.error';
 
 interface PostgresqlServiceProps {
   accessKey: string;
@@ -22,11 +23,31 @@ export class PostgresqlService implements OnDemandDatabase {
     try {
       await this.pgClient.connect();
       const result = await this.pgClient.query<unknown>(sql);
-      const columnsMetadata = result.fields.map((r) => ({
-        name: r.name,
-        dataType: this.getDataType(r.dataTypeID),
-      }));
-      return { rows: result.rows, metadata: { columns: columnsMetadata } };
+      const columnsMetadata = [];
+      result.fields.forEach((r) => {
+        const typeNameAlreadyPushed = columnsMetadata.find(
+          (c) => c.name === r.name,
+        );
+        if (typeNameAlreadyPushed) {
+          if (
+            typeNameAlreadyPushed.dataType !== this.getDataType(r.dataTypeID)
+          ) {
+            throw new IncompatibleTypesError();
+          } else {
+            return;
+          }
+        }
+
+        columnsMetadata.push({
+          name: r.name,
+          dataType: this.getDataType(r.dataTypeID),
+        });
+      });
+      return {
+        rows: result.rows,
+        metadata: { columns: columnsMetadata },
+        sql,
+      };
     } catch (error) {
       throw new ExecuteSqlError(error?.message ?? 'Erro desconhecido');
     } finally {

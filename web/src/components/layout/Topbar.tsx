@@ -1,5 +1,11 @@
 import Cookies from 'js-cookie';
-import { ChevronDown, LogOut, Settings, User } from 'lucide-react';
+import {
+  ChevronDown,
+  LogOut,
+  MessageSquareMore,
+  Settings,
+  User,
+} from 'lucide-react';
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -74,6 +80,12 @@ export const Topbar: React.FC<TopbarProps> = ({
                 <Settings size={16} className="text-zinc-500" />
                 Configurações
               </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <button className="flex items-center gap-2">
+                <MessageSquareMore size={16} className="text-zinc-500" />
+                Feedback
+              </button>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>

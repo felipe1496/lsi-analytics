@@ -1,24 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/services/prisma/prisma.service';
-import { PanelsMapper } from '../mappers/panels.mapper';
-
-type CreatePanelProps = {
-  name: string;
-  description: string;
-  userId: string;
-};
-
-type FindPanelProps = {
-  id: string;
-  userId: string;
-};
-
-type FindAllProps = {
-  userId: string;
-};
+import { PanelsMapper } from '../../mappers/panels.mapper';
+import {
+  CreatePanelProps,
+  FindAllProps,
+  FindPanelProps,
+  PanelsRepository,
+  UpdateProps,
+} from '../abstract/panels.repository';
 
 @Injectable()
-export class PanelsRepository {
+export class PrismaPanelsRepository implements PanelsRepository {
   constructor(private prisma: PrismaService) {}
 
   public async create(props: CreatePanelProps) {
@@ -50,5 +42,17 @@ export class PanelsRepository {
     });
 
     return panels.map(PanelsMapper.toDomain);
+  }
+
+  public async update(props: UpdateProps) {
+    const panel = await this.prisma.panel.update({
+      where: {
+        id: props.panelId,
+        userId: props.userId,
+      },
+      data: props.panel,
+    });
+
+    return PanelsMapper.toDomain(panel);
   }
 }

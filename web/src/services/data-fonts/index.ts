@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { api } from '../api';
 import { DataFontModel } from '../models/datafont';
-import { ColumnType } from '../models/panel';
+import { SQLResult } from '../models/panel';
 import { DeleteRequest, GetRequest, PostRequest } from '../types';
 
 export type CreateDataFontProps = PostRequest<
@@ -25,11 +25,6 @@ export type FindTablesProps = GetRequest<{
 export type FindTablesResponse = { tables: string[] };
 
 export type ExecuteSqlProps = PostRequest<{ datafontId: string; sql: string }>;
-
-export type ExecuteSqlResponse = {
-  rows: any[];
-  metadata: { columns: { name: string; dataType: ColumnType | 'undefined' }[] };
-};
 
 class DataFontsService {
   public async create(props: CreateDataFontProps) {
@@ -71,8 +66,8 @@ class DataFontsService {
     return response.data;
   }
 
-  public async executeSql(props: ExecuteSqlProps) {
-    const response = await api.post<ExecuteSqlResponse>(
+  public async executeSql(props: ExecuteSqlProps): Promise<SQLResult> {
+    const response = await api.post<SQLResult>(
       '/datafonts/sql',
       props.body,
       props.config,

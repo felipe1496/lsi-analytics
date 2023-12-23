@@ -40,7 +40,6 @@ export const Combobox: React.FC<ComboboxProps> = ({
   value,
 }) => {
   const [open, setOpen] = React.useState(false);
-  /* const [value, setValue] = React.useState(''); */
 
   const { className: popoverContentClassName, ...popoverContentProps } =
     slotProps.popoverContent || {};
@@ -82,14 +81,12 @@ export const Combobox: React.FC<ComboboxProps> = ({
                     key={`${item.value}-${index}`}
                     value={item.value}
                     onSelect={(currentValue: any) => {
-                      if (onChange) {
-                        onChange(currentValue === value ? '' : currentValue);
-                      }
-                      setOpen(false);
+                      /* setValue(currentValue === value ? '' : currentValue); */
 
-                      /* if (onChange) {
+                      setOpen(false);
+                      if (onChange) {
                         onChange(currentValue);
-                      } */
+                      }
                     }}
                   >
                     <Check

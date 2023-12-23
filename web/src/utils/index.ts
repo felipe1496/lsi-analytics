@@ -60,3 +60,41 @@ export const isDifferentOfUndefinedAndNull = (value: unknown) => {
 
   return false;
 };
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const objectsAreEqual = (objA: any, objB: any): boolean => {
+  if (
+    typeof objA !== 'object' ||
+    typeof objB !== 'object' ||
+    objA === null ||
+    objB === null
+  ) {
+    return false;
+  }
+
+  const keysA = Object.keys(objA);
+  const keysB = Object.keys(objB);
+
+  if (keysA.length !== keysB.length) {
+    return false;
+  }
+
+  // eslint-disable-next-line no-restricted-syntax
+  for (const key of keysA) {
+    const valueA = objA[key];
+    const valueB = objB[key];
+
+    if (typeof valueA === 'object' && typeof valueB === 'object') {
+      if (!objectsAreEqual(valueA, valueB)) {
+        return false;
+      }
+    } else {
+      // eslint-disable-next-line no-lonely-if
+      if (valueA !== valueB) {
+        return false;
+      }
+    }
+  }
+
+  return true;
+};

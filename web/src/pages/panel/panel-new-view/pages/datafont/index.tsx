@@ -113,7 +113,7 @@ export const PanelNewViewDataFont: React.FC = () => {
             </h1>
 
             <Typography level="muted">
-              selecione uma fonte de dados para criar a visualização
+              Selecione uma fonte de dados para criar a visualização
             </Typography>
           </div>
 
