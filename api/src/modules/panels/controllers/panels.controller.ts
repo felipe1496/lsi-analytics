@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
@@ -70,14 +71,21 @@ export class PanelsController {
     @Param() param: IdDto,
     @Body() updatePanelDto: UpdatePanelDto,
   ) {
-    const userId = request.userId;
-    const panelId = param.id;
     const panel = await this.panelsRepository.update({
-      userId,
-      panelId,
+      userId: request.userId,
+      panelId: param.id,
       panel: updatePanelDto,
     });
 
     return { panel };
+  }
+
+  @Delete('/:id')
+  @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.NO_CONTENT)
+  public async delete(@Req() request: Request, @Param() param: IdDto) {
+    await this.panelsRepository.delete({
+      id: param.id,
+    });
   }
 }

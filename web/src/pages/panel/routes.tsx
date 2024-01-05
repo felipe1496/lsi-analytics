@@ -7,6 +7,8 @@ import { PanelNewViewLayout } from './panel-new-view/layout';
 import { PanelNewViewConfig } from './panel-new-view/pages/config';
 import { PanelNewViewDataFont } from './panel-new-view/pages/datafont';
 import { PanelNewViewObject } from './panel-new-view/pages/object';
+import { PanelViewStudioPieChartPage } from './panel-new-view/pages/studio/pages/pie-chart';
+import { PanelViewStudioPieChartLayout } from './panel-new-view/pages/studio/pages/pie-chart/layout';
 import { PanelPage } from './panel-page';
 
 export const PanelRoutes: React.FC = () => (
@@ -24,6 +26,12 @@ export const PanelRoutes: React.FC = () => (
         path=":id/novo/visualizacao/objeto"
         element={<PanelNewViewObject />}
       />
+      <Route element={<PanelViewStudioPieChartLayout />}>
+        <Route
+          path=":id/novo/visualizacao/studio/pie"
+          element={<PanelViewStudioPieChartPage />}
+        />
+      </Route>
     </Route>
   </Routes>
 );

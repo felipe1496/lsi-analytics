@@ -8,6 +8,7 @@ import { config } from './config';
 import { SessionsModule } from './modules/sessions/sessions.module';
 import { PanelsModule } from './modules/panels/panels.module';
 import { DataFontsModule } from './modules/datafonts/datafonts.module';
+import { FeedbackModule } from './modules/feedbacks/feedbacks.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { DataFontsModule } from './modules/datafonts/datafonts.module';
     SessionsModule,
     ServicesModule,
     DataFontsModule,
+    FeedbackModule,
   ],
   controllers: [AppController],
   providers: [AppService],

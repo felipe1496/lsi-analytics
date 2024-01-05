@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { twMerge } from 'tailwind-merge';
 
 import { UNEXPECTED_ERROR } from '@/constants/messages';
-import { UserWithoutPasswordModel } from '@/services/models/users';
+import { UserWithoutPasswordModel } from '@/services/models/users/types';
 
 export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
 
@@ -97,4 +97,8 @@ export const objectsAreEqual = (objA: any, objB: any): boolean => {
   }
 
   return true;
+};
+
+export const print = (payload: unknown) => {
+  console.log(payload);
 };

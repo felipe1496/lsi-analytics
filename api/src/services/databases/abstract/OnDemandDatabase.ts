@@ -4,7 +4,7 @@ export abstract class OnDemandDatabase {
   public abstract query(sql: string): Promise<{
     rows: unknown[];
     metadata: {
-      columns: { name: string; dataType: ColumnType | 'undefined' }[];
+      columns: { name: string; dataType: ColumnType }[];
     };
   }>;
   public abstract schemas(): Promise<string[]>;

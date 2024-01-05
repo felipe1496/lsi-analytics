@@ -30,7 +30,7 @@ export const ProfilePage: React.FC = () => {
         breadcrumb={
           <Breadcrumb>
             <BreadcrumbHome />
-            <BreadcrumbLink to={APP_ROUTES.config.profile}>
+            <BreadcrumbLink to={APP_ROUTES.config.index}>
               Configurações
             </BreadcrumbLink>
             <BreadcrumbNeutral>Perfil</BreadcrumbNeutral>

@@ -26,11 +26,11 @@ import {
   TYPE_STORAGE_MAPPER_DB_LABEL,
 } from '@/constants/data-fonts';
 import { reactQueryKeys } from '@/constants/react-query-keys';
-import { dataFontsService } from '@/services/data-fonts';
-import { panelsService } from '@/services/panels';
+import { dataFontsService } from '@/services/datafonts';
 import { cn } from '@/utils';
 
 import { usePanelNewViewContext } from '../../hooks/usePanelNewViewContext';
+import { usePanelQuery } from '../../hooks/usePanelQuery';
 
 export const PanelNewViewDataFont: React.FC = () => {
   const [checkedDataFont, setCheckedDataFont] = React.useState<string | null>(
@@ -42,22 +42,14 @@ export const PanelNewViewDataFont: React.FC = () => {
 
   const navigate = useNavigate();
 
-  const { getWrongSteps, setPanelCreation } = usePanelNewViewContext();
+  const { setPanelCreation, canAccessStep } = usePanelNewViewContext();
 
   const { data: dataFontsData } = useQuery({
     queryKey: [reactQueryKeys.queries.findAllDataFontsQuery],
     queryFn: dataFontsService.findAll,
   });
 
-  const { data, error } = useQuery({
-    queryKey: [reactQueryKeys.queries.findPanelQuery, id],
-    queryFn: () => {
-      if (id) {
-        return panelsService.find({ path: { id } });
-      }
-      return null;
-    },
-  });
+  const { data, error } = usePanelQuery({ id });
 
   const handleNext = () => {
     if (data) {
@@ -75,37 +67,31 @@ export const PanelNewViewDataFont: React.FC = () => {
     }
   };
 
-  if (error || !id) {
-    return <NotFoundPage />;
-  }
+  const renderBreadbrumb = () => {
+    if (data && id) {
+      return (
+        <Breadcrumb>
+          <BreadcrumbHome />
+          <BreadcrumbLink to={APP_ROUTES.panels.index}>Paineis</BreadcrumbLink>
+          <BreadcrumbLink to={APP_ROUTES.panel.index.replace(':id', id)}>
+            {data.name}
+          </BreadcrumbLink>
+          <BreadcrumbLink to={APP_ROUTES.panel.edit.replace(':id', id)}>
+            Editar
+          </BreadcrumbLink>
+          <BreadcrumbNeutral>Nova visualização</BreadcrumbNeutral>
+          <BreadcrumbNeutral>Fonte de dados</BreadcrumbNeutral>
+        </Breadcrumb>
+      );
+    }
+    return null;
+  };
 
-  if (data && dataFontsData) {
-    return (
-      <Layout
-        title="Selecionar fonte"
-        breadcrumb={
-          <Breadcrumb>
-            <BreadcrumbHome />
-            <BreadcrumbLink to={APP_ROUTES.panels.index}>
-              Paineis
-            </BreadcrumbLink>
-            <BreadcrumbLink to={APP_ROUTES.panel.index.replace(':id', id)}>
-              {data.name}
-            </BreadcrumbLink>
-            <BreadcrumbLink to={APP_ROUTES.panel.edit.replace(':id', id)}>
-              Editar
-            </BreadcrumbLink>
-            <BreadcrumbNeutral>Nova visualização</BreadcrumbNeutral>
-          </Breadcrumb>
-        }
-        className="layout-page"
-      >
+  const render = () => {
+    if (dataFontsData && data && canAccessStep(2, data.id)) {
+      return (
         <div className="flex w-[768px] flex-col gap-6">
-          <SimpleStepper
-            incorrectSteps={getWrongSteps(2)}
-            numberOfSteps={4}
-            active={2}
-          />
+          <SimpleStepper numberOfSteps={4} active={2} />
 
           <div className="flex flex-col gap-1">
             <h1 className="text-2xl font-semibold">
@@ -181,9 +167,23 @@ export const PanelNewViewDataFont: React.FC = () => {
             </Button>
           </div>
         </div>
-      </Layout>
-    );
+      );
+    }
+
+    return null;
+  };
+
+  if (error || !id) {
+    return <NotFoundPage />;
   }
 
-  return null;
+  return (
+    <Layout
+      title="Selecionar fonte"
+      breadcrumb={renderBreadbrumb()}
+      className="layout-page"
+    >
+      {render()}
+    </Layout>
+  );
 };

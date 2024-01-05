@@ -1,10 +1,12 @@
 import { api } from '../api';
-import { PanelModel } from '../models/panel';
-import { GetRequest, PostRequest } from '../types';
+import { PanelModel } from '../models/panel/types';
+import { DeleteRequest, GetRequest, PostRequest } from '../types';
 
 type CreatePanelProps = PostRequest<Pick<PanelModel, 'name' | 'description'>>;
 
 type FindPanelProps = GetRequest<{ id: string }>;
+
+export type DeletePanelProps = DeleteRequest<{ id: string }>;
 
 class PanelsService {
   public async create(props: CreatePanelProps) {
@@ -32,6 +34,15 @@ class PanelsService {
     const response = await api.get<PanelModel[]>('/panels');
 
     return response.data;
+  }
+
+  public async delete(props: DeletePanelProps) {
+    const response = await api.delete<void>(
+      `/panels/${props.path.id}`,
+      props.config,
+    );
+
+    return response;
   }
 }
 

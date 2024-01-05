@@ -5,7 +5,7 @@ interface LeftBarProps {
 }
 
 export const LeftBar: React.FC<LeftBarProps> = ({ children }) => (
-  <div className="fixed top-14 h-[calc(100vh-3.5rem)] w-80 border-r bg-white">
+  <aside className="fixed top-14 h-[calc(100vh-3.5rem)] w-80 border-r bg-white">
     {children}
-  </div>
+  </aside>
 );

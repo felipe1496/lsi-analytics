@@ -26,7 +26,6 @@ interface LayoutProps {
   rightBar?: React.ReactNode;
   rightContent?: React.ReactNode;
   alert?: AlertMessage;
-  Guards?: (() => Promise<boolean> | boolean)[];
   footer?: string | React.ReactNode | null;
 }
 

@@ -18,7 +18,6 @@ const App: React.FC = () => (
       <Route path="/" index element={<LandingPage />} />
       <Route path="/entrar" element={<LoginPage />} />
       <Route path="/cadastrar" element={<RegisterPage />} />
-
       <Route path="/fontes/*" element={<DataFontRoutes />} />
       <Route path="/config/*" element={<ConfigRoutes />} />
       <Route path="/paineis/*" element={<PanelsRoutes />} />

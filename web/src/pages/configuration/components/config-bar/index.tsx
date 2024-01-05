@@ -14,7 +14,7 @@ export const ConfigBar: React.FC<ConfigBarProps> = ({ active }) => (
 
     <div className="flex flex-col">
       <Link
-        to={APP_ROUTES.config.profile}
+        to={APP_ROUTES.config.index}
         className={cn(
           'w-full rounded-md px-4 py-4',
           active === 'profile' && 'bg-zinc-100',
@@ -24,7 +24,7 @@ export const ConfigBar: React.FC<ConfigBarProps> = ({ active }) => (
       </Link>
 
       <Link
-        to={APP_ROUTES.config.index}
+        to={APP_ROUTES.config.preferences}
         className={cn(
           'w-full rounded-md px-4 py-4',
           active === 'preferences' && 'bg-zinc-100',

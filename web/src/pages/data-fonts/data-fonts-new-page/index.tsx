@@ -30,17 +30,17 @@ import { APP_ROUTES } from '@/constants/app-routes';
 import { AVAILABLE_DATA_FONTS } from '@/constants/data-fonts';
 import { REQUIRED_FIELD } from '@/constants/messages';
 import { reactQueryKeys } from '@/constants/react-query-keys';
-import { dataFontsService } from '@/services/data-fonts';
+import { dataFontsService } from '@/services/datafonts';
 import {
-  DataFontProviderEnum,
-  TypeOfStorageEnum,
-} from '@/services/models/datafont';
+  DataFontProvider,
+  TypeOfStorage,
+} from '@/services/models/datafont/types';
 import { cn, handleErrorNotify } from '@/utils';
 
 export type FormData = {
   name: string;
   accessKey: string;
-  font: { provider: DataFontProviderEnum; typeOfStorage: TypeOfStorageEnum };
+  font: { provider: DataFontProvider; typeOfStorage: TypeOfStorage };
 };
 
 export const DataFontsNewPage: React.FC = () => {

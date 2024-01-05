@@ -1,5 +1,5 @@
 import { api } from '../api';
-import { UserModel, UserWithoutPasswordModel } from '../models/users';
+import { UserModel, UserWithoutPasswordModel } from '../models/users/types';
 import { PostRequest } from '../types';
 
 interface CreateUserProps extends PostRequest<Omit<UserModel, 'id'>> {}

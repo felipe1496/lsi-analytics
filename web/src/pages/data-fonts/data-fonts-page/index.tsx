@@ -33,12 +33,12 @@ import {
   TYPE_STORAGE_MAPPER_DB_LABEL,
 } from '@/constants/data-fonts';
 import { reactQueryKeys } from '@/constants/react-query-keys';
-import { dataFontsService } from '@/services/data-fonts';
+import { dataFontsService } from '@/services/datafonts';
 import {
   DataFontModel,
-  DataFontProviderEnum,
-  TypeOfStorageEnum,
-} from '@/services/models/datafont';
+  DataFontProvider,
+  TypeOfStorage,
+} from '@/services/models/datafont/types';
 
 export const DataFontsPage: React.FC = () => {
   const [visibleFonts, setVisibleFonts] = React.useState<string[]>([]);
@@ -60,7 +60,7 @@ export const DataFontsPage: React.FC = () => {
       header: 'Tipo do armazenamento',
       cell: ({ row }) =>
         TYPE_STORAGE_MAPPER_DB_LABEL[
-          row.getValue<TypeOfStorageEnum>('typeOfStorage')
+          row.getValue<TypeOfStorage>('typeOfStorage')
         ],
     },
     {
@@ -72,15 +72,11 @@ export const DataFontsPage: React.FC = () => {
             className="h-8 w-8"
             src={
               PROVIDER_MAPPER_DB_IMAGEURL[
-                row.getValue<DataFontProviderEnum>('provider')
+                row.getValue<DataFontProvider>('provider')
               ]
             }
           />
-          {
-            PROVIDER_MAPPER_DB_LABEL[
-              row.getValue<DataFontProviderEnum>('provider')
-            ]
-          }
+          {PROVIDER_MAPPER_DB_LABEL[row.getValue<DataFontProvider>('provider')]}
         </div>
       ),
     },

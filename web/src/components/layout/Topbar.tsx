@@ -20,6 +20,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
+import { Feedback } from './Feedback';
 
 interface TopbarProps {
   breadcrumb?: React.ReactNode;
@@ -30,6 +31,9 @@ export const Topbar: React.FC<TopbarProps> = ({
   breadcrumb = null,
   rightContent = null,
 }) => {
+  const [feedbackPopoverIsOpen, setFeedbackPopoverIsOpen] =
+    React.useState<boolean>(false);
+
   const user = getUserInfo();
 
   const navigate = useNavigate();
@@ -38,7 +42,7 @@ export const Topbar: React.FC<TopbarProps> = ({
     Cookies.remove('accessToken');
     localStorage.removeItem('user');
     queryClient.clear();
-    navigate(APP_ROUTES.auth.login);
+    navigate(APP_ROUTES.misc.landing);
   };
 
   const UserBoxWrapper = rightContent ? 'div' : React.Fragment;
@@ -53,52 +57,57 @@ export const Topbar: React.FC<TopbarProps> = ({
       }
 
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger className="flex items-center gap-1">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-orange-600 text-zinc-50">
-              {user.name[0].toUpperCase()}
-            </div>
+        <>
+          <DropdownMenu>
+            <DropdownMenuTrigger className="flex items-center gap-1">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-orange-600 text-zinc-50">
+                {user.name[0].toUpperCase()}
+              </div>
 
-            <ChevronDown size={16} />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="mr-6">
-            <DropdownMenuItem asChild>
-              <Link
-                to={APP_ROUTES.config.profile}
-                className="flex items-center gap-2"
-              >
-                <User size={18} className="text-zinc-500" />
-                {capitalizarFirstLetter(user.name)}
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem asChild>
-              <Link
-                to={APP_ROUTES.config.index}
-                className="flex items-center gap-2"
-              >
-                <Settings size={16} className="text-zinc-500" />
-                Configurações
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <button className="flex items-center gap-2">
-                <MessageSquareMore size={16} className="text-zinc-500" />
-                Feedback
-              </button>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem asChild>
-              <button
-                onClick={logout}
-                className="group flex w-full items-center gap-2 text-red-500"
-              >
-                <LogOut size={18} className="group-hover:text-red-500" />
-                <span className="group-hover:text-red-500">Sair</span>
-              </button>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+              <ChevronDown size={16} />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="mr-6">
+              <DropdownMenuItem asChild>
+                <Link
+                  to={APP_ROUTES.config.index}
+                  className="flex items-center gap-2"
+                >
+                  <User size={18} className="text-zinc-500" />
+                  {capitalizarFirstLetter(user.name)}
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem asChild>
+                <Link
+                  to={APP_ROUTES.config.index}
+                  className="flex items-center gap-2"
+                >
+                  <Settings size={16} className="text-zinc-500" />
+                  Configurações
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <button
+                  className="flex w-full items-center gap-2"
+                  onClick={() => setFeedbackPopoverIsOpen(true)}
+                >
+                  <MessageSquareMore size={16} className="text-zinc-500" />
+                  Feedback
+                </button>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem asChild>
+                <button
+                  onClick={logout}
+                  className="group flex w-full items-center gap-2 text-red-500"
+                >
+                  <LogOut size={18} className="group-hover:text-red-500" />
+                  <span className="group-hover:text-red-500">Sair</span>
+                </button>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </>
       );
     }
 
@@ -118,6 +127,11 @@ export const Topbar: React.FC<TopbarProps> = ({
         {rightContent}
         {renderUserBox()}
       </UserBoxWrapper>
+
+      <Feedback
+        open={feedbackPopoverIsOpen}
+        setOpen={setFeedbackPopoverIsOpen}
+      />
     </header>
   );
 };

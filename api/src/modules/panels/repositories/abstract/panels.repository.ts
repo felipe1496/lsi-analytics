@@ -20,9 +20,14 @@ export type UpdateProps = {
   panelId: string;
   panel: Partial<PanelProps>;
 };
+
+export type DeleteProps = {
+  id: string;
+};
 export abstract class PanelsRepository {
   public abstract create(props: CreatePanelProps): Promise<Panel>;
   public abstract find(props: FindPanelProps): Promise<Panel>;
   public abstract findAll(props: FindAllProps): Promise<Panel[]>;
   public abstract update(props: UpdateProps): Promise<Panel>;
+  public abstract delete(props: DeleteProps): Promise<void>;
 }

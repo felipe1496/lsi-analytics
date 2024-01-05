@@ -1,12 +1,16 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { ViewModel } from '@/services/models/panel';
-import { isDifferentOfUndefinedAndNull } from '@/utils';
+import { APP_ROUTES } from '@/constants/app-routes';
+import { SQLResult } from '@/services/models/datafont/types';
+import { ViewModel } from '@/services/models/panel/types';
 
 type PanelNewViewContextType = {
-  panelCreation: ViewModel;
+  viewCreation: ViewModel;
   setPanelCreation: React.Dispatch<React.SetStateAction<ViewModel>>;
-  getWrongSteps: (currentStep: number) => number[];
+  canAccessStep: (step: number, datafontId: string) => boolean;
+  queryData: SQLResult | null;
+  setQueryData: React.Dispatch<React.SetStateAction<SQLResult | null>>;
 };
 
 export const PanelNewViewContext = React.createContext(
@@ -19,39 +23,66 @@ interface PanelNewViewContextProps {
 export const PanelNewViewProvider: React.FC<PanelNewViewContextProps> = ({
   children,
 }) => {
-  const [panelCreation, setPanelCreation] = React.useState<ViewModel>(
+  const [viewCreation, setPanelCreation] = React.useState<ViewModel>(
     {} as ViewModel,
   );
+  const [queryData, setQueryData] = React.useState<SQLResult | null>(null);
 
-  const getWrongSteps = React.useCallback(
-    (currentStep: number) => {
-      switch (currentStep) {
+  console.log(queryData);
+
+  const navigate = useNavigate();
+
+  const canAccessStep = React.useCallback(
+    (step: number, datafontId: string) => {
+      switch (step) {
         case 1:
-          return [];
+          return true;
         case 2:
           if (
-            isDifferentOfUndefinedAndNull(panelCreation.name) &&
-            isDifferentOfUndefinedAndNull(panelCreation.contentUpdate) &&
-            isDifferentOfUndefinedAndNull(panelCreation.type)
+            viewCreation.name &&
+            viewCreation.contentUpdate &&
+            viewCreation.type
           ) {
-            return [];
+            return true;
           }
-
-          return [1];
+          navigate(APP_ROUTES.panel.new.index.replace(':id', datafontId));
+          return false;
+        case 3:
+          if (viewCreation.datafontId) {
+            return true;
+          }
+          navigate(APP_ROUTES.panel.new.index.replace(':id', datafontId));
+          return false;
+        case 4:
+          if (viewCreation.sql) {
+            return true;
+          }
+          navigate(APP_ROUTES.panel.new.index.replace(':id', datafontId));
+          return false;
         default:
-          return [];
+          navigate(APP_ROUTES.panel.new.index.replace(':id', datafontId));
+          return false;
       }
     },
-    [panelCreation],
+    [
+      navigate,
+      viewCreation.contentUpdate,
+      viewCreation.datafontId,
+      viewCreation.name,
+      viewCreation.sql,
+      viewCreation.type,
+    ],
   );
 
   const value = React.useMemo(
     () => ({
-      panelCreation,
+      viewCreation,
+      queryData,
       setPanelCreation,
-      getWrongSteps,
+      canAccessStep,
+      setQueryData,
     }),
-    [panelCreation, setPanelCreation, getWrongSteps],
+    [viewCreation, canAccessStep, queryData],
   );
   return (
     <PanelNewViewContext.Provider value={value}>

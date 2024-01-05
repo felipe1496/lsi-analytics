@@ -3,6 +3,7 @@ import { PrismaService } from 'src/services/prisma/prisma.service';
 import { PanelsMapper } from '../../mappers/panels.mapper';
 import {
   CreatePanelProps,
+  DeleteProps,
   FindAllProps,
   FindPanelProps,
   PanelsRepository,
@@ -54,5 +55,13 @@ export class PrismaPanelsRepository implements PanelsRepository {
     });
 
     return PanelsMapper.toDomain(panel);
+  }
+
+  public async delete(props: DeleteProps) {
+    await this.prisma.panel.delete({
+      where: {
+        id: props.id,
+      },
+    });
   }
 }

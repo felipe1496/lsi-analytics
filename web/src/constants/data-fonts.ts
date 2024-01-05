@@ -1,13 +1,13 @@
 import {
-  DataFontProviderEnum,
-  TypeOfStorageEnum,
-} from '@/services/models/datafont';
+  DataFontProvider,
+  TypeOfStorage,
+} from '@/services/models/datafont/types';
 
 export const AVAILABLE_DATA_FONTS: {
   label: string;
   imageURL: string;
-  provider: DataFontProviderEnum;
-  typeOfStorage: TypeOfStorageEnum;
+  provider: DataFontProvider;
+  typeOfStorage: TypeOfStorage;
 }[] = [
   {
     label: 'PostgreSQL',

@@ -19,6 +19,7 @@ model User {
   imageURL String?
   panels Panel[]
   dataFonts DataFont[]
+  feedbacks Feedback[]
   @@map("USERS")
 }
 
@@ -92,4 +93,22 @@ model DataSet {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   @@map("DATASET")
+}
+
+enum FeedbackType {
+  BUG
+  IDEA
+  SUPPORT
+}
+
+model Feedback {
+  id String @default(nanoid()) @id
+  text String
+  type FeedbackType
+  imageURL String?
+  user   User @relation(fields: [userId], references: [id])
+  userId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@map("FEEDBACKS")
 }

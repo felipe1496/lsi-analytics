@@ -12,7 +12,8 @@ import {
 } from '@/components/ui/simple-tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { APP_ROUTES } from '@/constants/app-routes';
-import { PanelModel, ViewsType } from '@/services/models/panel';
+import { PANEL } from '@/services/models/panel/constants';
+import { PanelModel, View } from '@/services/models/panel/types';
 import { cn } from '@/utils';
 
 interface EditBarProps {
@@ -22,9 +23,7 @@ interface EditBarProps {
 export const EditBar: React.FC<EditBarProps> = ({ data }) => {
   const location = useLocation();
 
-  const [selectedView, setSelectedView] = React.useState<ViewsType | null>(
-    null,
-  );
+  const [selectedView, setSelectedView] = React.useState<View | null>(null);
 
   return (
     <div className="flex h-full flex-col">
@@ -63,15 +62,15 @@ export const EditBar: React.FC<EditBarProps> = ({ data }) => {
           <div className="flex flex-wrap px-4">
             <button
               className={cn(
-                selectedView === 'PIE_CHART' && 'rounded-sm border',
+                selectedView === PANEL.VIEW.PIE_CHART && 'rounded-sm border',
               )}
               onClick={() =>
                 setSelectedView((prevState) => {
-                  if (prevState === 'PIE_CHART') {
+                  if (prevState === PANEL.VIEW.PIE_CHART) {
                     return null;
                   }
 
-                  return 'PIE_CHART';
+                  return PANEL.VIEW.PIE_CHART;
                 })
               }
             >
@@ -90,7 +89,7 @@ export const EditBar: React.FC<EditBarProps> = ({ data }) => {
                   ? APP_ROUTES.panel.new.index.replace(':id', data.id)
                   : '#'
               }
-              state={{ view: 'PIE_CHART' }}
+              state={{ view: PANEL.VIEW.PIE_CHART }}
             >
               <Plus size={18} />
               Visualização
@@ -98,8 +97,6 @@ export const EditBar: React.FC<EditBarProps> = ({ data }) => {
           </div>
         </SimpleTabsContent>
       </SimpleTabs>
-
-      {/* <div className="h-full">{handleRenderEditContent(activeMenuOption)}</div> */}
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import { api } from '../api';
-import { UserWithoutPasswordModel } from '../models/users';
+import { UserWithoutPasswordModel } from '../models/users/types';
 import { PostRequest } from '../types';
 
 type CreateSessionProps = PostRequest<{ email: string; password: string }>;

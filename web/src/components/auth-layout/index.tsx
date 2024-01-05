@@ -2,7 +2,6 @@ import { ArrowLeft } from 'lucide-react';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import BluredImage from '@/assets/images/blured.jpg';
 import { cn } from '@/utils';
 
 import { Separator } from '../ui/separator';
@@ -29,7 +28,7 @@ export const AuthLayout: React.FC<AuthLayoutProps> = ({
     <div
       className="flex h-screen w-1/2 flex-col items-center justify-center text-zinc-50"
       style={{
-        backgroundImage: `url(${BluredImage})`,
+        backgroundImage: 'url(images/blured.jpg)',
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
       }}

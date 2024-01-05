@@ -10,6 +10,9 @@ export const APP_ROUTES = {
       index: '/painel/:id/novo/visualizacao',
       font: '/painel/:id/novo/visualizacao/fonte',
       object: '/painel/:id/novo/visualizacao/objeto',
+      studio: {
+        pie: '/painel/:id/novo/visualizacao/studio/pie',
+      },
     },
   },
   dataFont: {
@@ -21,13 +24,19 @@ export const APP_ROUTES = {
     register: '/cadastrar',
   },
   config: {
-    index: '/config',
-    profile: '/config/perfil',
+    index: '/config/perfil',
+    preferences: '/config/preferencias',
   },
   misc: {
     landing: '/',
   },
   docs: {
     index: '/docs',
+  },
+};
+
+export const EXTERNAL_ROUTES = {
+  domain: {
+    github: 'https://github.com/felipe1496/lsi-analytics',
   },
 };

@@ -15,19 +15,6 @@ export const LoadingPanelsPage: React.FC = () => (
         <Skeleton className="h-8 w-24 rounded-full" />
         <Skeleton className="h-4 w-4" />
         <Skeleton className="h-4 w-4" />
-
-        {/* <button onClick={() => setLayout('grid')}>
-          <LayoutGrid
-            size={18}
-            className={cn(layout === 'grid' && 'text-blue-500')}
-          />
-        </button>
-        <button onClick={() => setLayout('list')}>
-          <AlignJustify
-            size={18}
-            className={cn(layout === 'list' && 'text-blue-500')}
-          />
-        </button> */}
       </div>
     </div>
 

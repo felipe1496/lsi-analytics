@@ -6,7 +6,6 @@ import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import LSILogo from '@/assets/images/lsi-brand-background.png';
 import { AuthLayout } from '@/components/auth-layout';
 import { FieldError } from '@/components/errors/field-error';
 import { Typography } from '@/components/typography';
@@ -60,7 +59,6 @@ export const LoginPage: React.FC = () => {
       localStorage.setItem('user', JSON.stringify(response.user));
       toast('Login realizado com sucesso', {
         type: 'success',
-        position: 'bottom-right',
       });
       navigate(APP_ROUTES.panels.index);
     },
@@ -82,9 +80,9 @@ export const LoginPage: React.FC = () => {
       >
         <div className="flex flex-col items-center">
           <img
-            src={LSILogo}
+            src="/logo.svg"
             alt="Information Systems Laboratory logo"
-            className="w-24 object-cover"
+            className="w-16 object-cover"
           />
           <Typography level="h4">Bem-vindo!</Typography>
           <Typography level="muted">Faça Log In para iniciar</Typography>

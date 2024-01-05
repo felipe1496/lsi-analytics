@@ -1,5 +1,4 @@
 import { ErrorMessage } from '@hookform/error-message';
-import { useQuery } from '@tanstack/react-query';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -29,22 +28,22 @@ import {
 } from '@/components/ui/select';
 import { APP_ROUTES } from '@/constants/app-routes';
 import { REQUIRED_FIELD } from '@/constants/messages';
-import { reactQueryKeys } from '@/constants/react-query-keys';
-import { ViewModel } from '@/services/models/panel';
-import { panelsService } from '@/services/panels';
+import { PANEL } from '@/services/models/panel/constants';
+import { ViewModel } from '@/services/models/panel/types';
 
 import { usePanelNewViewContext } from '../../hooks/usePanelNewViewContext';
+import { usePanelQuery } from '../../hooks/usePanelQuery';
 
 type FormData = {
-  name: ViewModel['name'] | null;
-  type: ViewModel['type'] | null;
-  contentUpdate: ViewModel['contentUpdate'] | null;
+  name: ViewModel['name'];
+  type: ViewModel['type'];
+  contentUpdate: ViewModel['contentUpdate'];
 };
 
 export const PanelNewViewConfig: React.FC = () => {
   const { id } = useParams();
 
-  const { setPanelCreation, panelCreation } = usePanelNewViewContext();
+  const { setPanelCreation, viewCreation } = usePanelNewViewContext();
 
   const location = useLocation();
 
@@ -55,23 +54,15 @@ export const PanelNewViewConfig: React.FC = () => {
     control,
   } = useForm<FormData>({
     defaultValues: {
-      name: panelCreation.name ?? null,
-      type: location.state?.view ?? panelCreation.type ?? null,
-      contentUpdate: 'STATIC',
+      name: viewCreation.name ?? '',
+      type: location.state?.view ?? viewCreation.type ?? '',
+      contentUpdate: PANEL.CONTENT_UPDATE.STATIC,
     },
   });
 
   const navigate = useNavigate();
 
-  const { data, error } = useQuery({
-    queryKey: [reactQueryKeys.queries.findPanelQuery, id],
-    queryFn: () => {
-      if (id) {
-        return panelsService.find({ path: { id } });
-      }
-      return null;
-    },
-  });
+  const { data, error } = usePanelQuery({ id });
 
   const onSubmit = (formData: FormData) => {
     if (data) {
@@ -95,11 +86,6 @@ export const PanelNewViewConfig: React.FC = () => {
           <div className="flex flex-col gap-2">
             <Typography level="h3">Nova visualização</Typography>
             <Typography level="muted">Configuração geral</Typography>
-            {data.description && (
-              <Typography level="muted">
-                Configure as preferências na nova visualização
-              </Typography>
-            )}
           </div>
           <div className="flex flex-col gap-4">
             <div>
@@ -125,14 +111,14 @@ export const PanelNewViewConfig: React.FC = () => {
                   <Select
                     onValueChange={onChange}
                     defaultValue={
-                      location.state?.view ?? panelCreation.type ?? null
+                      location.state?.view ?? viewCreation.type ?? null
                     }
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Visualização" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="PIE_CHART">
+                      <SelectItem value={PANEL.VIEW.PIE_CHART}>
                         Gráfico de torta
                       </SelectItem>
                     </SelectContent>
