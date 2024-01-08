@@ -23,13 +23,13 @@ export const LandingPage: React.FC = () => (
           <div>
             <Link
               to={APP_ROUTES.auth.register}
-              className="bg-purple-500 px-4 py-2 text-lg text-zinc-50"
+              className="bg-purple-500 px-4 py-2 text-lg text-zinc-50 hover:bg-purple-600"
             >
               Tentar agora
             </Link>
           </div>
         </div>
-        <img src="/images/panels-image-skeleton.svg" className="" />
+        <img src="/images/panels-image-skeleton.svg" />
       </div>
     </div>
   </BrandLayout>

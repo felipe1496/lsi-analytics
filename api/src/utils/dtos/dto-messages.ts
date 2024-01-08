@@ -18,4 +18,8 @@ export class DtoMessages {
   public static invalid(field: string) {
     return `${field} inválido`;
   }
+
+  public static isObject(field: string) {
+    return `${field ?? 'O Campo'} deve ser um objeto`;
+  }
 }

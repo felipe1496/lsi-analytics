@@ -1,8 +1,6 @@
 import { IsIn, IsNotEmpty, IsOptional, IsString } from 'class-validator';
-import {
-  DataFontProviderEnum,
-  TypeOfStorageEnum,
-} from 'src/core/domain/types/common';
+import { DataFontProvider, TypeOfStorage } from 'src/core/domain/types/common';
+
 import { DtoMessages } from 'src/utils/dtos/dto-messages';
 
 export class CreateDataFontDto {
@@ -20,7 +18,7 @@ export class CreateDataFontDto {
   @IsNotEmpty({
     message: DtoMessages.IsNotEmpty('Tipo de armazenamento'),
   })
-  typeOfStorage: TypeOfStorageEnum;
+  typeOfStorage: TypeOfStorage;
 
   @IsIn(['POSTGRESQL', 'CSV'], {
     message: DtoMessages.invalid('Provedor'),
@@ -28,5 +26,5 @@ export class CreateDataFontDto {
   @IsNotEmpty({
     message: DtoMessages.IsNotEmpty('Provedor'),
   })
-  provider: DataFontProviderEnum;
+  provider: DataFontProvider;
 }

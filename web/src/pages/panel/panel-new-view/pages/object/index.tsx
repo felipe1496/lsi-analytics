@@ -1,6 +1,5 @@
 import Editor, { OnMount } from '@monaco-editor/react';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import ReactECharts from 'echarts-for-react';
 import { ChevronLeft, ChevronRight, CornerDownLeft, Sheet } from 'lucide-react';
 import React from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -37,7 +36,7 @@ export const PanelNewViewObject: React.FC = () => {
 
   const { id } = useParams();
 
-  const { viewCreation, setPanelCreation, canAccessStep, setQueryData } =
+  const { viewCreation, setViewCreation, canAccessStep, setQueryData } =
     usePanelNewViewContext();
 
   const navigate = useNavigate();
@@ -228,7 +227,7 @@ export const PanelNewViewObject: React.FC = () => {
   const handleNext = () => {
     if (sqlData && data) {
       setQueryData(sqlData);
-      setPanelCreation((prevState) => {
+      setViewCreation((prevState) => {
         const newState = { ...prevState };
         if (prevState.contentUpdate === 'STATIC') {
           Object.assign(newState, { staticData: sqlData, sql: sqlData.sql });

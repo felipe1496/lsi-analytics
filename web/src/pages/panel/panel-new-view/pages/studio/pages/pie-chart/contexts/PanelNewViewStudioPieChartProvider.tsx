@@ -10,6 +10,10 @@ type PanelNewViewStudioPieChartContextType = {
       }[]
     >
   >;
+  title: string | null;
+  setTitle: React.Dispatch<React.SetStateAction<string | null>>;
+  subTitle: string | null;
+  setSubTitle: React.Dispatch<React.SetStateAction<string | null>>;
 };
 
 export const PanelNewViewStudioPieChartContext = React.createContext(
@@ -26,13 +30,19 @@ export const PanelNewViewStudioPieChartProvider: React.FC<
   const [echartsData, setEchartsData] = React.useState<
     { name: unknown; value: unknown }[]
   >([]);
+  const [title, setTitle] = React.useState<string | null>(null);
+  const [subTitle, setSubTitle] = React.useState<string | null>(null);
 
   const value = React.useMemo(
     () => ({
       echartsData,
+      title,
+      subTitle,
       setEchartsData,
+      setTitle,
+      setSubTitle,
     }),
-    [echartsData],
+    [echartsData, subTitle, title],
   );
 
   return (

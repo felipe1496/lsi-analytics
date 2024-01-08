@@ -42,7 +42,7 @@ export const PanelNewViewDataFont: React.FC = () => {
 
   const navigate = useNavigate();
 
-  const { setPanelCreation, canAccessStep } = usePanelNewViewContext();
+  const { setViewCreation, canAccessStep } = usePanelNewViewContext();
 
   const { data: dataFontsData } = useQuery({
     queryKey: [reactQueryKeys.queries.findAllDataFontsQuery],
@@ -58,7 +58,7 @@ export const PanelNewViewDataFont: React.FC = () => {
         return;
       }
 
-      setPanelCreation((prevState) => {
+      setViewCreation((prevState) => {
         const newState = { ...prevState };
         Object.assign(newState, { datafontId: checkedDataFont });
         return newState;

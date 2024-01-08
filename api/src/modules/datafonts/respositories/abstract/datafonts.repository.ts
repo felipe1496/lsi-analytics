@@ -1,14 +1,11 @@
-import {
-  DataFontProviderEnum,
-  TypeOfStorageEnum,
-} from 'src/core/domain/types/common';
+import { DataFontProvider, TypeOfStorage } from 'src/core/domain/types/common';
 import { DataFont } from 'src/modules/datafonts/entities/datafont.entity';
 
 export type CreateDataFontProps = {
   name: string;
   accessKey?: string;
-  typeOfStorage: TypeOfStorageEnum;
-  provider: DataFontProviderEnum;
+  typeOfStorage: TypeOfStorage;
+  provider: DataFontProvider;
   userId: string;
 };
 

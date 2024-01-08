@@ -7,7 +7,8 @@ import {
   Tablet,
 } from 'lucide-react';
 import React from 'react';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { Responsive, WidthProvider } from 'react-grid-layout';
+import { Link, useParams } from 'react-router-dom';
 
 import {
   Breadcrumb,
@@ -31,19 +32,25 @@ import {
 } from '@/components/ui/tooltip';
 import { APP_ROUTES } from '@/constants/app-routes';
 import { reactQueryKeys } from '@/constants/react-query-keys';
+import { GridLayout } from '@/lib/react-grid-layout';
 import { panelsService } from '@/services/panels';
 
+import { usePanelContext } from '../hooks/usePanelContext';
 import { PanelPageLoading } from '../panel-page/loading';
 import { EditBar } from './components/EditBar';
 
 type ResponsiveType = 'mobile' | 'tablet' | 'desktop';
 
+const ResponsiveGridLayout = WidthProvider(Responsive);
+
 export const PanelEditPage: React.FC = () => {
   const [responsive, setResponsive] = React.useState<ResponsiveType>('desktop');
 
-  const { id } = useParams();
+  const { newViewsPreview } = usePanelContext();
 
-  useLocation();
+  console.log('newViewsPreview: ', newViewsPreview);
+
+  const { id } = useParams();
 
   const { data, error, isLoading } = useQuery({
     queryKey: [reactQueryKeys.queries.findPanelQuery, id],
@@ -76,10 +83,47 @@ export const PanelEditPage: React.FC = () => {
     }
   };
 
+  const layout = {
+    lg: [
+      { i: 'a', x: 0, y: 0, w: 1, h: 2 },
+      { i: 'b', x: 1, y: 0, w: 3, h: 2 },
+      { i: 'c', x: 4, y: 0, w: 1, h: 2 },
+    ],
+  };
+
+  const render = () => {
+    if (data) {
+      return (
+        <ResponsiveGridLayout
+          className="layout"
+          layouts={layout}
+          breakpoints={{ lg: 1200, md: 996, sm: 768 }}
+          cols={{ lg: 12, md: 10, sm: 6 }}
+          rowHeight={30}
+        >
+          {}
+          <div key="a" className="bg-red-500">
+            a
+          </div>
+          <div key="b" className="bg-amber-500">
+            b
+          </div>
+          <div key="c" className="bg-green-500">
+            c
+          </div>
+        </ResponsiveGridLayout>
+      );
+    }
+
+    return null;
+  };
+
   if (data) {
     return (
       <Layout
         title="Editar"
+        footer={null}
+        className="min-h-layout-page border-2 border-red-500"
         breadcrumb={
           <Breadcrumb>
             <BreadcrumbHome />
@@ -93,7 +137,6 @@ export const PanelEditPage: React.FC = () => {
           </Breadcrumb>
         }
         rightBar={<EditBar data={data} />}
-        className="layout-page"
         rightContent={
           <div className="flex items-center gap-2">
             <DropdownMenu>
@@ -153,7 +196,9 @@ export const PanelEditPage: React.FC = () => {
             </Tooltip>
           </div>
         }
-      ></Layout>
+      >
+        {render()}
+      </Layout>
     );
   }
 

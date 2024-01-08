@@ -1,14 +1,11 @@
 import { Entity, PropsConstructor } from 'src/core/domain/Entity';
-import {
-  DataFontProviderEnum,
-  TypeOfStorageEnum,
-} from 'src/core/domain/types/common';
+import { DataFontProvider, TypeOfStorage } from 'src/core/domain/types/common';
 
 export interface DataFontProps {
   name: string;
   accessKey: string;
-  typeOfStorage: TypeOfStorageEnum;
-  provider: DataFontProviderEnum;
+  typeOfStorage: TypeOfStorage;
+  provider: DataFontProvider;
   userId: string;
 }
 

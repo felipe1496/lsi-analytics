@@ -11,6 +11,8 @@ import { DocsRoutes } from './pages/docs/routes';
 import { LandingPage } from './pages/misc/landing-page';
 import { PanelRoutes } from './pages/panel/routes';
 import { PanelsRoutes } from './pages/panels/routes';
+import 'react-grid-layout/css/styles.css';
+import 'react-resizable/css/styles.css';
 
 const App: React.FC = () => (
   <Providers>

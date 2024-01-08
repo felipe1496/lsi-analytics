@@ -102,3 +102,13 @@ export const objectsAreEqual = (objA: any, objB: any): boolean => {
 export const print = (payload: unknown) => {
   console.log(payload);
 };
+
+export const inputSetState =
+  (callback: (prop: string | null) => unknown) =>
+  (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    callback(value);
+  };
+
+export const inputValue = (value: string | null) =>
+  value === null ? '' : value;

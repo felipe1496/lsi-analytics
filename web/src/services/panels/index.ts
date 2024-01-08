@@ -1,5 +1,5 @@
 import { api } from '../api';
-import { PanelModel } from '../models/panel/types';
+import { PanelModel, ViewProps } from '../models/panel/types';
 import { DeleteRequest, GetRequest, PostRequest } from '../types';
 
 type CreatePanelProps = PostRequest<Pick<PanelModel, 'name' | 'description'>>;
@@ -7,6 +7,8 @@ type CreatePanelProps = PostRequest<Pick<PanelModel, 'name' | 'description'>>;
 type FindPanelProps = GetRequest<{ id: string }>;
 
 export type DeletePanelProps = DeleteRequest<{ id: string }>;
+
+type CreateViewProps = PostRequest<ViewProps>;
 
 class PanelsService {
   public async create(props: CreatePanelProps) {

@@ -30,6 +30,7 @@ model Panel {
   imageURL String?
   user   User @relation(fields: [userId], references: [id])
   userId String
+  views View[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   @@map("PANELS")
@@ -58,7 +59,7 @@ model DataFont {
   @@map("DATAFONTS")
 }
 
-enum ViewTypeEnum {
+enum ViewType {
   PIECHART
 }
 
@@ -69,13 +70,29 @@ enum ViewContentUpdate {
 
 model View {
   id String @default(nanoid()) @id
-  config Json
-  type ViewTypeEnum
+  type ViewType
   contentUpdate ViewContentUpdate
   sql String?
+  pieChart PieChart?
+  panel Panel @relation(fields: [panelId], references: [id])
+  panelId String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   @@map("VIEWS")
+}
+
+model PieChart {
+  id String @default(nanoid()) @id
+  title String?
+  subTitle String?
+  labelColumn String
+  valueColumn String
+  staticData Json?
+  view View @relation(fields: [viewId], references: [id])
+  viewId String @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@map("PIE_CHART")
 }
 
 model StaticViewData {

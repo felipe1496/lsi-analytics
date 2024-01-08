@@ -27,14 +27,26 @@ export class FeedbacksController {
   @HttpCode(HttpStatus.CREATED)
   @UseInterceptors(FileInterceptor('file'))
   public async create(@UploadedFile() file, @Body() body) {
-    console.log('typeof: ', typeof file);
-    console.log('file HERE: ', file);
-    console.log('BODY HERE: ', body);
+    console.log('arquivo: ', file);
+    console.log('type: ', typeof file);
+    const _file = { ...file };
+    _file.originalname = 'arroba.png';
+    console.log('_file: ', _file);
 
-    console.log('FILE: ', file);
+    const byteArray = new Uint8Array(_file.buffer);
+
+    /* const blob = new Blob([byteArray], { type: _file.mimetype }); */
+
+    const fileObj = new File([byteArray], file.originalname, {
+      type: file.mimetype,
+    });
+
     const supabaseResult = await this.supabase.storage
       .from('feedback')
-      .upload('bugs/arroba.png', file, { upsert: true });
+      .upload('bugs/arroba.png', fileObj, {
+        upsert: true,
+        contentType: 'image/png',
+      });
 
     console.log('supabaseResult', supabaseResult);
   }

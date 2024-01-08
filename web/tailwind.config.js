@@ -19,6 +19,9 @@ module.exports = {
       },
     },
     extend: {
+      minHeight: {
+        'layout-page': 'calc(100vh - 3.5rem)',
+      },
       height: {
         'layout-page': 'calc(100vh - 3.5rem)',
       },

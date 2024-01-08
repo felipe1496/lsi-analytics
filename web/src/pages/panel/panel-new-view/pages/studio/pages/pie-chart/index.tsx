@@ -22,7 +22,8 @@ export const PanelViewStudioPieChartPage: React.FC = () => {
 
   const { canAccessStep } = usePanelNewViewContext();
 
-  const { echartsData } = usePanelNewViewStudioPieChartContext();
+  const { echartsData, title, subTitle } =
+    usePanelNewViewStudioPieChartContext();
 
   const { data, error } = usePanelQuery({ id });
 
@@ -49,39 +50,40 @@ export const PanelViewStudioPieChartPage: React.FC = () => {
   const render = () => {
     if (data && canAccessStep(4, data.id)) {
       return (
-        <div className="h-screen">
-          <ReactEChart
-            option={{
-              title: {
-                text: 'Referer of a Website',
-                subtext: 'Fake Data',
-                left: 'center',
-              },
-              tooltip: {
-                trigger: 'item',
-              },
-              legend: {
-                orient: 'vertical',
-                left: 'left',
-              },
-              series: [
-                {
-                  name: 'Access From',
-                  type: 'pie',
-                  radius: '50%',
-                  data: echartsData,
-                  emphasis: {
-                    itemStyle: {
-                      shadowBlur: 10,
-                      shadowOffsetX: 0,
-                      shadowColor: 'rgba(0, 0, 0, 0.5)',
-                    },
+        <ReactEChart
+          style={{
+            height: 'calc(100vh - 3.5rem)',
+          }}
+          option={{
+            title: {
+              left: 'center',
+              text: title,
+              subtext: subTitle,
+            },
+            tooltip: {
+              trigger: 'item',
+            },
+            legend: {
+              orient: 'vertical',
+              left: 'left',
+            },
+            series: [
+              {
+                name: 'Access From',
+                type: 'pie',
+                radius: '50%',
+                data: echartsData,
+                emphasis: {
+                  itemStyle: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)',
                   },
                 },
-              ],
-            }}
-          />
-        </div>
+              },
+            ],
+          }}
+        />
       );
     }
 
@@ -91,56 +93,7 @@ export const PanelViewStudioPieChartPage: React.FC = () => {
 
     return null;
   };
-  /* if (data && canAccessStep(4, data.id)) {
-      console.log('renderizei');
-      return (
-        <div className="flex h-screen items-center justify-center">
-          <ReactEChart
-            option={{
-              title: {
-                text: 'Referer of a Website',
-                subtext: 'Fake Data',
-                left: 'center',
-              },
-              tooltip: {
-                trigger: 'item',
-              },
-              legend: {
-                orient: 'vertical',
-                left: 'left',
-              },
-              series: [
-                {
-                  name: 'Access From',
-                  type: 'pie',
-                  radius: '50%',
-                  data: [
-                    { value: 1048, name: 'Search Engine' },
-                    { value: 735, name: 'Direct' },
-                    { value: 580, name: 'Email' },
-                    { value: 484, name: 'Union Ads' },
-                    { value: 300, name: 'Video Ads' },
-                  ],
-                  emphasis: {
-                    itemStyle: {
-                      shadowBlur: 10,
-                      shadowOffsetX: 0,
-                      shadowColor: 'rgba(0, 0, 0, 0.5)',
-                    },
-                  },
-                },
-              ],
-            }}
-          />
-        </div>
-      );
-    }
 
-    if (error || !id) {
-      <NotFoundPage />;
-    }
-
-    return <>asdkljdlkasj</>; */
   return (
     <Layout
       footer={null}

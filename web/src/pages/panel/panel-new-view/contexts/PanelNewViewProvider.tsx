@@ -3,11 +3,11 @@ import { useNavigate } from 'react-router-dom';
 
 import { APP_ROUTES } from '@/constants/app-routes';
 import { SQLResult } from '@/services/models/datafont/types';
-import { ViewModel } from '@/services/models/panel/types';
+import { ViewProps } from '@/services/models/panel/types';
 
 type PanelNewViewContextType = {
-  viewCreation: ViewModel;
-  setPanelCreation: React.Dispatch<React.SetStateAction<ViewModel>>;
+  viewCreation: ViewProps;
+  setViewCreation: React.Dispatch<React.SetStateAction<ViewProps>>;
   canAccessStep: (step: number, datafontId: string) => boolean;
   queryData: SQLResult | null;
   setQueryData: React.Dispatch<React.SetStateAction<SQLResult | null>>;
@@ -23,8 +23,8 @@ interface PanelNewViewContextProps {
 export const PanelNewViewProvider: React.FC<PanelNewViewContextProps> = ({
   children,
 }) => {
-  const [viewCreation, setPanelCreation] = React.useState<ViewModel>(
-    {} as ViewModel,
+  const [viewCreation, setViewCreation] = React.useState<ViewProps>(
+    {} as ViewProps,
   );
   const [queryData, setQueryData] = React.useState<SQLResult | null>(null);
 
@@ -54,7 +54,7 @@ export const PanelNewViewProvider: React.FC<PanelNewViewContextProps> = ({
           navigate(APP_ROUTES.panel.new.index.replace(':id', datafontId));
           return false;
         case 4:
-          if (viewCreation.sql) {
+          if (viewCreation.sql && queryData) {
             return true;
           }
           navigate(APP_ROUTES.panel.new.index.replace(':id', datafontId));
@@ -66,6 +66,7 @@ export const PanelNewViewProvider: React.FC<PanelNewViewContextProps> = ({
     },
     [
       navigate,
+      queryData,
       viewCreation.contentUpdate,
       viewCreation.datafontId,
       viewCreation.name,
@@ -78,7 +79,7 @@ export const PanelNewViewProvider: React.FC<PanelNewViewContextProps> = ({
     () => ({
       viewCreation,
       queryData,
-      setPanelCreation,
+      setViewCreation,
       canAccessStep,
       setQueryData,
     }),

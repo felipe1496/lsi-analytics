@@ -1,5 +1,6 @@
 import { ErrorMessage } from '@hookform/error-message';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { nanoid } from 'nanoid';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
@@ -29,21 +30,21 @@ import {
 import { APP_ROUTES } from '@/constants/app-routes';
 import { REQUIRED_FIELD } from '@/constants/messages';
 import { PANEL } from '@/services/models/panel/constants';
-import { ViewModel } from '@/services/models/panel/types';
+import { ViewProps } from '@/services/models/panel/types';
 
 import { usePanelNewViewContext } from '../../hooks/usePanelNewViewContext';
 import { usePanelQuery } from '../../hooks/usePanelQuery';
 
 type FormData = {
-  name: ViewModel['name'];
-  type: ViewModel['type'];
-  contentUpdate: ViewModel['contentUpdate'];
+  name: ViewProps['name'];
+  type: ViewProps['type'];
+  contentUpdate: ViewProps['contentUpdate'];
 };
 
 export const PanelNewViewConfig: React.FC = () => {
   const { id } = useParams();
 
-  const { setPanelCreation, viewCreation } = usePanelNewViewContext();
+  const { setViewCreation, viewCreation } = usePanelNewViewContext();
 
   const location = useLocation();
 
@@ -64,11 +65,11 @@ export const PanelNewViewConfig: React.FC = () => {
 
   const { data, error } = usePanelQuery({ id });
 
-  const onSubmit = (formData: FormData) => {
+  const handleNext = (formData: FormData) => {
     if (data) {
-      setPanelCreation((prevState) => {
+      setViewCreation((prevState) => {
         const newState = { ...prevState };
-        Object.assign(newState, formData);
+        Object.assign(newState, { ...formData, panelId: id, id: nanoid() });
         return newState;
       });
       navigate(APP_ROUTES.panel.new.font.replace(':id', data.id));
@@ -79,7 +80,7 @@ export const PanelNewViewConfig: React.FC = () => {
     if (data) {
       return (
         <form
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleSubmit(handleNext)}
           className="flex w-[768px] flex-col gap-6"
         >
           <SimpleStepper active={1} numberOfSteps={4} />
