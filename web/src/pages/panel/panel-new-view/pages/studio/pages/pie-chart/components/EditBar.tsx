@@ -18,10 +18,11 @@ import {
   SimpleTabsTrigger,
 } from '@/components/ui/simple-tabs';
 import { APP_ROUTES } from '@/constants/app-routes';
+import { Breakpoints } from '@/pages/panel/contexts/PanelProvider';
 import { usePanelContext } from '@/pages/panel/hooks/usePanelContext';
 import { usePanelNewViewContext } from '@/pages/panel/panel-new-view/hooks/usePanelNewViewContext';
 import { usePanelQuery } from '@/pages/panel/panel-new-view/hooks/usePanelQuery';
-import { PieChartCore } from '@/services/models/panel/types';
+import { PieChartProps } from '@/services/models/panel/types';
 import { inputSetState, inputValue } from '@/utils';
 
 import { usePanelNewViewStudioPieChartContext } from '../hooks/usePanelNewViewStudioPieChartContext';
@@ -38,9 +39,9 @@ export const EditBar: React.FC = () => {
 
   const { queryData, viewCreation } = usePanelNewViewContext();
 
-  const { setNewViewsPreview } = usePanelContext();
+  const { setNewViewsPreview, setLayouts } = usePanelContext();
 
-  const { setEchartsData, setTitle, setSubTitle, title, subTitle } =
+  const { setEchartData, echartData, setTitle, setSubTitle, title, subTitle } =
     usePanelNewViewStudioPieChartContext();
 
   const getEChartsData = React.useCallback(() => {
@@ -49,9 +50,9 @@ export const EditBar: React.FC = () => {
         value: r[value],
         name: r[category],
       }));
-      setEchartsData(graphData);
+      setEchartData(graphData);
     }
-  }, [category, queryData, setEchartsData, value]);
+  }, [category, queryData, setEchartData, value]);
 
   React.useEffect(() => {
     getEChartsData();
@@ -61,7 +62,7 @@ export const EditBar: React.FC = () => {
     if (category && value && queryData && data) {
       const createdView = { ...viewCreation };
 
-      const core: PieChartCore = {
+      const core: PieChartProps = {
         labelColumn: category,
         valueColumn: value,
       };
@@ -78,7 +79,22 @@ export const EditBar: React.FC = () => {
 
       setNewViewsPreview((prevState) => {
         const newState = [...prevState];
-        newState.push({ echartData: queryData, view: createdView });
+        newState.push({ echartData, view: createdView });
+        return newState;
+      });
+
+      setLayouts((prevState) => {
+        const newState = { ...prevState };
+
+        Object.keys(newState).forEach((k) => {
+          const key = k as Breakpoints;
+          const current = newState[key];
+          newState[key] = [
+            { i: createdView.id, x: 0, y: 0, w: 2, h: 2 },
+            ...current,
+          ];
+        });
+
         return newState;
       });
 

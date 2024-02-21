@@ -49,8 +49,6 @@ export const PanelsPage: React.FC = () => {
 
   const navigate = useNavigate();
 
-  console.log(layout);
-
   const {
     handleSubmit,
     register,
@@ -68,8 +66,6 @@ export const PanelsPage: React.FC = () => {
   });
 
   const { data, isLoading } = usePanelsQuery();
-
-  console.log(data);
 
   const onSubmit = (formData: FormData) => {
     createPanel({ body: formData });

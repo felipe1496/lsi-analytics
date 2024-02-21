@@ -1,3 +1,3 @@
-import EChart from 'echarts-for-react';
+import ReactEChart from 'echarts-for-react';
 
-export const ReactEChart = EChart;
+export const EChart = ReactEChart;

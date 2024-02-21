@@ -5,12 +5,18 @@ export type PostRequest<T = unknown> = {
   config?: AxiosRequestConfig;
 };
 
-export type GetRequest<T = unknown> = {
+export type GetRequest<T = unknown, D = unknown> = {
+  path: T;
+  config?: AxiosRequestConfig<D>;
+};
+
+export type DeleteRequest<T = unknown> = {
   path: T;
   config?: AxiosRequestConfig;
 };
 
-export type DeleteRequest<T = unknown> = {
+export type PatchRequest<U = unknown, T = unknown> = {
+  body: U;
   path: T;
   config?: AxiosRequestConfig;
 };

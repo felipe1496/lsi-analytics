@@ -8,7 +8,10 @@ export type CreateDataFontProps = PostRequest<
   Pick<DataFontModel, 'name' | 'typeOfStorage' | 'provider' | 'accessKey'>
 >;
 
-export type FindAllDataFontsProps = GetRequest<undefined>;
+export type FindAllDataFontsProps = Omit<
+  GetRequest<unknown, { name: string }>,
+  'path'
+>;
 
 export type DeleteDataFontProps = DeleteRequest<{ id: string }>;
 
@@ -36,8 +39,8 @@ class DataFontsService {
     return response.data;
   }
 
-  public async findAll() {
-    const response = await api.get<DataFontModel[]>('/datafonts');
+  public async findAll(props: FindAllDataFontsProps = {}) {
+    const response = await api.get<DataFontModel[]>('/datafonts', props.config);
 
     return response.data;
   }

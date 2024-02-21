@@ -1,8 +1,8 @@
-import { ContentUpdate, View } from './types';
+import { ContentUpdate, ViewType } from './types';
 
 export const PANEL = {
   VIEW: {
-    PIE_CHART: 'PIE_CHART' as View,
+    PIE_CHART: 'PIECHART' as ViewType,
   },
   CONTENT_UPDATE: {
     DINAMIC: 'DINAMIC' as ContentUpdate,

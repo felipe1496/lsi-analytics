@@ -10,7 +10,7 @@ import {
 import { Layout } from '@/components/layout';
 import { NotFoundPage } from '@/components/not-found-page';
 import { APP_ROUTES } from '@/constants/app-routes';
-import { ReactEChart } from '@/lib/echarts-for-react';
+import { EChart } from '@/lib/echarts-for-react';
 import { usePanelNewViewContext } from '@/pages/panel/panel-new-view/hooks/usePanelNewViewContext';
 import { usePanelQuery } from '@/pages/panel/panel-new-view/hooks/usePanelQuery';
 
@@ -22,7 +22,7 @@ export const PanelViewStudioPieChartPage: React.FC = () => {
 
   const { canAccessStep } = usePanelNewViewContext();
 
-  const { echartsData, title, subTitle } =
+  const { echartData, title, subTitle } =
     usePanelNewViewStudioPieChartContext();
 
   const { data, error } = usePanelQuery({ id });
@@ -50,7 +50,7 @@ export const PanelViewStudioPieChartPage: React.FC = () => {
   const render = () => {
     if (data && canAccessStep(4, data.id)) {
       return (
-        <ReactEChart
+        <EChart
           style={{
             height: 'calc(100vh - 3.5rem)',
           }}
@@ -72,7 +72,7 @@ export const PanelViewStudioPieChartPage: React.FC = () => {
                 name: 'Access From',
                 type: 'pie',
                 radius: '50%',
-                data: echartsData,
+                data: echartData,
                 emphasis: {
                   itemStyle: {
                     shadowBlur: 10,

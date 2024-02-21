@@ -1,15 +1,10 @@
 import React from 'react';
 
+export type EChartData = { name: unknown; value: unknown };
+
 type PanelNewViewStudioPieChartContextType = {
-  echartsData: { name: unknown; value: unknown }[];
-  setEchartsData: React.Dispatch<
-    React.SetStateAction<
-      {
-        name: unknown;
-        value: unknown;
-      }[]
-    >
-  >;
+  echartData: EChartData[];
+  setEchartData: React.Dispatch<React.SetStateAction<EChartData[]>>;
   title: string | null;
   setTitle: React.Dispatch<React.SetStateAction<string | null>>;
   subTitle: string | null;
@@ -27,22 +22,20 @@ interface PanelNewViewStudioPieChartProviderProps {
 export const PanelNewViewStudioPieChartProvider: React.FC<
   PanelNewViewStudioPieChartProviderProps
 > = ({ children }) => {
-  const [echartsData, setEchartsData] = React.useState<
-    { name: unknown; value: unknown }[]
-  >([]);
+  const [echartData, setEchartData] = React.useState<EChartData[]>([]);
   const [title, setTitle] = React.useState<string | null>(null);
   const [subTitle, setSubTitle] = React.useState<string | null>(null);
 
   const value = React.useMemo(
     () => ({
-      echartsData,
+      echartData,
       title,
       subTitle,
-      setEchartsData,
+      setEchartData,
       setTitle,
       setSubTitle,
     }),
-    [echartsData, subTitle, title],
+    [echartData, subTitle, title],
   );
 
   return (

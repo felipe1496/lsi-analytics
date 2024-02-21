@@ -99,10 +99,6 @@ export const objectsAreEqual = (objA: any, objB: any): boolean => {
   return true;
 };
 
-export const print = (payload: unknown) => {
-  console.log(payload);
-};
-
 export const inputSetState =
   (callback: (prop: string | null) => unknown) =>
   (event: React.ChangeEvent<HTMLInputElement>) => {

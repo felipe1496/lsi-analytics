@@ -32,24 +32,24 @@ import {
 } from '@/components/ui/tooltip';
 import { APP_ROUTES } from '@/constants/app-routes';
 import { reactQueryKeys } from '@/constants/react-query-keys';
-import { GridLayout } from '@/lib/react-grid-layout';
 import { panelsService } from '@/services/panels';
 
+import { BREAKPOINTS, Breakpoints } from '../contexts/PanelProvider';
+import { useSavePanelMutation } from '../hooks/mutations/useSavePanelMutation';
 import { usePanelContext } from '../hooks/usePanelContext';
 import { PanelPageLoading } from '../panel-page/loading';
 import { EditBar } from './components/EditBar';
-
-type ResponsiveType = 'mobile' | 'tablet' | 'desktop';
+import { View } from './components/View';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 export const PanelEditPage: React.FC = () => {
-  const [responsive, setResponsive] = React.useState<ResponsiveType>('desktop');
+  const [responsive, setResponsive] = React.useState<Breakpoints>(
+    BREAKPOINTS.LARGE,
+  );
 
-  const { newViewsPreview } = usePanelContext();
-
-  console.log('newViewsPreview: ', newViewsPreview);
-
+  const { newViewsPreview, layouts, getCreateViews } = usePanelContext();
+  console.log(newViewsPreview);
   const { id } = useParams();
 
   const { data, error, isLoading } = useQuery({
@@ -62,6 +62,8 @@ export const PanelEditPage: React.FC = () => {
     },
   });
 
+  const { mutate: savePanel } = useSavePanelMutation();
+
   if (isLoading) {
     return <PanelPageLoading />;
   }
@@ -70,25 +72,39 @@ export const PanelEditPage: React.FC = () => {
     return <NotFoundPage />;
   }
 
-  const renderResponsiveContentIcon = (_responsive: ResponsiveType) => {
+  const renderResponsiveContentIcon = (_responsive: Breakpoints) => {
     switch (_responsive) {
-      case 'desktop':
+      case BREAKPOINTS.LARGE:
         return <Monitor size={18} />;
-      case 'tablet':
+      case BREAKPOINTS.MEDIUM:
         return <Tablet size={18} />;
-      case 'mobile':
+      case BREAKPOINTS.SMALL:
         return <Smartphone size={18} />;
       default:
         return null;
     }
   };
 
-  const layout = {
-    lg: [
-      { i: 'a', x: 0, y: 0, w: 1, h: 2 },
-      { i: 'b', x: 1, y: 0, w: 3, h: 2 },
-      { i: 'c', x: 4, y: 0, w: 1, h: 2 },
-    ],
+  const handleSavePanel = () => {
+    if (data) {
+      savePanel({
+        path: {
+          id: data.id,
+        },
+        body: {
+          layout: layouts,
+          createViews: getCreateViews(),
+        },
+      });
+    }
+  };
+
+  const saveIsDisabled = () => {
+    if (newViewsPreview.length > 0) {
+      return false;
+    }
+
+    return true;
   };
 
   const render = () => {
@@ -96,21 +112,17 @@ export const PanelEditPage: React.FC = () => {
       return (
         <ResponsiveGridLayout
           className="layout"
-          layouts={layout}
-          breakpoints={{ lg: 1200, md: 996, sm: 768 }}
-          cols={{ lg: 12, md: 10, sm: 6 }}
+          layouts={layouts}
+          onLayoutChange={(newLayout) => console.log(newLayout)}
+          breakpoints={{ LARGE: 1200, MEDIUM: 996, SMALL: 768 }}
+          cols={{ LARGE: 12, MEDIUM: 10, SMALL: 6 }}
           rowHeight={30}
         >
-          {}
-          <div key="a" className="bg-red-500">
-            a
-          </div>
-          <div key="b" className="bg-amber-500">
-            b
-          </div>
-          <div key="c" className="bg-green-500">
-            c
-          </div>
+          {newViewsPreview.map((v) => (
+            <div key={v.view.id}>
+              <View data={v.echartData} />
+            </div>
+          ))}
         </ResponsiveGridLayout>
       );
     }
@@ -123,7 +135,7 @@ export const PanelEditPage: React.FC = () => {
       <Layout
         title="Editar"
         footer={null}
-        className="min-h-layout-page border-2 border-red-500"
+        className="min-h-layout-page"
         breadcrumb={
           <Breadcrumb>
             <BreadcrumbHome />
@@ -150,7 +162,7 @@ export const PanelEditPage: React.FC = () => {
                 <DropdownMenuItem asChild>
                   <button
                     className="flex w-full items-center gap-1"
-                    onClick={() => setResponsive('desktop')}
+                    onClick={() => setResponsive(BREAKPOINTS.LARGE)}
                   >
                     <Monitor size={18} />
                     Desktop
@@ -159,7 +171,7 @@ export const PanelEditPage: React.FC = () => {
                 <DropdownMenuItem asChild>
                   <button
                     className="flex w-full items-center gap-1"
-                    onClick={() => setResponsive('tablet')}
+                    onClick={() => setResponsive(BREAKPOINTS.MEDIUM)}
                   >
                     <Tablet size={18} />
                     Tablet
@@ -168,7 +180,7 @@ export const PanelEditPage: React.FC = () => {
                 <DropdownMenuItem asChild>
                   <button
                     className="flex w-full items-center gap-1"
-                    onClick={() => setResponsive('mobile')}
+                    onClick={() => setResponsive(BREAKPOINTS.SMALL)}
                   >
                     <Smartphone size={18} />
                     Mobile
@@ -176,7 +188,11 @@ export const PanelEditPage: React.FC = () => {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-            <Button variant="positive" disabled>
+            <Button
+              variant="positive"
+              disabled={saveIsDisabled()}
+              onClick={handleSavePanel}
+            >
               Salvar
             </Button>
             <Tooltip delayDuration={0}>

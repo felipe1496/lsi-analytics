@@ -7,7 +7,7 @@ import { useScreenshot } from '@/hooks/useScreenshot';
 import { feedbackService } from '@/services/feedback';
 import { FEEDBACK } from '@/services/models/feedback/constants';
 import { FeedbackCategory } from '@/services/models/feedback/types';
-import { cn, print } from '@/utils';
+import { cn } from '@/utils';
 
 import { Button } from '../ui/button';
 import { Textarea } from '../ui/textarea';
@@ -145,7 +145,7 @@ export const Feedback: React.FC<FeedbackProps> = ({
                   onClick={async () => {
                     try {
                       const result = await shot();
-                      console.log('typeof: ', typeof result.blob);
+
                       setImage(result);
                     } catch (error) {
                       toast('Não foi possível capturar a tela', {
@@ -166,18 +166,14 @@ export const Feedback: React.FC<FeedbackProps> = ({
                 className="w-full"
                 disabled={!text}
                 onClick={async () => {
-                  print('executei aqui');
                   if (image && selectedOption) {
                     const response = await feedbackService.create({
                       file: image?.blob,
                       text,
                       type: selectedOption,
                     });
-
-                    console.log('Respostaa: ', response);
                   }
                 }}
-                /* onClick={() => print('cliquei')} */
               >
                 Enviar
               </Button>

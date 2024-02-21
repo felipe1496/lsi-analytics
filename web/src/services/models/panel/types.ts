@@ -9,11 +9,11 @@ export type PanelModel = {
   imageURL?: string;
 };
 
-export type View = 'PIE_CHART';
+export type ViewType = 'PIECHART';
 
-export type ContentUpdate = 'DINAMIC' | 'STATIC';
+export type ContentUpdate = 'DYNAMIC' | 'STATIC';
 
-export type PieChartCore = {
+export type PieChart = {
   id: string;
   title?: string;
   subTitle?: string;
@@ -23,18 +23,22 @@ export type PieChartCore = {
   updatedAt: Date;
 };
 
+export type PieChartProps = Omit<PieChart, 'id' | 'createdAt' | 'updatedAt'>;
+
 export type ViewModel = {
   id: string;
   name: string;
-  type: View;
+  type: ViewType;
   contentUpdate: ContentUpdate;
   datafontId: string;
   staticData?: SQLResult;
   sql: string;
   panelId: string;
-  core: PieChartCore;
+  core: PieChart;
   createdAt: Date;
   updatedAt: Date;
 };
 
-export type ViewProps = Omit<ViewModel, 'createdAt' | 'updatedAt'>;
+export type ViewProps = Omit<ViewModel, 'createdAt' | 'updatedAt' | 'core'> & {
+  core: PieChartProps;
+};

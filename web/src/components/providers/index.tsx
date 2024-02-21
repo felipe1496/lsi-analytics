@@ -18,7 +18,7 @@ export const Providers: React.FC<ProvidersProps> = ({ children }) => (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         {children}
-        <ToastContainer position="bottom-left" />
+        <ToastContainer />
       </TooltipProvider>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>

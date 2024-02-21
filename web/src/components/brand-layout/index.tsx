@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { APP_ROUTES, EXTERNAL_ROUTES } from '@/constants/app-routes';
 import { APP_DESCRIPTION } from '@/constants/meta';
 
+import { Button } from '../ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -81,18 +82,12 @@ export const BrandLayout: React.FC<BrandLayoutProps> = ({
             >
               <Github />
             </Link>
-            <Link
-              to={APP_ROUTES.auth.login}
-              className="border px-4 py-2 hover:bg-zinc-100 hover:underline"
-            >
-              Entrar
-            </Link>
-            <Link
-              to={APP_ROUTES.auth.register}
-              className="hover bg-purple-500 px-4 py-2 text-zinc-50 hover:bg-purple-600"
-            >
-              Tentar agora
-            </Link>
+            <Button variant="outline" asChild>
+              <Link to={APP_ROUTES.auth.login}>Entrar</Link>
+            </Button>
+            <Button asChild>
+              <Link to={APP_ROUTES.auth.register}>Tentar agora</Link>
+            </Button>
           </nav>
         </header>
 

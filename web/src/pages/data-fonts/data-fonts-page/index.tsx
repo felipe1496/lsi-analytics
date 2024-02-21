@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { ColumnDef } from '@tanstack/react-table';
-import { Eye, EyeOff, Plus, Trash2 } from 'lucide-react';
+import { Eye, EyeOff, Plus, Trash2, Type } from 'lucide-react';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -9,6 +9,8 @@ import {
   BreadcrumbHome,
   BreadcrumbNeutral,
 } from '@/components/breadcrumb';
+import { Filter } from '@/components/filter';
+import { TextQueryField } from '@/components/filter/TextQueryField';
 import { Layout } from '@/components/layout';
 import { LoadingTable } from '@/components/loading-table';
 import { Typography } from '@/components/typography';
@@ -42,10 +44,23 @@ import {
 
 export const DataFontsPage: React.FC = () => {
   const [visibleFonts, setVisibleFonts] = React.useState<string[]>([]);
+  const [nameFilter, setNameFilter] = React.useState<{
+    text: string | null;
+    operator: string | null;
+  }>({
+    text: null,
+    operator: null,
+  });
+  const [params, setParams] = React.useState<string[]>([]);
 
   const { data, isLoading, refetch } = useQuery({
-    queryKey: [reactQueryKeys.queries.findAllDataFontsQuery],
-    queryFn: dataFontsService.findAll,
+    queryKey: [reactQueryKeys.queries.findAllDataFontsQuery, params],
+    queryFn: () =>
+      dataFontsService.findAll({
+        config: {
+          params,
+        },
+      }),
   });
 
   const { mutate, isPending } = useMutation({
@@ -172,6 +187,15 @@ export const DataFontsPage: React.FC = () => {
     },
   ];
 
+  const handleOnFilterApply = () => {
+    console.log();
+    const newParams: string[] = [];
+    if (nameFilter.operator && nameFilter.text) {
+      newParams.push(`${nameFilter.operator} ${nameFilter}`);
+    }
+    setParams(newParams);
+  };
+
   const render = () => {
     if (isLoading || isPending) {
       return (
@@ -198,17 +222,39 @@ export const DataFontsPage: React.FC = () => {
               <Typography level="muted">Todas as fontes</Typography>
             </div>
 
-            <Button
-              type="submit"
-              variant="outline"
-              className="gap-1 rounded-full border-blue-500 text-blue-500 hover:bg-blue-100 hover:text-blue-500"
-              asChild
-            >
-              <Link to={APP_ROUTES.dataFont.new}>
-                <Plus size={18} />
-                Fonte de dados
-              </Link>
-            </Button>
+            <div className="flex items-center gap-2">
+              <Filter
+                onApply={handleOnFilterApply}
+                tabs={[
+                  {
+                    icon: <Type size={16} />,
+                    title: 'Nome',
+                    content: (
+                      <TextQueryField
+                        field="name"
+                        label="Nome"
+                        onChange={(value) => {
+                          console.log(value);
+                          setNameFilter(value);
+                        }}
+                      />
+                    ),
+                  },
+                ]}
+              />
+
+              <Button
+                type="submit"
+                variant="outline"
+                className="gap-1 rounded-full border-blue-500 text-blue-500 hover:bg-blue-100 hover:text-blue-500"
+                asChild
+              >
+                <Link to={APP_ROUTES.dataFont.new}>
+                  <Plus size={18} />
+                  Fonte de dados
+                </Link>
+              </Button>
+            </div>
           </div>
 
           <DataTable columns={columns} data={data} />

@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import { BrandLayout } from '@/components/brand-layout';
+import { Button } from '@/components/ui/button';
 import { APP_ROUTES } from '@/constants/app-routes';
 
 export const LandingPage: React.FC = () => (
@@ -21,12 +22,9 @@ export const LandingPage: React.FC = () => (
           </div>
 
           <div>
-            <Link
-              to={APP_ROUTES.auth.register}
-              className="bg-purple-500 px-4 py-2 text-lg text-zinc-50 hover:bg-purple-600"
-            >
-              Tentar agora
-            </Link>
+            <Button asChild size="lg" className="text-lg">
+              <Link to={APP_ROUTES.auth.register}>Tentar agora</Link>
+            </Button>
           </div>
         </div>
         <img src="/images/panels-image-skeleton.svg" />
