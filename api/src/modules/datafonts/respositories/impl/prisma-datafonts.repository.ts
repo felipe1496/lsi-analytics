@@ -4,6 +4,7 @@ import {
   CreateDataFontProps,
   DataFontsRepository,
   DeleteDataFontProps,
+  FindAllDataFontProps,
   FindDataFontProps,
 } from '../abstract/datafonts.repository';
 import { DataFont } from '../../entities/datafont.entity';
@@ -21,10 +22,14 @@ export class PrismaDataFontsRepository implements DataFontsRepository {
     return DataFontsMapper.toDomain(dataFont);
   }
 
-  public async findAll(userId: string): Promise<DataFont[]> {
+  public async findAll({
+    userId,
+    filters,
+  }: FindAllDataFontProps): Promise<DataFont[]> {
     const dataFonts = await this.prisma.dataFont.findMany({
       where: {
         userId,
+        ...filters,
       },
     });
 

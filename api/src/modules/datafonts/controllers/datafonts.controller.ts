@@ -7,19 +7,24 @@ import {
   HttpStatus,
   Param,
   Post,
+  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
 import { Request } from 'express';
 import { AuthGuard } from 'src/guards/auth/auth.guard';
 import { CreateDataFontDto } from '../dtos/create-datafont.dto';
-import { DataFontsRepository } from '../respositories/abstract/datafonts.repository';
+import {
+  DataFontsRepository,
+  FindAllDataFontFilters,
+} from '../respositories/abstract/datafonts.repository';
 import { SqlDto } from '../dtos/sql.dto';
 import { DataFontsMapper } from '../mappers/datafonts.mapper';
 import { IdDto } from 'src/utils/dtos/id.dto';
 import { PostgresqlService } from 'src/services/databases/postgresql.service';
 import { InvalidDataFontError } from '../errors/invalid-datafont.error';
 import { TablesDto } from '../dtos/tables.dto';
+import { DataFontNotFoundError } from '../errors/datafont-not-found.error';
 
 @Controller('/datafonts')
 export class DataFontsController {
@@ -44,9 +49,23 @@ export class DataFontsController {
   @Get()
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
-  public async findAll(@Req() request: Request) {
+  public async findAll(@Req() request: Request, @Query('name') name?: string) {
     const userId = request.userId;
-    const dataFonts = await this.dataFontsRepository.findAll(userId);
+
+    const filters: FindAllDataFontFilters = {};
+
+    if (name) {
+      const [operator, value] = name.split(' ');
+      filters.name = {
+        [operator]: value,
+        mode: 'insensitive',
+      };
+    }
+
+    const dataFonts = await this.dataFontsRepository.findAll({
+      userId,
+      filters,
+    });
 
     return dataFonts.map(DataFontsMapper.toHTTP);
   }
@@ -75,6 +94,10 @@ export class DataFontsController {
     });
 
     if (!datafont) {
+      throw new DataFontNotFoundError();
+    }
+
+    if (!datafont.props.accessKey) {
       throw new InvalidDataFontError();
     }
 
@@ -101,6 +124,10 @@ export class DataFontsController {
     });
 
     if (!datafont) {
+      throw new DataFontNotFoundError();
+    }
+
+    if (!datafont.props.accessKey) {
       throw new InvalidDataFontError();
     }
 
@@ -125,6 +152,10 @@ export class DataFontsController {
     });
 
     if (!datafont) {
+      throw new DataFontNotFoundError();
+    }
+
+    if (!datafont.props.accessKey) {
       throw new InvalidDataFontError();
     }
 

@@ -18,16 +18,23 @@ export type FindAllProps = {
 export type UpdateProps = {
   userId: string;
   panelId: string;
-  panel: Partial<PanelProps>;
+  panel: Omit<Partial<PanelProps>, 'views'>;
 };
 
 export type DeleteProps = {
   id: string;
 };
+
+export type FindChartViews = {
+  id: string;
+  userId: string;
+};
+
 export abstract class PanelsRepository {
   public abstract create(props: CreatePanelProps): Promise<Panel>;
-  public abstract find(props: FindPanelProps): Promise<Panel>;
+  public abstract find(props: FindPanelProps): Promise<Panel | null>;
   public abstract findAll(props: FindAllProps): Promise<Panel[]>;
   public abstract update(props: UpdateProps): Promise<Panel>;
   public abstract delete(props: DeleteProps): Promise<void>;
+  public abstract findChartViews(props: FindChartViews): Promise<Panel | null>;
 }

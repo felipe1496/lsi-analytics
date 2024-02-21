@@ -3,8 +3,8 @@ import { Client } from 'pg';
 import { SchemaError } from './errors/schema.error';
 import { TableError } from './errors/tables.error';
 import { OnDemandDatabase } from './abstract/OnDemandDatabase';
-import { PG_DOMAIN_TYPES } from 'src/constants/pg-domain-types';
-import { PG_DATABASE_TYPES } from 'src/constants/pg-database-types';
+import { PG_DOMAIN_TYPES } from 'src/constants/database/pg-domain-types';
+import { PG_DATABASE_TYPES } from 'src/constants/database/pg-database-types';
 import { ColumnType } from 'src/core/domain/types/common';
 import { IncompatibleTypesError } from './errors/incompatible-types.error';
 
@@ -22,8 +22,8 @@ export class PostgresqlService implements OnDemandDatabase {
   public async query(sql: string) {
     try {
       await this.pgClient.connect();
-      const result = await this.pgClient.query<unknown>(sql);
-      const columnsMetadata = [];
+      const result = await this.pgClient.query(sql);
+      const columnsMetadata: { name: string; dataType: ColumnType }[] = [];
       result.fields.forEach((r) => {
         const typeNameAlreadyPushed = columnsMetadata.find(
           (c) => c.name === r.name,
@@ -86,11 +86,11 @@ export class PostgresqlService implements OnDemandDatabase {
     }
   }
 
-  public getDataType(id: number): ColumnType | 'undefined' {
+  public getDataType(id: number): ColumnType {
     const resultDataType = PG_DATABASE_TYPES[id];
     const dataType = PG_DOMAIN_TYPES[resultDataType];
     if (dataType === undefined) {
-      return 'undefined';
+      return 'UNDEFINED';
     }
     return dataType;
   }

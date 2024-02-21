@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { DataFontsController } from './controllers/datafonts.contoller';
+import { DataFontsController } from './controllers/datafonts.controller';
 import { DataFontsRepository } from './respositories/abstract/datafonts.repository';
 import { PrismaDataFontsRepository } from './respositories/impl/prisma-datafonts.repository';
 

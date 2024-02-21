@@ -1,11 +1,11 @@
 import { Entity, PropsConstructor } from 'src/core/domain/Entity';
 
 export interface PieChartProps {
-  title?: string;
-  subTitle?: string;
+  title?: string | null;
+  subTitle?: string | null;
   labelColumn: string;
   valueColumn: string;
-  viewId: string;
+  viewId?: string | null;
 }
 
 export class PieChart extends Entity<PieChartProps> {

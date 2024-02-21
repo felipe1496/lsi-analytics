@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import {
-  CreateWithCoreProps,
+  UpdateViewsInPanelProps,
   ViewsRepository,
 } from '../abstract/views.repository';
 /* import { View } from '../../entities/view.entity'; */
@@ -10,32 +10,15 @@ import { PrismaService } from 'src/services/prisma/prisma.service';
 export class PrismaViewsRepository implements ViewsRepository {
   constructor(private prisma: PrismaService) {}
 
-  public async createWithCore(props: CreateWithCoreProps): Promise<any> {
-    const core = {};
-
-    if (props.type === 'PIECHART') {
-      Object.assign(core, {
-        pieChart: {
-          create: {
-            title: props.core.title,
-            subTitle: props.core.subTitle,
-            labelColumn: props.core.labelColumn,
-            valueColumn: props.core.valueColumn,
-          },
+  public async updateViewsInPanel(
+    props: UpdateViewsInPanelProps,
+  ): Promise<any> {
+    await this.prisma.$transaction(async () => {
+      await this.prisma.view.deleteMany({
+        where: {
+          panelId: props.panelId,
         },
       });
-    }
-
-    const createdView = await this.prisma.view.create({
-      data: {
-        type: props.type,
-        contentUpdate: props.contentUpdate,
-        sql: props.sql,
-        panelId: props.panelId,
-        ...core,
-      },
     });
-
-    console.log('criado: ', createdView);
   }
 }

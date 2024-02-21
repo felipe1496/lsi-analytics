@@ -3,7 +3,7 @@ export interface UserProps {
   name: string;
   email: string;
   birthDay: Date;
-  imageURL?: string;
+  imageURL?: string | null;
   password: string;
 }
 

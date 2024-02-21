@@ -1,6 +1,7 @@
 import { View } from '../../entities/view.entity';
 import { ViewContentUpdate, ViewType } from 'src/core/domain/types/common';
 import { PieChartProps } from '../../entities/pie-chart.entity';
+import { Panel } from '../../entities/panel.entity';
 
 export type CreateWithCoreProps = {
   type: ViewType;
@@ -10,6 +11,13 @@ export type CreateWithCoreProps = {
   panelId: string;
 };
 
+export type UpdateViewsInPanelProps = {
+  panelId: string;
+  views: View[];
+};
+
 export abstract class ViewsRepository {
-  public abstract createWithCore(props: CreateWithCoreProps): Promise<View>;
+  public abstract updateViewsInPanel(
+    props: UpdateViewsInPanelProps,
+  ): Promise<Panel>;
 }

@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "PANELS" ALTER COLUMN "layout" DROP NOT NULL;

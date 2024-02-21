@@ -5,6 +5,7 @@ import {
   CreatePanelProps,
   DeleteProps,
   FindAllProps,
+  FindChartViews,
   FindPanelProps,
   PanelsRepository,
   UpdateProps,
@@ -15,13 +16,13 @@ export class PrismaPanelsRepository implements PanelsRepository {
   constructor(private prisma: PrismaService) {}
 
   public async create(props: CreatePanelProps) {
-    const user = await this.prisma.panel.create({
+    const panel = await this.prisma.panel.create({
       data: {
         ...props,
       },
     });
 
-    return PanelsMapper.toDomain(user);
+    return PanelsMapper.toDomain(panel);
   }
 
   public async find(props: FindPanelProps) {
@@ -31,6 +32,10 @@ export class PrismaPanelsRepository implements PanelsRepository {
         userId: props.userId,
       },
     });
+
+    if (!panel) {
+      return null;
+    }
 
     return PanelsMapper.toDomain(panel);
   }
@@ -63,5 +68,27 @@ export class PrismaPanelsRepository implements PanelsRepository {
         id: props.id,
       },
     });
+  }
+
+  public async findChartViews(props: FindChartViews) {
+    const panel = await this.prisma.panel.findFirst({
+      where: {
+        id: props.id,
+        userId: props.userId,
+      },
+      include: {
+        views: {
+          include: {
+            pieChart: true,
+          },
+        },
+      },
+    });
+
+    if (!panel) {
+      return null;
+    }
+
+    return PanelsMapper.toDomain(panel);
   }
 }

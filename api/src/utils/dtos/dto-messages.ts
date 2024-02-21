@@ -22,4 +22,8 @@ export class DtoMessages {
   public static isObject(field: string) {
     return `${field ?? 'O Campo'} deve ser um objeto`;
   }
+
+  public static isArray(field: string) {
+    return `${field ?? 'O Campo'} deve ser uma lista`;
+  }
 }

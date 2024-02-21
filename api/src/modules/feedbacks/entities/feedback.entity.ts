@@ -5,7 +5,7 @@ export interface FeedbackProps {
   text: string;
   type: FeedbackType;
   userId: string;
-  imageURL?: string;
+  imageURL?: string | null;
 }
 
 export class Feedback extends Entity<FeedbackProps> {

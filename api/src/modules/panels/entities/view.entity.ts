@@ -5,8 +5,9 @@ import { PieChart } from './pie-chart.entity';
 export interface ViewProps {
   type: ViewType;
   contentUpdate: ViewContentUpdate;
-  sql?: string;
+  sql?: string | null;
   core: PieChart;
+  datafontId: string;
   panelId: string;
 }
 

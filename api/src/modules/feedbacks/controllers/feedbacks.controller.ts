@@ -27,11 +27,8 @@ export class FeedbacksController {
   @HttpCode(HttpStatus.CREATED)
   @UseInterceptors(FileInterceptor('file'))
   public async create(@UploadedFile() file, @Body() body) {
-    console.log('arquivo: ', file);
-    console.log('type: ', typeof file);
     const _file = { ...file };
     _file.originalname = 'arroba.png';
-    console.log('_file: ', _file);
 
     const byteArray = new Uint8Array(_file.buffer);
 
@@ -47,7 +44,5 @@ export class FeedbacksController {
         upsert: true,
         contentType: 'image/png',
       });
-
-    console.log('supabaseResult', supabaseResult);
   }
 }
