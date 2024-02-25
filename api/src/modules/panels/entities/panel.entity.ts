@@ -7,14 +7,11 @@ export interface PanelProps {
   imageURL?: string | null;
   userId: string;
   views?: View[];
+  layout?: object | null;
 }
 
 export class Panel extends Entity<PanelProps> {
   constructor(props: PropsConstructor<PanelProps>) {
     super(props);
-  }
-
-  get description() {
-    return this.props.description;
   }
 }

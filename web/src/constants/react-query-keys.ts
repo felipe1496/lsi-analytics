@@ -5,6 +5,7 @@ export const reactQueryKeys = {
     findAllDataFontsQuery: 'findAllDataFontsQuery',
     findSchemasQuery: 'findSchemasQuery',
     findTablesQuery: 'findTablesQuery',
+    findPanelChartViews: 'findPanelChartViews',
   },
   mutations: {
     createUserMutation: 'createUserMutation',

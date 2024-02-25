@@ -61,8 +61,6 @@ export class PanelsController {
       userId: request.userId,
     });
 
-    console.log('paineeel:', panel);
-
     if (!panel) {
       throw new PanelNotFoundError();
     }
@@ -163,7 +161,7 @@ export class PanelsController {
     });
   }
 
-  @Get('/chart-views/:id')
+  @Get('/:id/chart-views')
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   public async findChartViews(@Req() request: Request, @Param() param: IdDto) {

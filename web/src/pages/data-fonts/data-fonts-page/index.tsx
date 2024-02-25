@@ -188,7 +188,6 @@ export const DataFontsPage: React.FC = () => {
   ];
 
   const handleOnFilterApply = () => {
-    console.log();
     const newParams: string[] = [];
     if (nameFilter.operator && nameFilter.text) {
       newParams.push(`${nameFilter.operator} ${nameFilter}`);
@@ -234,7 +233,6 @@ export const DataFontsPage: React.FC = () => {
                         field="name"
                         label="Nome"
                         onChange={(value) => {
-                          console.log(value);
                           setNameFilter(value);
                         }}
                       />

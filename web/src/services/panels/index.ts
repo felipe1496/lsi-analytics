@@ -1,5 +1,6 @@
 import { api } from '../api';
-import { PanelModel, ViewModel } from '../models/panel/types';
+import { SQLResult } from '../models/datafont/types';
+import { PanelModel, ViewModel, ViewProps } from '../models/panel/types';
 import { DeleteRequest, GetRequest, PatchRequest, PostRequest } from '../types';
 
 type CreatePanelProps = PostRequest<Pick<PanelModel, 'name' | 'description'>>;
@@ -12,12 +13,19 @@ type UpdatePanelProps = PatchRequest<
   Partial<
     Omit<PanelModel, 'createdAt' | 'updatedAt'> & {
       layout: object;
-      createViews?: Omit<ViewModel, 'createdAt' | 'updatedAt'>;
+      createViews?: ViewProps[];
       deleteViewIds?: string[];
     }
   >,
   { id: string }
 >;
+
+type FindPanelChartViewsProps = GetRequest<{ id: string }>;
+
+type FindPanelChartViewsResponse = {
+  panel: PanelModel;
+  views: { queryResult: SQLResult; view: ViewModel }[];
+};
 
 class PanelsService {
   public async create(props: CreatePanelProps) {
@@ -58,6 +66,15 @@ class PanelsService {
     const response = await api.patch(
       `/panels/${props.path.id}`,
       props.body,
+      props.config,
+    );
+
+    return response.data;
+  }
+
+  public async findPanelChartViews(props: FindPanelChartViewsProps) {
+    const response = await api.get<FindPanelChartViewsResponse>(
+      `/panels/${props.path.id}/chart-views`,
       props.config,
     );
 

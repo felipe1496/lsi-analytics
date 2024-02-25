@@ -1,8 +1,8 @@
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import { EchartAdapter } from '@/adapters/echart';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
   Select,
@@ -23,7 +23,6 @@ import { usePanelContext } from '@/pages/panel/hooks/usePanelContext';
 import { usePanelNewViewContext } from '@/pages/panel/panel-new-view/hooks/usePanelNewViewContext';
 import { usePanelQuery } from '@/pages/panel/panel-new-view/hooks/usePanelQuery';
 import { PieChartProps } from '@/services/models/panel/types';
-import { inputSetState, inputValue } from '@/utils';
 
 import { usePanelNewViewStudioPieChartContext } from '../hooks/usePanelNewViewStudioPieChartContext';
 
@@ -41,18 +40,21 @@ export const EditBar: React.FC = () => {
 
   const { setNewViewsPreview, setLayouts } = usePanelContext();
 
-  const { setEchartData, echartData, setTitle, setSubTitle, title, subTitle } =
-    usePanelNewViewStudioPieChartContext();
+  const { setEchartData, echartData } = usePanelNewViewStudioPieChartContext();
 
   const getEChartsData = React.useCallback(() => {
     if (category && value && queryData) {
-      const graphData = queryData.rows.map((r) => ({
-        value: r[value],
-        name: r[category],
-      }));
-      setEchartData(graphData);
+      const graphData = EchartAdapter.queryToData({
+        queryResult: queryData,
+        core: { labelColumn: category, valueColumn: value },
+        type: viewCreation.type,
+      });
+
+      if (graphData) {
+        setEchartData(graphData);
+      }
     }
-  }, [category, queryData, setEchartData, value]);
+  }, [category, queryData, setEchartData, value, viewCreation]);
 
   React.useEffect(() => {
     getEChartsData();
@@ -66,14 +68,6 @@ export const EditBar: React.FC = () => {
         labelColumn: category,
         valueColumn: value,
       };
-
-      if (title) {
-        core.title = title;
-      }
-
-      if (subTitle) {
-        core.subTitle = subTitle;
-      }
 
       Object.assign(createdView, { core });
 
@@ -90,7 +84,7 @@ export const EditBar: React.FC = () => {
           const key = k as Breakpoints;
           const current = newState[key];
           newState[key] = [
-            { i: createdView.id, x: 0, y: 0, w: 2, h: 2 },
+            { i: createdView.id, x: 0, y: 0, w: 5, h: 5 },
             ...current,
           ];
         });
@@ -156,24 +150,7 @@ export const EditBar: React.FC = () => {
               </div>
             </div>
           </SimpleTabsContent>
-          <SimpleTabsContent value="customize" asChild>
-            <div className="flex flex-col gap-4 p-4">
-              <div>
-                <Label>Título</Label>
-                <Input
-                  value={inputValue(title)}
-                  onChange={inputSetState(setTitle)}
-                />
-              </div>
-              <div>
-                <Label>Subtítulo</Label>
-                <Input
-                  value={inputValue(subTitle)}
-                  onChange={inputSetState(setSubTitle)}
-                />
-              </div>
-            </div>
-          </SimpleTabsContent>
+          <SimpleTabsContent value="customize" asChild></SimpleTabsContent>
         </SimpleTabs>
         <div className="flex items-center justify-center border-t p-4">
           <Button className="w-full" onClick={handleCreate}>

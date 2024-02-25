@@ -24,6 +24,7 @@ type PanelContextType = {
   setNewViewsPreview: React.Dispatch<React.SetStateAction<NewViewPreview[]>>;
   layouts: LayoutsType;
   setLayouts: React.Dispatch<React.SetStateAction<LayoutsType>>;
+  getCreateViews: () => ViewProps[];
 };
 
 export const PanelContext = React.createContext({} as PanelContextType);
@@ -42,12 +43,13 @@ export const PanelProvider: React.FC<PanelProviderProps> = ({ children }) => {
     SMALL: [],
   });
 
-  console.log(newViewsPreview);
+  console.log('meu layout: ', layouts);
 
   const getCreateViews = React.useCallback(
     () =>
       newViewsPreview.map((v) => ({
         id: v.view.id,
+        name: v.view.name,
         type: v.view.type,
         contentUpdate: v.view.contentUpdate,
         datafontId: v.view.datafontId,

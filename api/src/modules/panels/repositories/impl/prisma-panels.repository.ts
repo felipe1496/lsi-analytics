@@ -10,6 +10,7 @@ import {
   PanelsRepository,
   UpdateProps,
 } from '../abstract/panels.repository';
+import { JsonObject } from '@prisma/client/runtime/library';
 
 @Injectable()
 export class PrismaPanelsRepository implements PanelsRepository {
@@ -51,12 +52,17 @@ export class PrismaPanelsRepository implements PanelsRepository {
   }
 
   public async update(props: UpdateProps) {
+    let layout: JsonObject | undefined = undefined;
+
+    if (props.panel.layout) {
+      layout = props.panel.layout as JsonObject;
+    }
     const panel = await this.prisma.panel.update({
       where: {
         id: props.panelId,
         userId: props.userId,
       },
-      data: props.panel,
+      data: { ...props.panel, layout },
     });
 
     return PanelsMapper.toDomain(panel);

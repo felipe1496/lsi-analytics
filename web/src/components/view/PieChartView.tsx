@@ -1,14 +1,13 @@
 import React from 'react';
 
 import { EChart } from '@/lib/echarts-for-react';
+import { EChartData } from '@/pages/panel/panel-new-view/pages/studio/pages/pie-chart/contexts/PanelNewViewStudioPieChartProvider';
 
-import { EChartData } from '../../panel-new-view/pages/studio/pages/pie-chart/contexts/PanelNewViewStudioPieChartProvider';
-
-interface ViewProps {
+interface PieChartViewProps {
   data: EChartData[];
 }
 
-export const View: React.FC<ViewProps> = ({ data }) => (
+export const PieChartView: React.FC<PieChartViewProps> = ({ data }) => (
   <div className="h-full w-full rounded-md border shadow-sm">
     <EChart
       style={{

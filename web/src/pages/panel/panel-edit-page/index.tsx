@@ -7,9 +7,10 @@ import {
   Tablet,
 } from 'lucide-react';
 import React from 'react';
-import { Responsive, WidthProvider } from 'react-grid-layout';
+import { Layout as GridLayout } from 'react-grid-layout';
 import { Link, useParams } from 'react-router-dom';
 
+import { EchartAdapter } from '@/adapters/echart';
 import {
   Breadcrumb,
   BreadcrumbHome,
@@ -30,39 +31,49 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import { View } from '@/components/view';
 import { APP_ROUTES } from '@/constants/app-routes';
 import { reactQueryKeys } from '@/constants/react-query-keys';
+import { ResponsiveGridLayout } from '@/lib/echarts-for-react';
 import { panelsService } from '@/services/panels';
+import { objectsAreEqual } from '@/utils';
 
 import { BREAKPOINTS, Breakpoints } from '../contexts/PanelProvider';
 import { useSavePanelMutation } from '../hooks/mutations/useSavePanelMutation';
 import { usePanelContext } from '../hooks/usePanelContext';
 import { PanelPageLoading } from '../panel-page/loading';
 import { EditBar } from './components/EditBar';
-import { View } from './components/View';
-
-const ResponsiveGridLayout = WidthProvider(Responsive);
 
 export const PanelEditPage: React.FC = () => {
   const [responsive, setResponsive] = React.useState<Breakpoints>(
     BREAKPOINTS.LARGE,
   );
+  const [hasFilledLayoutWithResponse, setHasFilledLayoutWithResponse] =
+    React.useState<boolean>(false);
 
-  const { newViewsPreview, layouts, getCreateViews } = usePanelContext();
-  console.log(newViewsPreview);
+  const { newViewsPreview, layouts, getCreateViews, setLayouts } =
+    usePanelContext();
+
   const { id } = useParams();
 
-  const { data, error, isLoading } = useQuery({
-    queryKey: [reactQueryKeys.queries.findPanelQuery, id],
+  const { mutate: savePanel } = useSavePanelMutation();
+
+  const { data, error, isLoading, isSuccess } = useQuery({
+    queryKey: [reactQueryKeys.queries.findPanelChartViews, id],
     queryFn: () => {
       if (id) {
-        return panelsService.find({ path: { id } });
+        return panelsService.findPanelChartViews({ path: { id } });
       }
       return null;
     },
   });
 
-  const { mutate: savePanel } = useSavePanelMutation();
+  React.useEffect(() => {
+    if (isSuccess && data && data.panel.layout) {
+      setLayouts(data.panel.layout);
+      setHasFilledLayoutWithResponse(true);
+    }
+  }, [isSuccess, data, setLayouts]);
 
   if (isLoading) {
     return <PanelPageLoading />;
@@ -89,7 +100,7 @@ export const PanelEditPage: React.FC = () => {
     if (data) {
       savePanel({
         path: {
-          id: data.id,
+          id: data.panel.id,
         },
         body: {
           layout: layouts,
@@ -104,25 +115,72 @@ export const PanelEditPage: React.FC = () => {
       return false;
     }
 
+    if (!objectsAreEqual(data?.panel.layout, layouts)) {
+      return false;
+    }
+
     return true;
+  };
+  const handleLayoutChange = (layout: GridLayout[]) => {
+    switch (responsive) {
+      case BREAKPOINTS.LARGE:
+        setLayouts((prevState) => ({
+          ...prevState,
+          LARGE: layout,
+        }));
+        break;
+      case BREAKPOINTS.MEDIUM:
+        setLayouts((prevState) => ({
+          ...prevState,
+          MEDIUM: layout,
+        }));
+        break;
+      case BREAKPOINTS.SMALL:
+        setLayouts((prevState) => ({
+          ...prevState,
+          SMALL: layout,
+        }));
+        break;
+      default:
+        break;
+    }
   };
 
   const render = () => {
-    if (data) {
+    if (data && hasFilledLayoutWithResponse) {
       return (
         <ResponsiveGridLayout
           className="layout"
           layouts={layouts}
-          onLayoutChange={(newLayout) => console.log(newLayout)}
+          onLayoutChange={handleLayoutChange}
           breakpoints={{ LARGE: 1200, MEDIUM: 996, SMALL: 768 }}
           cols={{ LARGE: 12, MEDIUM: 10, SMALL: 6 }}
           rowHeight={30}
         >
           {newViewsPreview.map((v) => (
             <div key={v.view.id}>
-              <View data={v.echartData} />
+              <View data={v.echartData} type={v.view.type} />
             </div>
           ))}
+          {data.views.map((v) => {
+            const graphData = EchartAdapter.queryToData({
+              queryResult: v.queryResult,
+              type: v.view.type,
+              core: v.view.core,
+            });
+
+            console.log(v.view.id);
+
+            if (graphData) {
+              return (
+                <div key={v.view.id}>
+                  <View data={graphData} type={v.view.type} />
+                </div>
+              );
+            }
+
+            return null;
+          })}
         </ResponsiveGridLayout>
       );
     }
@@ -143,12 +201,12 @@ export const PanelEditPage: React.FC = () => {
               Paineis
             </BreadcrumbLink>
             <BreadcrumbLink to={APP_ROUTES.panel.index.replace(':id', id)}>
-              {data.name}
+              {data.panel.name}
             </BreadcrumbLink>
             <BreadcrumbNeutral>Editar</BreadcrumbNeutral>
           </Breadcrumb>
         }
-        rightBar={<EditBar data={data} />}
+        rightBar={<EditBar data={data.panel} />}
         rightContent={
           <div className="flex items-center gap-2">
             <DropdownMenu>
@@ -203,7 +261,9 @@ export const PanelEditPage: React.FC = () => {
                   className="rounded-full"
                   asChild
                 >
-                  <Link to={APP_ROUTES.panel.audit.replace(':id', data.id)}>
+                  <Link
+                    to={APP_ROUTES.panel.audit.replace(':id', data.panel.id)}
+                  >
                     <History className="text-zinc-600" />
                   </Link>
                 </Button>

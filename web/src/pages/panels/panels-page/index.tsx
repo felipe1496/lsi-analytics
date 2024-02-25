@@ -1,5 +1,5 @@
 import { ErrorMessage } from '@hookform/error-message';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AlignJustify, LayoutGrid, Plus, Search } from 'lucide-react';
 import React from 'react';
 import { useForm } from 'react-hook-form';
@@ -29,8 +29,9 @@ import { Label } from '@/components/ui/label';
 import { APP_ROUTES } from '@/constants/app-routes';
 import { REQUIRED_FIELD } from '@/constants/messages';
 import { reactQueryKeys } from '@/constants/react-query-keys';
+import { PanelModel } from '@/services/models/panel/types';
 import { panelsService } from '@/services/panels';
-import { cn } from '@/utils';
+import { cn, removeAccents } from '@/utils';
 
 import { PanelCard } from './components/PanelCard';
 import { PanelRow } from './components/PanelRow';
@@ -46,6 +47,26 @@ interface FormData {
 
 export const PanelsPage: React.FC = () => {
   const [layout, setLayout] = React.useState<LayoutType>(LAYOUT.GRID);
+  const [search, setSearch] = React.useState<string>('');
+
+  const queryClient = useQueryClient();
+
+  React.useEffect(() => {
+    try {
+      const item = localStorage.getItem('panels-layout');
+      if (item) {
+        const _item = item as LayoutType;
+        setLayout(_item);
+      } else {
+        localStorage.setItem('panels-layout', LAYOUT.GRID);
+      }
+    } catch (error) {
+      console.error(
+        'Ocorreu um erro ao utilizar o localStorage na key panels-layout: ',
+        error,
+      );
+    }
+  }, []);
 
   const navigate = useNavigate();
 
@@ -71,23 +92,49 @@ export const PanelsPage: React.FC = () => {
     createPanel({ body: formData });
   };
 
+  const handleChangeSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.target.value);
+  };
+
+  const handleRemoveOnDelete = (id: string) => {
+    const cachedPanels = queryClient.getQueryData<PanelModel[]>([
+      reactQueryKeys.queries.findAllPanelsQuery,
+    ]);
+    if (cachedPanels) {
+      queryClient.setQueryData(
+        [reactQueryKeys.queries.findAllPanelsQuery],
+        cachedPanels?.filter((p) => p.id !== id),
+      );
+    }
+  };
+
   const renderPanels = () => {
     if (data) {
-      if (layout === LAYOUT.GRID) {
-        if (data.length > 0) {
-          return (
-            <div className="grid grid-cols-4 gap-6">
-              {data.map((p) => (
-                <PanelCard
-                  key={p.id}
-                  to={APP_ROUTES.panel.index.replace(':id', p.id)}
-                  imageURL={p.imageURL}
-                  title={p.name}
-                />
-              ))}
-            </div>
+      const filteredData = data.filter((item) => {
+        const nameContainsSearch = removeAccents(
+          item.name.toLowerCase(),
+        ).includes(removeAccents(search.toLowerCase()));
+        const descriptionContainsSearch =
+          item.description &&
+          removeAccents(item.description.toLowerCase()).includes(
+            removeAccents(search.toLowerCase()),
           );
-        }
+
+        return nameContainsSearch || descriptionContainsSearch;
+      });
+
+      if (filteredData.length === 0) {
+        return <NoData />;
+      }
+
+      if (layout === LAYOUT.GRID) {
+        return (
+          <div className="grid grid-cols-4 gap-6">
+            {filteredData.map((p) => (
+              <PanelCard key={p.id} onDelete={handleRemoveOnDelete} data={p} />
+            ))}
+          </div>
+        );
       }
 
       return (
@@ -102,7 +149,7 @@ export const PanelsPage: React.FC = () => {
           </thead>
           <tbody>
             {data.map((p) => (
-              <PanelRow key={p.id} data={p} />
+              <PanelRow key={p.id} data={p} onDelete={handleRemoveOnDelete} />
             ))}
           </tbody>
         </table>
@@ -132,6 +179,7 @@ export const PanelsPage: React.FC = () => {
                 className="w-96"
                 placeholder="Buscar painel..."
                 rigthAdornment={<Search size={20} className="text-zinc-400" />}
+                onChange={handleChangeSearch}
               />
               <Dialog>
                 <DialogTrigger asChild>
@@ -185,13 +233,37 @@ export const PanelsPage: React.FC = () => {
                 </DialogContent>
               </Dialog>
 
-              <button onClick={() => setLayout(LAYOUT.GRID)}>
+              <button
+                onClick={() => {
+                  try {
+                    localStorage.setItem('panels-layout', LAYOUT.GRID);
+                  } catch (error) {
+                    console.error(
+                      'Ocorreu um erro ao salvar panels-layout no localStorage: ',
+                      error,
+                    );
+                  }
+                  setLayout(LAYOUT.GRID);
+                }}
+              >
                 <LayoutGrid
                   size={18}
                   className={cn(layout === LAYOUT.GRID && 'text-blue-500')}
                 />
               </button>
-              <button onClick={() => setLayout(LAYOUT.LIST)}>
+              <button
+                onClick={() => {
+                  try {
+                    localStorage.setItem('panels-layout', LAYOUT.LIST);
+                  } catch (error) {
+                    console.error(
+                      'Ocorreu um erro ao salvar panels-layout no localStorage: ',
+                      error,
+                    );
+                  }
+                  setLayout(LAYOUT.LIST);
+                }}
+              >
                 <AlignJustify
                   size={18}
                   className={cn(layout === LAYOUT.LIST && 'text-blue-500')}

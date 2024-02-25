@@ -6,6 +6,9 @@ export class CreateViewDto {
   @IsString()
   id: string;
 
+  @IsString()
+  name: string;
+
   @IsIn(['PIECHART'])
   type: ViewType;
 

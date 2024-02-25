@@ -1,8 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import { Plus, Settings, Share2, Trash2 } from 'lucide-react';
 import React from 'react';
+import { Layout as GridLayout } from 'react-grid-layout';
 import { Link, useParams } from 'react-router-dom';
 
+import { EchartAdapter } from '@/adapters/echart';
 import {
   Breadcrumb,
   BreadcrumbHome,
@@ -20,20 +22,23 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { View } from '@/components/view';
 import { APP_ROUTES } from '@/constants/app-routes';
 import { reactQueryKeys } from '@/constants/react-query-keys';
+import { ResponsiveGridLayout } from '@/lib/echarts-for-react';
 import { panelsService } from '@/services/panels';
 
+import { Breakpoints } from '../contexts/PanelProvider';
 import { PanelPageLoading } from './loading';
 
 export const PanelPage: React.FC = () => {
   const { id } = useParams();
 
   const { data, error, isLoading } = useQuery({
-    queryKey: [reactQueryKeys.queries.findPanelQuery, id],
+    queryKey: [reactQueryKeys.queries.findPanelChartViews, id],
     queryFn: () => {
       if (id) {
-        return panelsService.find({ path: { id } });
+        return panelsService.findPanelChartViews({ path: { id } });
       }
       return null;
     },
@@ -47,26 +52,47 @@ export const PanelPage: React.FC = () => {
     return <NotFoundPage />;
   }
 
+  const layoutToStatic = (
+    layout: Record<Breakpoints, GridLayout[]> | null | undefined,
+  ) => {
+    if (layout) {
+      const _layout: Record<Breakpoints, GridLayout[]> = {
+        LARGE: [],
+        MEDIUM: [],
+        SMALL: [],
+      };
+      Object.keys(layout).forEach((k) => {
+        const _k = k as Breakpoints;
+        _layout[_k] = layout[_k].map((l) => ({ ...l, static: true }));
+      });
+      return _layout;
+    }
+
+    return {};
+  };
+
   if (data) {
+    console.log('layoutzin: ', data.panel.layout);
+    console.log('mudadooo: ', layoutToStatic(data.panel.layout));
     return (
       <Layout
-        title={data.name}
+        title={data.panel.name}
         breadcrumb={
           <Breadcrumb>
             <BreadcrumbHome />
             <BreadcrumbLink to={APP_ROUTES.panels.index}>
               Paineis
             </BreadcrumbLink>
-            <BreadcrumbNeutral>{data.name}</BreadcrumbNeutral>
+            <BreadcrumbNeutral>{data.panel.name}</BreadcrumbNeutral>
           </Breadcrumb>
         }
         className="layout-page"
       >
         <div className="flex items-center justify-between">
           <div className="flex flex-col gap-1">
-            <h1 className="text-2xl font-semibold">{data.name}</h1>
-            {data.description && (
-              <Typography level="muted">{data.description}</Typography>
+            <h1 className="text-2xl font-semibold">{data.panel.name}</h1>
+            {data.panel.description && (
+              <Typography level="muted">{data.panel.description}</Typography>
             )}
           </div>
           <div className="flex items-center gap-4">
@@ -116,6 +142,31 @@ export const PanelPage: React.FC = () => {
             </DropdownMenu>
           </div>
         </div>
+        <ResponsiveGridLayout
+          className="layout"
+          layouts={layoutToStatic(data.panel.layout)}
+          breakpoints={{ LARGE: 1200, MEDIUM: 996, SMALL: 768 }}
+          cols={{ LARGE: 12, MEDIUM: 10, SMALL: 6 }}
+          rowHeight={30}
+        >
+          {data.views.map((v) => {
+            const graphData = EchartAdapter.queryToData({
+              queryResult: v.queryResult,
+              type: v.view.type,
+              core: v.view.core,
+            });
+
+            if (graphData) {
+              return (
+                <div key={v.view.id}>
+                  <View data={graphData} type={v.view.type} />
+                </div>
+              );
+            }
+
+            return null;
+          })}
+        </ResponsiveGridLayout>
       </Layout>
     );
   }

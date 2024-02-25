@@ -1,9 +1,14 @@
+import { Layout } from 'react-grid-layout';
+
+import { Breakpoints } from '@/pages/panel/contexts/PanelProvider';
+
 import { SQLResult } from '../datafont/types';
 
 export type PanelModel = {
   id: string;
   name: string;
   description?: string | null;
+  layout?: Record<Breakpoints, Layout[]> | null;
   createdAt: Date;
   updatedAt: Date;
   imageURL?: string;
@@ -15,8 +20,6 @@ export type ContentUpdate = 'DYNAMIC' | 'STATIC';
 
 export type PieChart = {
   id: string;
-  title?: string;
-  subTitle?: string;
   labelColumn: string;
   valueColumn: string;
   createdAt: Date;

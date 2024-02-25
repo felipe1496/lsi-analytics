@@ -108,3 +108,6 @@ export const inputSetState =
 
 export const inputValue = (value: string | null) =>
   value === null ? '' : value;
+
+export const removeAccents = (str: string) =>
+  str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');

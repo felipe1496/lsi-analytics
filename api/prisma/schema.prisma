@@ -72,11 +72,12 @@ enum ViewContentUpdate {
 
 model View {
   id String @default(nanoid()) @id
+  name String
   type ViewType
   contentUpdate ViewContentUpdate
   sql String?
   pieChart PieChart?
-  panel Panel @relation(fields: [panelId], references: [id])
+  panel Panel @relation(fields: [panelId], references: [id], onDelete: Cascade)
   panelId String
   datafont DataFont @relation(fields: [datafontId], references: [id])
   datafontId String
@@ -87,8 +88,6 @@ model View {
 
 model PieChart {
   id String @default(nanoid()) @id
-  title String?
-  subTitle String?
   labelColumn String
   valueColumn String
   staticData Json?

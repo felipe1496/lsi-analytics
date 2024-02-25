@@ -15,8 +15,6 @@ export class ViewsMapper {
         const core = view.pieChart;
         return new PieChart({
           id: core.id,
-          title: core.title,
-          subTitle: core.subTitle,
           labelColumn: core.labelColumn,
           valueColumn: core.valueColumn,
           viewId: core.viewId,
@@ -49,8 +47,6 @@ export class ViewsMapper {
         const _core = view.props.core as PieChart;
         return {
           id: _core.id,
-          title: _core.props.title,
-          subTitle: _core.props.subTitle,
           labelColumn: _core.props.labelColumn,
           valueColumn: _core.props.valueColumn,
           viewId: _core.props.viewId,

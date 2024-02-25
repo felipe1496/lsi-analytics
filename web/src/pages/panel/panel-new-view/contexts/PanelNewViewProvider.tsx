@@ -28,8 +28,6 @@ export const PanelNewViewProvider: React.FC<PanelNewViewContextProps> = ({
   );
   const [queryData, setQueryData] = React.useState<SQLResult | null>(null);
 
-  console.log('viewCreation: ', viewCreation);
-
   const navigate = useNavigate();
 
   const canAccessStep = React.useCallback(
