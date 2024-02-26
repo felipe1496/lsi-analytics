@@ -167,7 +167,7 @@ export const Feedback: React.FC<FeedbackProps> = ({
                 disabled={!text}
                 onClick={async () => {
                   if (image && selectedOption) {
-                    const response = await feedbackService.create({
+                    await feedbackService.create({
                       file: image?.blob,
                       text,
                       type: selectedOption,
