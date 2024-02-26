@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { PanelContext } from '../contexts/PanelProvider';
+import { PanelEditContext } from '../contexts/PanelEditProvider';
 
-export const usePanelContext = () => {
-  const value = React.useContext(PanelContext);
+export const usePanelEditContext = () => {
+  const value = React.useContext(PanelEditContext);
 
   if (!value) {
     throw new Error(

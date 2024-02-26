@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/services/prisma/prisma.service';
-import { UsersMapper } from './users.mapper';
+import { UsersMapper } from '../../mappers/users.mapper';
+import { UsersRepository } from '../abstract/users.repository';
 
 type CreateUserProps = {
   name: string;
@@ -10,8 +11,12 @@ type CreateUserProps = {
   imageURL?: string;
 };
 
+type FindUserProps = {
+  userId: string;
+};
+
 @Injectable()
-export class UsersRepository {
+export class PrismaUsersRepository implements UsersRepository {
   constructor(private prisma: PrismaService) {}
 
   public async save(props: CreateUserProps) {
@@ -42,5 +47,19 @@ export class UsersRepository {
     }
 
     return null;
+  }
+
+  public async findByToken(props: FindUserProps) {
+    const user = await this.prisma.user.findFirst({
+      where: {
+        id: props.userId,
+      },
+    });
+
+    if (!user) {
+      return null;
+    }
+
+    return UsersMapper.toDomain(user);
   }
 }

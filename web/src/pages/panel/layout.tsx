@@ -1,12 +1,12 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 
-import { PanelProvider } from './contexts/PanelProvider';
+import { PanelEditProvider } from './contexts/PanelEditProvider';
 
 interface PanelLayoutProps {}
 
-export const PanelLayout: React.FC<PanelLayoutProps> = () => (
-  <PanelProvider>
+export const PanelEditLayout: React.FC<PanelLayoutProps> = () => (
+  <PanelEditProvider>
     <Outlet />
-  </PanelProvider>
+  </PanelEditProvider>
 );

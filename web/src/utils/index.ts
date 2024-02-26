@@ -111,3 +111,20 @@ export const inputValue = (value: string | null) =>
 
 export const removeAccents = (str: string) =>
   str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+export const copyToClipboard = async ({
+  text,
+  onSuccess = () => {},
+  onError = () => {},
+}: {
+  text: string;
+  onSuccess?: () => void;
+  onError?: () => void;
+}) => {
+  try {
+    await navigator.clipboard.writeText(text);
+    onSuccess();
+  } catch (err) {
+    onError();
+  }
+};

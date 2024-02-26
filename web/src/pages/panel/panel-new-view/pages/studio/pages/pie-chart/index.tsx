@@ -22,8 +22,7 @@ export const PanelViewStudioPieChartPage: React.FC = () => {
 
   const { canAccessStep } = usePanelNewViewContext();
 
-  const { echartData, title, subTitle } =
-    usePanelNewViewStudioPieChartContext();
+  const { echartData } = usePanelNewViewStudioPieChartContext();
 
   const { data, error } = usePanelQuery({ id });
 
@@ -57,8 +56,6 @@ export const PanelViewStudioPieChartPage: React.FC = () => {
           option={{
             title: {
               left: 'center',
-              text: title,
-              subtext: subTitle,
             },
             tooltip: {
               trigger: 'item',

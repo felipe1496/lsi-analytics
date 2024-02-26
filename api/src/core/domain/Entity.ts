@@ -13,7 +13,6 @@ export abstract class Entity<T> {
   public readonly updatedAt?: Date;
 
   constructor(props: PropsConstructor<T>) {
-    /* this.props = props; */
     this.id = props.id;
     this.createdAt = props.createdAt;
     this.updatedAt = props.updatedAt;

@@ -1,6 +1,6 @@
 import { Layout } from 'react-grid-layout';
 
-import { Breakpoints } from '@/pages/panel/contexts/PanelProvider';
+import { Breakpoints } from '@/pages/panel/contexts/PanelEditProvider';
 
 import { SQLResult } from '../datafont/types';
 

@@ -4,7 +4,9 @@ export type UserModel = {
   email: string;
   password: string;
   birthDay: Date;
-  imageURL?: string;
+  imageURL?: string | null;
+  createdAt: Date;
+  updatedAt: Date;
 };
 
 export type UserWithoutPasswordModel = Omit<UserModel, 'password'>;

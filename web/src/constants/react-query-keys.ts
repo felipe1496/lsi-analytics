@@ -6,6 +6,7 @@ export const reactQueryKeys = {
     findSchemasQuery: 'findSchemasQuery',
     findTablesQuery: 'findTablesQuery',
     findPanelChartViews: 'findPanelChartViews',
+    findUserByToken: 'findUserByToken',
   },
   mutations: {
     createUserMutation: 'createUserMutation',

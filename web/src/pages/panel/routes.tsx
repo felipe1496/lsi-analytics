@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 
-import { PanelLayout } from './layout';
+import { PanelEditLayout } from './layout';
 import { PanelAuditPage } from './panel-audit-page';
 import { PanelEditPage } from './panel-edit-page';
 import { PanelNewViewLayout } from './panel-new-view/layout';
@@ -14,10 +14,10 @@ import { PanelPage } from './panel-page';
 
 export const PanelRoutes: React.FC = () => (
   <Routes>
-    <Route element={<PanelLayout />}>
-      <Route path=":id" element={<PanelPage />} />
+    <Route path=":id" element={<PanelPage />} />
+    <Route path=":id/auditoria" element={<PanelAuditPage />} />
+    <Route element={<PanelEditLayout />}>
       <Route path=":id/editar" element={<PanelEditPage />} />
-      <Route path=":id/auditoria" element={<PanelAuditPage />} />
       <Route element={<PanelNewViewLayout />}>
         <Route path=":id/novo/visualizacao" element={<PanelNewViewConfig />} />
         <Route

@@ -8,7 +8,7 @@ import {
 } from 'lucide-react';
 import React from 'react';
 import { Layout as GridLayout } from 'react-grid-layout';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import { EchartAdapter } from '@/adapters/echart';
 import {
@@ -38,9 +38,9 @@ import { ResponsiveGridLayout } from '@/lib/echarts-for-react';
 import { panelsService } from '@/services/panels';
 import { objectsAreEqual } from '@/utils';
 
-import { BREAKPOINTS, Breakpoints } from '../contexts/PanelProvider';
+import { BREAKPOINTS, Breakpoints } from '../contexts/PanelEditProvider';
 import { useSavePanelMutation } from '../hooks/mutations/useSavePanelMutation';
-import { usePanelContext } from '../hooks/usePanelContext';
+import { usePanelEditContext } from '../hooks/usePanelEditContext';
 import { PanelPageLoading } from '../panel-page/loading';
 import { EditBar } from './components/EditBar';
 
@@ -51,12 +51,23 @@ export const PanelEditPage: React.FC = () => {
   const [hasFilledLayoutWithResponse, setHasFilledLayoutWithResponse] =
     React.useState<boolean>(false);
 
-  const { newViewsPreview, layouts, getCreateViews, setLayouts } =
-    usePanelContext();
+  const {
+    newViewsPreview,
+    layouts,
+    getCreateViews,
+    setLayouts,
+    name,
+    setName,
+    description,
+    setDescription,
+  } = usePanelEditContext();
 
   const { id } = useParams();
 
-  const { mutate: savePanel } = useSavePanelMutation();
+  const { mutate: savePanel, isPending: savePanelIsPending } =
+    useSavePanelMutation();
+
+  const navigate = useNavigate();
 
   const { data, error, isLoading, isSuccess } = useQuery({
     queryKey: [reactQueryKeys.queries.findPanelChartViews, id],
@@ -69,11 +80,24 @@ export const PanelEditPage: React.FC = () => {
   });
 
   React.useEffect(() => {
-    if (isSuccess && data && data.panel.layout) {
-      setLayouts(data.panel.layout);
+    if (data) {
+      setName(data.panel.name);
+      setDescription(data.panel.description);
+    }
+    if (isSuccess) {
+      if (data && data.panel.layout && newViewsPreview.length === 0) {
+        setLayouts(data.panel.layout);
+      }
       setHasFilledLayoutWithResponse(true);
     }
-  }, [isSuccess, data, setLayouts]);
+  }, [
+    isSuccess,
+    data,
+    setLayouts,
+    newViewsPreview.length,
+    setName,
+    setDescription,
+  ]);
 
   if (isLoading) {
     return <PanelPageLoading />;
@@ -98,15 +122,23 @@ export const PanelEditPage: React.FC = () => {
 
   const handleSavePanel = () => {
     if (data) {
-      savePanel({
-        path: {
-          id: data.panel.id,
+      savePanel(
+        {
+          path: {
+            id: data.panel.id,
+          },
+          body: {
+            name,
+            description,
+            layout: layouts,
+            createViews: getCreateViews(),
+          },
         },
-        body: {
-          layout: layouts,
-          createViews: getCreateViews(),
+        {
+          onSuccess: () =>
+            navigate(APP_ROUTES.panel.index.replace(':id', data.panel.id)),
         },
-      });
+      );
     }
   };
 
@@ -115,7 +147,17 @@ export const PanelEditPage: React.FC = () => {
       return false;
     }
 
-    if (!objectsAreEqual(data?.panel.layout, layouts)) {
+    if (data?.panel.layout) {
+      if (!objectsAreEqual(data?.panel.layout, layouts)) {
+        return false;
+      }
+    }
+
+    if (data?.panel.name !== name) {
+      return false;
+    }
+
+    if (data.panel.description !== description) {
       return false;
     }
 
@@ -169,8 +211,6 @@ export const PanelEditPage: React.FC = () => {
               core: v.view.core,
             });
 
-            console.log(v.view.id);
-
             if (graphData) {
               return (
                 <div key={v.view.id}>
@@ -191,6 +231,7 @@ export const PanelEditPage: React.FC = () => {
   if (data) {
     return (
       <Layout
+        loading={savePanelIsPending}
         title="Editar"
         footer={null}
         className="min-h-layout-page"

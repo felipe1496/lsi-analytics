@@ -1,19 +1,11 @@
-import {
-  Body,
-  Controller,
-  Get,
-  HttpCode,
-  HttpStatus,
-  Post,
-  UseGuards,
-} from '@nestjs/common';
-import { UsersRepository } from '../users/users.repository';
+import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+
 import { CreateSessionDto } from './dtos/create-sesssion.dto';
 import { EmailOrPasswordIncorrectError } from './errors/email-or-password-incorrect.error';
 import { JwtService } from '@nestjs/jwt';
 
-import { UsersMapper } from '../users/users.mapper';
-import { AuthGuard } from 'src/guards/auth/auth.guard';
+import { UsersMapper } from '../users/mappers/users.mapper';
+import { UsersRepository } from '../users/repositories/abstract/users.repository';
 
 @Controller('/sessions')
 export class SessionsController {
@@ -44,17 +36,5 @@ export class SessionsController {
       user: UsersMapper.toHTTP(user),
       accessToken,
     };
-  }
-
-  @Get()
-  /* @UseGuards(AuthGuard) */
-  @HttpCode(HttpStatus.OK)
-  public async verify() {
-    await this.delay(5000);
-    return { a: true };
-  }
-
-  private delay(ms: number) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 }

@@ -1,3 +1,4 @@
+import { useQueryClient } from '@tanstack/react-query';
 import Cookies from 'js-cookie';
 import {
   ChevronDown,
@@ -10,7 +11,6 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { APP_ROUTES } from '@/constants/app-routes';
-import { queryClient } from '@/lib/react-query';
 import { capitalizarFirstLetter, cn, getUserInfo } from '@/utils';
 
 import {
@@ -35,6 +35,8 @@ export const Topbar: React.FC<TopbarProps> = ({
     React.useState<boolean>(false);
 
   const user = getUserInfo();
+
+  const queryClient = useQueryClient();
 
   const navigate = useNavigate();
 

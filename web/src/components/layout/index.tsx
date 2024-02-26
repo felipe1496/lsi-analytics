@@ -8,6 +8,7 @@ import { cn } from '@/utils';
 import { Footer } from './Footer';
 import { LeftBar } from './LeftBar';
 import { Navbar } from './Navbar';
+import { OverlayLoading } from './OverlayLoading';
 import { RightBar } from './RightBar';
 import { Topbar } from './Topbar';
 
@@ -27,6 +28,7 @@ interface LayoutProps {
   rightContent?: React.ReactNode;
   alert?: AlertMessage;
   footer?: string | React.ReactNode | null;
+  loading?: boolean;
 }
 
 export const Layout: React.FC<LayoutProps> = ({
@@ -40,6 +42,7 @@ export const Layout: React.FC<LayoutProps> = ({
   rightContent,
   alert,
   footer,
+  loading = false,
 }) => {
   const title = _title ? `${_title} | LSI Analytics` : 'LSI Analytics';
   const description = _description ?? APP_DESCRIPTION;
@@ -73,6 +76,7 @@ export const Layout: React.FC<LayoutProps> = ({
         <title>{title}</title>
         <meta name="description" content={description} />
       </Helmet>
+      {loading && <OverlayLoading />}
       <div className="flex flex-col">
         {alert && renderAlertMessage(alert)}
         <div className="flex">

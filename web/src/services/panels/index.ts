@@ -11,7 +11,7 @@ export type DeletePanelProps = DeleteRequest<{ id: string }>;
 
 type UpdatePanelProps = PatchRequest<
   Partial<
-    Omit<PanelModel, 'createdAt' | 'updatedAt'> & {
+    Omit<PanelModel, 'createdAt' | 'updatedAt' | 'id'> & {
       layout: object;
       createViews?: ViewProps[];
       deleteViewIds?: string[];

@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 
-import { UsersRepository } from '../users/users.repository';
 import { SessionsController } from './sessions.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { PrismaUsersRepository } from '../users/repositories/impl/prisma-users.repository';
+import { UsersRepository } from '../users/repositories/abstract/users.repository';
 
 @Module({
   imports: [
@@ -17,6 +18,6 @@ import { ConfigService } from '@nestjs/config';
     }),
   ],
   controllers: [SessionsController],
-  providers: [UsersRepository],
+  providers: [{ provide: UsersRepository, useClass: PrismaUsersRepository }],
 })
 export class SessionsModule {}

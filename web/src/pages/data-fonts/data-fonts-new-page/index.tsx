@@ -2,7 +2,7 @@ import { ErrorMessage } from '@hookform/error-message';
 import { useMutation } from '@tanstack/react-query';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import {
@@ -47,6 +47,8 @@ export const DataFontsNewPage: React.FC = () => {
   const [accessKeyIsVisible, setAccessKeyIsVisible] =
     React.useState<boolean>(false);
 
+  const navigate = useNavigate();
+
   const {
     handleSubmit,
     register,
@@ -61,8 +63,10 @@ export const DataFontsNewPage: React.FC = () => {
     mutationKey: [reactQueryKeys.mutations.createDataFontMutation],
     mutationFn: dataFontsService.create,
     onError: handleErrorNotify,
-    onSuccess: () =>
-      toast('Fonte de dados criada com sucesso', { type: 'success' }),
+    onSuccess: () => {
+      toast('Fonte de dados criada com sucesso', { type: 'success' });
+      navigate(APP_ROUTES.dataFont.index);
+    },
   });
 
   const onSubmit = (data: FormData) => {

@@ -28,7 +28,7 @@ import { reactQueryKeys } from '@/constants/react-query-keys';
 import { ResponsiveGridLayout } from '@/lib/echarts-for-react';
 import { panelsService } from '@/services/panels';
 
-import { Breakpoints } from '../contexts/PanelProvider';
+import { Breakpoints } from '../contexts/PanelEditProvider';
 import { PanelPageLoading } from './loading';
 
 export const PanelPage: React.FC = () => {
@@ -72,8 +72,6 @@ export const PanelPage: React.FC = () => {
   };
 
   if (data) {
-    console.log('layoutzin: ', data.panel.layout);
-    console.log('mudadooo: ', layoutToStatic(data.panel.layout));
     return (
       <Layout
         title={data.panel.name}

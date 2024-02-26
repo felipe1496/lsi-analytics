@@ -16,7 +16,6 @@ import { Label } from '@/components/ui/label';
 import { APP_ROUTES } from '@/constants/app-routes';
 import { REQUIRED_FIELD } from '@/constants/messages';
 import { reactQueryKeys } from '@/constants/react-query-keys';
-/* import { updateAxiosInstance } from '@/services/api'; */
 import { sessionsService } from '@/services/sessions';
 import {
   extractTokenFromCookies,

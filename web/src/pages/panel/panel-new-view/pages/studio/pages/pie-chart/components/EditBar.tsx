@@ -18,8 +18,8 @@ import {
   SimpleTabsTrigger,
 } from '@/components/ui/simple-tabs';
 import { APP_ROUTES } from '@/constants/app-routes';
-import { Breakpoints } from '@/pages/panel/contexts/PanelProvider';
-import { usePanelContext } from '@/pages/panel/hooks/usePanelContext';
+import { Breakpoints } from '@/pages/panel/contexts/PanelEditProvider';
+import { usePanelEditContext } from '@/pages/panel/hooks/usePanelEditContext';
 import { usePanelNewViewContext } from '@/pages/panel/panel-new-view/hooks/usePanelNewViewContext';
 import { usePanelQuery } from '@/pages/panel/panel-new-view/hooks/usePanelQuery';
 import { PieChartProps } from '@/services/models/panel/types';
@@ -38,7 +38,7 @@ export const EditBar: React.FC = () => {
 
   const { queryData, viewCreation } = usePanelNewViewContext();
 
-  const { setNewViewsPreview, setLayouts } = usePanelContext();
+  const { setNewViewsPreview, setLayouts } = usePanelEditContext();
 
   const { setEchartData, echartData } = usePanelNewViewStudioPieChartContext();
 
@@ -81,11 +81,25 @@ export const EditBar: React.FC = () => {
         const newState = { ...prevState };
 
         Object.keys(newState).forEach((k) => {
-          const key = k as Breakpoints;
-          const current = newState[key];
-          newState[key] = [
-            { i: createdView.id, x: 0, y: 0, w: 5, h: 5 },
-            ...current,
+          const _k = k as Breakpoints;
+
+          let higherY = 0;
+
+          newState[_k].forEach((l) => {
+            if (l.y > higherY) {
+              higherY = l.y;
+            }
+          });
+
+          newState[_k] = [
+            ...newState[_k],
+            {
+              i: createdView.id,
+              x: 0,
+              y: higherY === 0 ? higherY : higherY + 1,
+              w: 2,
+              h: 2,
+            },
           ];
         });
 

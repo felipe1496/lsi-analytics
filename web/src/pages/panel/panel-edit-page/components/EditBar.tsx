@@ -13,8 +13,10 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { APP_ROUTES } from '@/constants/app-routes';
 import { PANEL } from '@/services/models/panel/constants';
-import { PanelModel, View } from '@/services/models/panel/types';
+import { PanelModel, ViewType } from '@/services/models/panel/types';
 import { cn } from '@/utils';
+
+import { usePanelEditContext } from '../../hooks/usePanelEditContext';
 
 interface EditBarProps {
   data: PanelModel;
@@ -23,7 +25,9 @@ interface EditBarProps {
 export const EditBar: React.FC<EditBarProps> = ({ data }) => {
   const location = useLocation();
 
-  const [selectedView, setSelectedView] = React.useState<View | null>(null);
+  const [selectedView, setSelectedView] = React.useState<ViewType | null>(null);
+
+  const { name, setName, description, setDescription } = usePanelEditContext();
 
   return (
     <div className="flex h-full flex-col">
@@ -41,7 +45,11 @@ export const EditBar: React.FC<EditBarProps> = ({ data }) => {
           <div className="flex flex-col gap-4 p-4">
             <div>
               <Label>Nome</Label>
-              <Input defaultValue={data.name} placeholder="Nome" />
+              <Input
+                placeholder="Nome"
+                value={name}
+                onChange={(event) => setName(event.target.value)}
+              />
             </div>
 
             <div>
@@ -49,7 +57,8 @@ export const EditBar: React.FC<EditBarProps> = ({ data }) => {
 
               <Textarea
                 className="h-36 resize-none"
-                defaultValue={data.description ?? ''}
+                value={description ?? ''}
+                onChange={(event) => setDescription(event.target.value)}
                 placeholder="Descrição"
               />
             </div>

@@ -25,15 +25,21 @@ type PanelContextType = {
   layouts: LayoutsType;
   setLayouts: React.Dispatch<React.SetStateAction<LayoutsType>>;
   getCreateViews: () => ViewProps[];
+  name: string;
+  setName: (value: string) => void;
+  description?: string | null;
+  setDescription: (value?: string | null) => void;
 };
 
-export const PanelContext = React.createContext({} as PanelContextType);
+export const PanelEditContext = React.createContext({} as PanelContextType);
 
 interface PanelProviderProps {
   children?: React.ReactNode;
 }
 
-export const PanelProvider: React.FC<PanelProviderProps> = ({ children }) => {
+export const PanelEditProvider: React.FC<PanelProviderProps> = ({
+  children,
+}) => {
   const [newViewsPreview, setNewViewsPreview] = React.useState<
     NewViewPreview[]
   >([]);
@@ -42,8 +48,10 @@ export const PanelProvider: React.FC<PanelProviderProps> = ({ children }) => {
     MEDIUM: [],
     SMALL: [],
   });
-
-  console.log('meu layout: ', layouts);
+  const [name, setName] = React.useState<string>('');
+  const [description, setDescription] = React.useState<
+    string | null | undefined
+  >(null);
 
   const getCreateViews = React.useCallback(
     () =>
@@ -68,11 +76,17 @@ export const PanelProvider: React.FC<PanelProviderProps> = ({ children }) => {
       layouts,
       setLayouts,
       getCreateViews,
+      name,
+      setName,
+      description,
+      setDescription,
     }),
-    [getCreateViews, layouts, newViewsPreview],
+    [getCreateViews, layouts, newViewsPreview, name, description],
   );
 
   return (
-    <PanelContext.Provider value={value}>{children}</PanelContext.Provider>
+    <PanelEditContext.Provider value={value}>
+      {children}
+    </PanelEditContext.Provider>
   );
 };
