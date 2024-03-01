@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/services/prisma/prisma.service';
 import { UsersMapper } from '../../mappers/users.mapper';
-import { UsersRepository } from '../abstract/users.repository';
+import { UpdateUserProps, UsersRepository } from '../abstract/users.repository';
 
 type CreateUserProps = {
   name: string;
@@ -59,6 +59,22 @@ export class PrismaUsersRepository implements UsersRepository {
     if (!user) {
       return null;
     }
+
+    return UsersMapper.toDomain(user);
+  }
+
+  public async update(props: UpdateUserProps) {
+    const user = await this.prisma.user.update({
+      where: {
+        id: props.userId,
+      },
+      data: {
+        email: props.user.email,
+        name: props.user.name,
+        birthDay: props.user.birthDay,
+        imageURL: props.user.imageURL,
+      },
+    });
 
     return UsersMapper.toDomain(user);
   }

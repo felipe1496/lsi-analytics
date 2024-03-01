@@ -2,6 +2,7 @@ import {
   Panel as PrismaPanel,
   View as PrismaView,
   PieChart as PrismaPieChart,
+  BarChart as PrismaBarChart,
 } from '@prisma/client';
 import { Panel } from '../entities/panel.entity';
 
@@ -10,7 +11,10 @@ import { ViewsMapper } from './views.mapper';
 export class PanelsMapper {
   public static toDomain(
     panel: PrismaPanel & {
-      views?: (PrismaView & { pieChart?: PrismaPieChart | null })[];
+      views?: (PrismaView & {
+        pieChart?: PrismaPieChart | null;
+        barChart?: PrismaBarChart | null;
+      })[];
     },
   ) {
     const {

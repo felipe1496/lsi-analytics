@@ -3,7 +3,8 @@ import { Layout } from 'react-grid-layout';
 
 import { ViewProps } from '@/services/models/panel/types';
 
-import { EChartData } from '../panel-new-view/pages/studio/pages/pie-chart/contexts/PanelNewViewStudioPieChartProvider';
+import { EBarChartData } from '../panel-new-view/pages/studio/pages/bar-chart/contexts/PanelNewViewStudioBarChartProvider';
+import { EPieChartData } from '../panel-new-view/pages/studio/pages/pie-chart/contexts/PanelNewViewStudioPieChartProvider';
 
 export type Breakpoints = 'LARGE' | 'MEDIUM' | 'SMALL';
 
@@ -15,7 +16,7 @@ export const BREAKPOINTS: Record<Breakpoints, Breakpoints> = {
 export type LayoutsType = Record<Breakpoints, Layout[]>;
 
 export type NewViewPreview = {
-  echartData: EChartData[];
+  echartData: EPieChartData[] | EBarChartData;
   view: ViewProps;
 };
 
@@ -61,7 +62,6 @@ export const PanelEditProvider: React.FC<PanelProviderProps> = ({
         type: v.view.type,
         contentUpdate: v.view.contentUpdate,
         datafontId: v.view.datafontId,
-        staticData: v.view.staticData,
         sql: v.view.sql,
         panelId: v.view.panelId,
         core: v.view.core,

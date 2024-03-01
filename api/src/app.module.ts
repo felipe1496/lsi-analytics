@@ -9,6 +9,7 @@ import { SessionsModule } from './modules/sessions/sessions.module';
 import { PanelsModule } from './modules/panels/panels.module';
 import { DataFontsModule } from './modules/datafonts/datafonts.module';
 import { FeedbackModule } from './modules/feedbacks/feedbacks.module';
+import { FavoriteQueriesModule } from './modules/favorite-queries/favorite-queries.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { FeedbackModule } from './modules/feedbacks/feedbacks.module';
     ServicesModule,
     DataFontsModule,
     FeedbackModule,
+    FavoriteQueriesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

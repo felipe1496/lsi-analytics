@@ -81,7 +81,7 @@ export class PanelsController {
 
   @Patch('/:id')
   @UseGuards(AuthGuard)
-  @HttpCode(HttpStatus.OK)
+  @HttpCode(HttpStatus.NO_CONTENT)
   public async update(
     @Req() request: Request,
     @Param() param: IdDto,
@@ -119,18 +119,48 @@ export class PanelsController {
     if (updatePanelDto.createViews && updatePanelDto.createViews.length > 0) {
       await Promise.all(
         updatePanelDto.createViews.map(async (c) => {
-          const { core, ...view } = c;
+          const {
+            core,
+            id,
+            name,
+            type,
+            contentUpdate,
+            sql,
+            panelId,
+            datafontId,
+          } = c;
           switch (c.type) {
             case 'PIECHART':
               await this.prisma.view.create({
                 data: {
-                  ...view,
+                  id,
+                  name,
+                  type,
+                  contentUpdate,
+                  sql,
+                  panelId,
+                  datafontId,
                   pieChart: {
                     create: core,
                   },
                 },
               });
               break;
+            case 'BARCHART':
+              await this.prisma.view.create({
+                data: {
+                  id,
+                  name,
+                  type,
+                  contentUpdate,
+                  sql,
+                  panelId,
+                  datafontId,
+                  barChart: {
+                    create: core,
+                  },
+                },
+              });
             default:
               break;
           }

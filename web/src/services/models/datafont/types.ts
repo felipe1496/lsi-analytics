@@ -1,3 +1,5 @@
+import { BaseModel } from '../types';
+
 export type Column =
   | 'STRING'
   | 'DATE'
@@ -22,13 +24,10 @@ export type TypeOfStorage = 'DATABASE' | 'FILE';
 
 export type DataFontProvider = 'POSTGRESQL' | 'CSV';
 
-export type DataFontModel = {
-  id: string;
+export type DataFontModel = BaseModel & {
   name: string;
   typeOfStorage: TypeOfStorage;
   provider: DataFontProvider;
   accessKey?: string;
   userId: string;
-  createdAt: Date;
-  updatedAt: Date;
 };

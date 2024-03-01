@@ -1,10 +1,10 @@
 import React from 'react';
 
 import { EChart } from '@/lib/echarts-for-react';
-import { EChartData } from '@/pages/panel/panel-new-view/pages/studio/pages/pie-chart/contexts/PanelNewViewStudioPieChartProvider';
+import { EPieChartData } from '@/pages/panel/panel-new-view/pages/studio/pages/pie-chart/contexts/PanelNewViewStudioPieChartProvider';
 
 interface PieChartViewProps {
-  data: EChartData[];
+  data: EPieChartData[];
 }
 
 export const PieChartView: React.FC<PieChartViewProps> = ({ data }) => (

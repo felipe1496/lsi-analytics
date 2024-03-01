@@ -222,7 +222,7 @@ export const PanelsPage: React.FC = () => {
                       </div>
                     </div>
                     <DialogFooter>
-                      <DialogClose>
+                      <DialogClose asChild>
                         <Button type="button" variant="outline">
                           Cancelar
                         </Button>

@@ -1,6 +1,7 @@
 import { IsIn, IsObject, IsOptional, IsString } from 'class-validator';
 import { CreatePieChartDto } from './create-pie-chart.dto';
 import { ViewContentUpdate, ViewType } from 'src/core/domain/types/common';
+import { CreateBarChartDto } from './create-bar-chart.dto';
 
 export class CreateViewDto {
   @IsString()
@@ -9,7 +10,7 @@ export class CreateViewDto {
   @IsString()
   name: string;
 
-  @IsIn(['PIECHART'])
+  @IsIn(['PIECHART', 'BARCHART'])
   type: ViewType;
 
   @IsIn(['STATIC', 'DYNAMIC'])
@@ -20,11 +21,15 @@ export class CreateViewDto {
   sql: string;
 
   @IsObject()
-  core: CreatePieChartDto;
+  core: CreatePieChartDto | CreateBarChartDto;
 
   @IsString()
   panelId: string;
 
   @IsString()
   datafontId: string;
+
+  @IsObject()
+  @IsOptional()
+  staticData?: object;
 }

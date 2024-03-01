@@ -1,0 +1,138 @@
+-- CreateEnum
+CREATE TYPE "TypeOfStorage" AS ENUM ('DATABASE', 'FILE');
+
+-- CreateEnum
+CREATE TYPE "DataProvider" AS ENUM ('POSTGRESQL', 'CSV');
+
+-- CreateEnum
+CREATE TYPE "ViewType" AS ENUM ('PIECHART');
+
+-- CreateEnum
+CREATE TYPE "ViewContentUpdate" AS ENUM ('STATIC', 'DYNAMIC');
+
+-- CreateEnum
+CREATE TYPE "FeedbackType" AS ENUM ('BUG', 'IDEA', 'SUPPORT');
+
+-- CreateTable
+CREATE TABLE "USERS" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "birthDay" TIMESTAMP(3) NOT NULL,
+    "imageURL" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "USERS_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "PANELS" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "description" TEXT,
+    "imageURL" TEXT,
+    "layout" JSONB,
+    "userId" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "PANELS_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "DATAFONTS" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "typeOfStorage" "TypeOfStorage" NOT NULL,
+    "provider" "DataProvider" NOT NULL,
+    "accessKey" TEXT,
+    "userId" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "DATAFONTS_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "VIEWS" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "type" "ViewType" NOT NULL,
+    "contentUpdate" "ViewContentUpdate" NOT NULL,
+    "sql" TEXT,
+    "panelId" TEXT NOT NULL,
+    "datafontId" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "VIEWS_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "PIE_CHART" (
+    "id" TEXT NOT NULL,
+    "labelColumn" TEXT NOT NULL,
+    "valueColumn" TEXT NOT NULL,
+    "viewId" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "PIE_CHART_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "FEEDBACKS" (
+    "id" TEXT NOT NULL,
+    "text" TEXT NOT NULL,
+    "type" "FeedbackType" NOT NULL,
+    "imageURL" TEXT,
+    "userId" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "FEEDBACKS_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "FAVORITE_QUERIES" (
+    "id" TEXT NOT NULL,
+    "sql" TEXT NOT NULL,
+    "datafontId" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "FAVORITE_QUERIES_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateIndex
+CREATE UNIQUE INDEX "USERS_email_key" ON "USERS"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "PIE_CHART_viewId_key" ON "PIE_CHART"("viewId");
+
+-- AddForeignKey
+ALTER TABLE "PANELS" ADD CONSTRAINT "PANELS_userId_fkey" FOREIGN KEY ("userId") REFERENCES "USERS"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "DATAFONTS" ADD CONSTRAINT "DATAFONTS_userId_fkey" FOREIGN KEY ("userId") REFERENCES "USERS"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "VIEWS" ADD CONSTRAINT "VIEWS_panelId_fkey" FOREIGN KEY ("panelId") REFERENCES "PANELS"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "VIEWS" ADD CONSTRAINT "VIEWS_datafontId_fkey" FOREIGN KEY ("datafontId") REFERENCES "DATAFONTS"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "PIE_CHART" ADD CONSTRAINT "PIE_CHART_viewId_fkey" FOREIGN KEY ("viewId") REFERENCES "VIEWS"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "FEEDBACKS" ADD CONSTRAINT "FEEDBACKS_userId_fkey" FOREIGN KEY ("userId") REFERENCES "USERS"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "FAVORITE_QUERIES" ADD CONSTRAINT "FAVORITE_QUERIES_datafontId_fkey" FOREIGN KEY ("datafontId") REFERENCES "DATAFONTS"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "FAVORITE_QUERIES" ADD CONSTRAINT "FAVORITE_QUERIES_userId_fkey" FOREIGN KEY ("userId") REFERENCES "USERS"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

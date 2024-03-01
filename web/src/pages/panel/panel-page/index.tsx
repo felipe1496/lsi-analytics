@@ -133,7 +133,7 @@ export const PanelPage: React.FC = () => {
                 <DropdownMenuItem asChild>
                   <button className="group flex w-full items-center gap-2 text-red-500">
                     <Trash2 size={18} className="group-hover:text-red-500" />
-                    <span className="group-hover:text-red-500">Remover</span>
+                    <span className="group-hover:text-red-500">Excluir</span>
                   </button>
                 </DropdownMenuItem>
               </DropdownMenuContent>

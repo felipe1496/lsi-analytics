@@ -12,6 +12,6 @@ export type ColumnType =
 
 export type FeedbackType = 'BUG' | 'IDEA' | 'SUPPORT';
 
-export type ViewType = 'PIECHART';
+export type ViewType = 'PIECHART' | 'BARCHART';
 
 export type ViewContentUpdate = 'STATIC' | 'DYNAMIC';

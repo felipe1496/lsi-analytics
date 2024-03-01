@@ -1,10 +1,10 @@
 import React from 'react';
 
-export type EChartData = { name: unknown; value: unknown };
+export type EPieChartData = { name: unknown; value: unknown };
 
 type PanelNewViewStudioPieChartContextType = {
-  echartData: EChartData[];
-  setEchartData: React.Dispatch<React.SetStateAction<EChartData[]>>;
+  echartData: EPieChartData[];
+  setEchartData: React.Dispatch<React.SetStateAction<EPieChartData[]>>;
 };
 
 export const PanelNewViewStudioPieChartContext = React.createContext(
@@ -18,7 +18,7 @@ interface PanelNewViewStudioPieChartProviderProps {
 export const PanelNewViewStudioPieChartProvider: React.FC<
   PanelNewViewStudioPieChartProviderProps
 > = ({ children }) => {
-  const [echartData, setEchartData] = React.useState<EChartData[]>([]);
+  const [echartData, setEchartData] = React.useState<EPieChartData[]>([]);
 
   const value = React.useMemo(
     () => ({

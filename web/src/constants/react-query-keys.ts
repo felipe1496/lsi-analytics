@@ -7,6 +7,7 @@ export const reactQueryKeys = {
     findTablesQuery: 'findTablesQuery',
     findPanelChartViews: 'findPanelChartViews',
     findUserByToken: 'findUserByToken',
+    findAllFavoriteQueriesQuery: 'findAllFavoriteQueriesQuery',
   },
   mutations: {
     createUserMutation: 'createUserMutation',
@@ -17,5 +18,8 @@ export const reactQueryKeys = {
     executeSqlMutation: 'executeSqlMutation',
     deletePanelMutation: 'deletePanelMutation',
     savePanelMutation: 'savePanelMutation',
+    saveFavoriteQueryMutation: 'saveFavoriteQueryMutation',
+    deleteFavoriteQueryMutation: 'deleteFavoriteQueryMutation',
+    updateUserMutation: 'updateUserMutation',
   },
 };

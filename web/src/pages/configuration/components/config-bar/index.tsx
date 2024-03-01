@@ -5,7 +5,7 @@ import { APP_ROUTES } from '@/constants/app-routes';
 import { cn } from '@/utils';
 
 interface ConfigBarProps {
-  active?: 'profile' | 'preferences';
+  active?: 'account' | 'preferences';
 }
 
 export const ConfigBar: React.FC<ConfigBarProps> = ({ active }) => (
@@ -17,10 +17,10 @@ export const ConfigBar: React.FC<ConfigBarProps> = ({ active }) => (
         to={APP_ROUTES.config.index}
         className={cn(
           'w-full rounded-md px-4 py-4',
-          active === 'profile' && 'bg-zinc-100',
+          active === 'account' && 'bg-zinc-100',
         )}
       >
-        Perfil
+        Conta
       </Link>
 
       <Link

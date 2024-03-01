@@ -1,6 +1,11 @@
 import { api } from '../api';
 import { SQLResult } from '../models/datafont/types';
-import { PanelModel, ViewModel, ViewProps } from '../models/panel/types';
+import {
+  PanelModel,
+  PanelProps,
+  ViewModel,
+  ViewProps,
+} from '../models/panel/types';
 import { DeleteRequest, GetRequest, PatchRequest, PostRequest } from '../types';
 
 type CreatePanelProps = PostRequest<Pick<PanelModel, 'name' | 'description'>>;
@@ -11,8 +16,7 @@ export type DeletePanelProps = DeleteRequest<{ id: string }>;
 
 type UpdatePanelProps = PatchRequest<
   Partial<
-    Omit<PanelModel, 'createdAt' | 'updatedAt' | 'id'> & {
-      layout: object;
+    PanelProps & {
       createViews?: ViewProps[];
       deleteViewIds?: string[];
     }

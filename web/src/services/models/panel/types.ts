@@ -3,20 +3,33 @@ import { Layout } from 'react-grid-layout';
 import { Breakpoints } from '@/pages/panel/contexts/PanelEditProvider';
 
 import { SQLResult } from '../datafont/types';
+import { BaseModel } from '../types';
 
-export type PanelModel = {
-  id: string;
+export type PanelModel = BaseModel & {
   name: string;
   description?: string | null;
   layout?: Record<Breakpoints, Layout[]> | null;
-  createdAt: Date;
-  updatedAt: Date;
   imageURL?: string;
 };
 
-export type ViewType = 'PIECHART';
+export type PanelProps = {
+  name: string;
+  description?: string | null;
+  layout?: Record<Breakpoints, Layout[]> | null;
+  imageURL?: string;
+};
+
+export type ViewType = 'PIECHART' | 'BARCHART';
 
 export type ContentUpdate = 'DYNAMIC' | 'STATIC';
+
+export type BarChart = {
+  id: string;
+  labelColumn: string;
+  valueColumn: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
 
 export type PieChart = {
   id: string;
@@ -26,7 +39,17 @@ export type PieChart = {
   updatedAt: Date;
 };
 
-export type PieChartProps = Omit<PieChart, 'id' | 'createdAt' | 'updatedAt'>;
+export type PieChartProps = {
+  labelColumn: string;
+  valueColumn: string;
+};
+
+export type BarChartProps = {
+  labelColumn: string;
+  valueColumn: string;
+};
+
+export type CoreType = PieChart | BarChart;
 
 export type ViewModel = {
   id: string;
@@ -37,11 +60,11 @@ export type ViewModel = {
   staticData?: SQLResult;
   sql: string;
   panelId: string;
-  core: PieChart;
+  core: CoreType;
   createdAt: Date;
   updatedAt: Date;
 };
 
 export type ViewProps = Omit<ViewModel, 'createdAt' | 'updatedAt' | 'core'> & {
-  core: PieChartProps;
+  core: PieChartProps | BarChartProps;
 };

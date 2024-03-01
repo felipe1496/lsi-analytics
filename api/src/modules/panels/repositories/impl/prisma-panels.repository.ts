@@ -46,8 +46,10 @@ export class PrismaPanelsRepository implements PanelsRepository {
       where: {
         userId: props.userId,
       },
+      orderBy: {
+        createdAt: 'desc',
+      },
     });
-
     return panels.map(PanelsMapper.toDomain);
   }
 
@@ -86,6 +88,7 @@ export class PrismaPanelsRepository implements PanelsRepository {
         views: {
           include: {
             pieChart: true,
+            barChart: true,
           },
         },
       },

@@ -21,7 +21,7 @@ import { handleErrorNotify } from '@/utils';
 interface FormData {
   email: string;
   name: string;
-  birthDay: Date | null;
+  birthDay: string | null;
   password: string;
   confirmPassword: string;
 }
@@ -145,7 +145,7 @@ export const RegisterPage: React.FC = () => {
               render={({ message }) => <FieldError message={message} />}
             />
           </div>
-          <Label>Data de Nascimento</Label>
+          <Label>Data de nascimento</Label>
           <div>
             <Input
               error={!!errors.birthDay}

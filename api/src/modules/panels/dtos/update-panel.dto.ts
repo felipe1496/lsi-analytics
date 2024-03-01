@@ -20,6 +20,7 @@ export class UpdatePanelDto {
   description?: string;
 
   @IsObject()
+  @IsOptional()
   layout?: object;
 
   @IsString({ message: DtoMessages.isString('ID do usuário') })

@@ -1,7 +1,9 @@
+import { ErrorMessage } from '@hookform/error-message';
 import Editor, { OnMount } from '@monaco-editor/react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { ChevronLeft, ChevronRight, CornerDownLeft, Sheet } from 'lucide-react';
 import React from 'react';
+import { useForm } from 'react-hook-form';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import {
@@ -10,23 +12,39 @@ import {
   BreadcrumbLink,
   BreadcrumbNeutral,
 } from '@/components/breadcrumb';
+import { FieldError } from '@/components/errors/field-error';
 import { Layout } from '@/components/layout';
 import { NoData } from '@/components/no-data';
 import { NotFoundPage } from '@/components/not-found-page';
 import { SimpleStepper } from '@/components/simple-stepper';
 import { Button } from '@/components/ui/button';
 import { Combobox } from '@/components/ui/combobox';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Skeleton } from '@/components/ui/skeleton';
 import { APP_ROUTES } from '@/constants/app-routes';
-import { UNEXPECTED_ERROR } from '@/constants/messages';
+import { REQUIRED_FIELD, UNEXPECTED_ERROR } from '@/constants/messages';
 import { reactQueryKeys } from '@/constants/react-query-keys';
 import { dataFontsService } from '@/services/datafonts';
+import { favoriteQueriesService } from '@/services/favorite-queries';
 
 import { usePanelNewViewContext } from '../../hooks/usePanelNewViewContext';
 import { usePanelQuery } from '../../hooks/usePanelQuery';
 import { TYPE_STUDIO_LINK_MAPPER } from './constants';
+
+type FormData = {
+  name: string;
+};
 
 export const PanelNewViewObject: React.FC = () => {
   const [schemaName, setSchemaName] = React.useState<string>('');
@@ -35,6 +53,16 @@ export const PanelNewViewObject: React.FC = () => {
   const textSelectionRef = React.useRef<string | undefined>();
 
   const { id } = useParams();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setError,
+    clearErrors,
+  } = useForm<FormData>({
+    defaultValues: { name: '' },
+  });
 
   const { viewCreation, setViewCreation, canAccessStep, setQueryData } =
     usePanelNewViewContext();
@@ -68,6 +96,47 @@ export const PanelNewViewObject: React.FC = () => {
     },
   });
 
+  /* const { data: favoriteQueriesData } = useQuery({
+    queryKey: [
+      reactQueryKeys.queries.findAllFavoriteQueriesQuery,
+      viewCreation.datafontId,
+    ],
+    queryFn: () => favoriteQueriesService.findAll(),
+  }); */
+
+  const { mutate: saveFavoriteQueryMutation } = useMutation({
+    mutationFn: favoriteQueriesService.create,
+    mutationKey: [
+      reactQueryKeys.mutations.saveFavoriteQueryMutation,
+      viewCreation.id,
+    ],
+  });
+
+  /* const { mutate: deleteFavoriteQueryMutation } = useMutation({
+    mutationFn: favoriteQueriesService.delete,
+    mutationKey: [
+      reactQueryKeys.mutations.deleteFavoriteQueryMutation,
+      viewCreation.id,
+    ],
+  }); */
+
+  const onSubmit = (formData: FormData) => {
+    if (sqlRef.current) {
+      saveFavoriteQueryMutation({
+        body: {
+          name: formData.name,
+          datafontId: viewCreation.datafontId,
+          sql: sqlRef.current,
+        },
+      });
+    } else {
+      setError('name', {
+        type: 'manual',
+        message: 'Sql vazio não pode ser salvo',
+      });
+    }
+  };
+
   const {
     data: sqlData,
     mutate: executeSql,
@@ -89,30 +158,28 @@ export const PanelNewViewObject: React.FC = () => {
   };
 
   const renderTables = () => {
-    if (tablesData) {
-      if (tablesData.tables.length > 0) {
-        return (
-          <div className="flex flex-col text-sm">
-            {tablesData.tables.map((t, index) => (
-              <button
-                className="flex items-center gap-2"
-                key={`${t}-${index}`}
-                onClick={() =>
-                  executeSql({
-                    body: {
-                      sql: `SELECT * FROM ${t} LIMIT 100`,
-                      datafontId: viewCreation.datafontId,
-                    },
-                  })
-                }
-              >
-                <Sheet className="text-green-500" />
-                <span>{t}</span>
-              </button>
-            ))}
-          </div>
-        );
-      }
+    if (tablesData && tablesData.tables.length > 0) {
+      return (
+        <div className="flex flex-col text-sm">
+          {tablesData.tables.map((t, index) => (
+            <button
+              className="flex items-center gap-2"
+              key={`${t}-${index}`}
+              onClick={() =>
+                executeSql({
+                  body: {
+                    sql: `SELECT * FROM "${t}" LIMIT 100`,
+                    datafontId: viewCreation.datafontId,
+                  },
+                })
+              }
+            >
+              <Sheet className="text-green-500" />
+              <span>{t}</span>
+            </button>
+          ))}
+        </div>
+      );
     }
 
     if (tablesIsLoading) {
@@ -256,6 +323,7 @@ export const PanelNewViewObject: React.FC = () => {
             className="border-b"
             onMount={handleEditorDidMount}
             onChange={(value) => {
+              clearErrors('name');
               sqlRef.current = value;
             }}
           />
@@ -266,9 +334,43 @@ export const PanelNewViewObject: React.FC = () => {
             }`}</span>
 
             <div className="flex items-center gap-4">
-              <button>
-                <img src="/icons/heart-fill.svg" alt="" className="w-[20px]" />
-              </button>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <button>
+                    <img
+                      src="/icons/heart-fill.svg"
+                      alt=""
+                      className="w-[20px]"
+                    />
+                  </button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[425px]">
+                  <form onSubmit={handleSubmit(onSubmit)}>
+                    <DialogHeader>
+                      <DialogTitle>Favoritar query</DialogTitle>
+                    </DialogHeader>
+                    <div>
+                      <Label>Nome</Label>
+                      <Input
+                        {...register('name', { required: REQUIRED_FIELD })}
+                      />
+                      <ErrorMessage
+                        errors={errors}
+                        name="name"
+                        render={({ message }) => (
+                          <FieldError message={message} />
+                        )}
+                      />
+                    </div>
+                    <DialogFooter className="mt-4">
+                      <DialogClose asChild>
+                        <Button variant="outline">Cancelar</Button>
+                      </DialogClose>
+                      <Button type="submit">Salvar</Button>
+                    </DialogFooter>
+                  </form>
+                </DialogContent>
+              </Dialog>
 
               <Button
                 size="sm"
@@ -371,6 +473,9 @@ export const PanelNewViewObject: React.FC = () => {
                 value={schemaName}
               />
             </div>
+
+            {/* Funcionalidade despriorizada */}
+            {/* {renderFavoriteQueries()} */}
 
             <span className="text-sm">
               Tabelas {tablesData ? `(${tablesData?.tables.length})` : '(0)'}

@@ -122,6 +122,9 @@ export const PanelNewViewConfig: React.FC = () => {
                       <SelectItem value={PANEL.VIEW.PIE_CHART}>
                         Gráfico de torta
                       </SelectItem>
+                      <SelectItem value={PANEL.VIEW.BAR_CHART}>
+                        Gráfico de barra
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 )}

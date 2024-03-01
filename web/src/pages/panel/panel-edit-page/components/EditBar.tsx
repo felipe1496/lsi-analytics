@@ -1,4 +1,4 @@
-import { PieChart, Plus } from 'lucide-react';
+import { BarChart3, PieChart, Plus } from 'lucide-react';
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -28,6 +28,8 @@ export const EditBar: React.FC<EditBarProps> = ({ data }) => {
   const [selectedView, setSelectedView] = React.useState<ViewType | null>(null);
 
   const { name, setName, description, setDescription } = usePanelEditContext();
+
+  console.log(selectedView);
 
   return (
     <div className="flex h-full flex-col">
@@ -68,7 +70,7 @@ export const EditBar: React.FC<EditBarProps> = ({ data }) => {
           value="views"
           className="flex h-full flex-col justify-between"
         >
-          <div className="flex flex-wrap px-4">
+          <div className="flex flex-wrap gap-4 px-4">
             <button
               className={cn(
                 selectedView === PANEL.VIEW.PIE_CHART && 'rounded-sm border',
@@ -85,6 +87,22 @@ export const EditBar: React.FC<EditBarProps> = ({ data }) => {
             >
               <PieChart />
             </button>
+            <button
+              className={cn(
+                selectedView === PANEL.VIEW.BAR_CHART && 'rounded-sm border',
+              )}
+              onClick={() =>
+                setSelectedView((prevState) => {
+                  if (prevState === PANEL.VIEW.BAR_CHART) {
+                    return null;
+                  }
+
+                  return PANEL.VIEW.BAR_CHART;
+                })
+              }
+            >
+              <BarChart3 />
+            </button>
           </div>
 
           <div className="border-t bg-white p-4">
@@ -98,7 +116,7 @@ export const EditBar: React.FC<EditBarProps> = ({ data }) => {
                   ? APP_ROUTES.panel.new.index.replace(':id', data.id)
                   : '#'
               }
-              state={{ view: PANEL.VIEW.PIE_CHART }}
+              state={{ view: selectedView }}
             >
               <Plus size={18} />
               Visualização

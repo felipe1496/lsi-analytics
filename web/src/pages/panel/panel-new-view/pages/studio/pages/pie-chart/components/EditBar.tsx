@@ -24,6 +24,7 @@ import { usePanelNewViewContext } from '@/pages/panel/panel-new-view/hooks/usePa
 import { usePanelQuery } from '@/pages/panel/panel-new-view/hooks/usePanelQuery';
 import { PieChartProps } from '@/services/models/panel/types';
 
+import { EPieChartData } from '../contexts/PanelNewViewStudioPieChartProvider';
 import { usePanelNewViewStudioPieChartContext } from '../hooks/usePanelNewViewStudioPieChartContext';
 
 export const EditBar: React.FC = () => {
@@ -48,7 +49,7 @@ export const EditBar: React.FC = () => {
         queryResult: queryData,
         core: { labelColumn: category, valueColumn: value },
         type: viewCreation.type,
-      });
+      }) as EPieChartData[];
 
       if (graphData) {
         setEchartData(graphData);

@@ -12,6 +12,7 @@ export const APP_ROUTES = {
       object: '/painel/:id/novo/visualizacao/objeto',
       studio: {
         pie: '/painel/:id/novo/visualizacao/studio/pie',
+        bar: '/painel/:id/novo/visualizacao/studio/bar',
       },
     },
   },
@@ -24,7 +25,7 @@ export const APP_ROUTES = {
     register: '/cadastrar',
   },
   config: {
-    index: '/config/perfil',
+    index: '/config/conta',
     preferences: '/config/preferencias',
   },
   misc: {

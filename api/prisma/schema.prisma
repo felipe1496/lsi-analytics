@@ -20,6 +20,7 @@ model User {
   panels Panel[]
   dataFonts DataFont[]
   feedbacks Feedback[]
+  favoriteQueries FavoriteQuery[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   @@map("USERS")
@@ -58,6 +59,7 @@ model DataFont {
   user   User @relation(fields: [userId], references: [id])
   userId String
   views View[]
+  favoriteQueries FavoriteQuery[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   @@map("DATAFONTS")
@@ -65,6 +67,7 @@ model DataFont {
 
 enum ViewType {
   PIECHART
+  BARCHART
 }
 
 enum ViewContentUpdate {
@@ -79,6 +82,7 @@ model View {
   contentUpdate ViewContentUpdate
   sql String?
   pieChart PieChart?
+  barChart BarChart?
   panel Panel @relation(fields: [panelId], references: [id], onDelete: Cascade)
   panelId String
   datafont DataFont @relation(fields: [datafontId], references: [id])
@@ -92,29 +96,21 @@ model PieChart {
   id String @default(nanoid()) @id
   labelColumn String
   valueColumn String
-  staticData Json?
   view View @relation(fields: [viewId], references: [id], onDelete: Cascade)
   viewId String @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   @@map("PIE_CHART")
 }
-
-model StaticViewData {
+model BarChart {
   id String @default(nanoid()) @id
-  data Json
+  labelColumn String
+  valueColumn String
+  view View @relation(fields: [viewId], references: [id], onDelete: Cascade)
+  viewId String @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  @@map("STATIC_VIEW_DATA")
-}
-
-model DataSet {
-  id String @default(nanoid()) @id
-  sql String
-  columnsMetadata Json
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  @@map("DATASET")
+  @@map("BAR_CHART")
 }
 
 enum FeedbackType {
@@ -133,4 +129,17 @@ model Feedback {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   @@map("FEEDBACKS")
+}
+
+model FavoriteQuery {
+  id String @default(nanoid()) @id
+  sql String
+  name String
+  datafont DataFont @relation(fields: [datafontId], references: [id])
+  datafontId String
+  user User @relation(fields: [userId], references: [id])
+  userId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@map("FAVORITE_QUERIES")
 }

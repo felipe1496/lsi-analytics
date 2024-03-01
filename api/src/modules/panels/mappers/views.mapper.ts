@@ -1,32 +1,19 @@
-import { View as PrismaView, PieChart as PrismaPieChart } from '@prisma/client';
+import {
+  View as PrismaView,
+  PieChart as PrismaPieChart,
+  BarChart as PrismaBarChart,
+} from '@prisma/client';
 import { View } from '../entities/view.entity';
 import { ItWasNotPossibleToCreateViewInstanceError } from '../errors/it-was-not-possible-to-create-view-instance.error';
 import { PieChart } from '../entities/pie-chart.entity';
+import { BarChart } from '../entities/bar-chart.entity';
 
-type FullRelationView = PrismaView & { pieChart?: PrismaPieChart | null };
+type FullRelationView = PrismaView & {
+  pieChart?: PrismaPieChart | null;
+  barChart?: PrismaBarChart | null;
+};
 
 export class ViewsMapper {
-  private static getDomainCore(view: FullRelationView) {
-    switch (view.type) {
-      case 'PIECHART':
-        if (!view.pieChart) {
-          throw new ItWasNotPossibleToCreateViewInstanceError();
-        }
-        const core = view.pieChart;
-        return new PieChart({
-          id: core.id,
-          labelColumn: core.labelColumn,
-          valueColumn: core.valueColumn,
-          viewId: core.viewId,
-          createdAt: core.createdAt,
-          updatedAt: core.updatedAt,
-        });
-
-      default:
-        throw new ItWasNotPossibleToCreateViewInstanceError();
-    }
-  }
-
   public static toDomain(view: FullRelationView) {
     return new View({
       id: view.id,
@@ -41,23 +28,6 @@ export class ViewsMapper {
     });
   }
 
-  private static getHttpCore(view: View) {
-    switch (view.props.type) {
-      case 'PIECHART':
-        const _core = view.props.core as PieChart;
-        return {
-          id: _core.id,
-          labelColumn: _core.props.labelColumn,
-          valueColumn: _core.props.valueColumn,
-          viewId: _core.props.viewId,
-          createdAt: _core.createdAt,
-          updatedAt: _core.updatedAt,
-        };
-      default:
-        throw new ItWasNotPossibleToCreateViewInstanceError();
-    }
-  }
-
   public static toHttp(view: View) {
     return {
       id: view.id,
@@ -70,5 +40,66 @@ export class ViewsMapper {
       updatedAt: view.updatedAt,
       core: this.getHttpCore(view),
     };
+  }
+
+  private static getHttpCore(view: View) {
+    switch (view.props.type) {
+      case 'PIECHART':
+        const pieCore = view.props.core as PieChart;
+        return {
+          id: pieCore.id,
+          labelColumn: pieCore.props.labelColumn,
+          valueColumn: pieCore.props.valueColumn,
+          viewId: pieCore.props.viewId,
+          createdAt: pieCore.createdAt,
+          updatedAt: pieCore.updatedAt,
+        };
+      case 'BARCHART':
+        const barCore = view.props.core as BarChart;
+        return {
+          id: barCore.id,
+          labelColumn: barCore.props.labelColumn,
+          valueColumn: barCore.props.valueColumn,
+          viewId: barCore.props.viewId,
+          createdAt: barCore.createdAt,
+          updatedAt: barCore.updatedAt,
+        };
+      default:
+        throw new ItWasNotPossibleToCreateViewInstanceError();
+    }
+  }
+
+  private static getDomainCore(view: FullRelationView) {
+    switch (view.type) {
+      case 'PIECHART':
+        if (!view.pieChart) {
+          throw new ItWasNotPossibleToCreateViewInstanceError();
+        }
+        const pieCore = view.pieChart;
+        return new PieChart({
+          id: pieCore.id,
+          labelColumn: pieCore.labelColumn,
+          valueColumn: pieCore.valueColumn,
+          viewId: pieCore.viewId,
+          createdAt: pieCore.createdAt,
+          updatedAt: pieCore.updatedAt,
+        });
+      case 'BARCHART':
+        if (!view.barChart) {
+          throw new ItWasNotPossibleToCreateViewInstanceError();
+        }
+        const barCore = view.barChart;
+        return new BarChart({
+          id: barCore.id,
+          labelColumn: barCore.labelColumn,
+          valueColumn: barCore.valueColumn,
+          viewId: barCore.viewId,
+          createdAt: barCore.createdAt,
+          updatedAt: barCore.updatedAt,
+        });
+
+      default:
+        throw new ItWasNotPossibleToCreateViewInstanceError();
+    }
   }
 }
