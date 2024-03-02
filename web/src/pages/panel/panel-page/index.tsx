@@ -157,7 +157,11 @@ export const PanelPage: React.FC = () => {
             if (graphData) {
               return (
                 <div key={v.view.id}>
-                  <View data={graphData} type={v.view.type} />
+                  <View
+                    name={v.view.name}
+                    data={graphData}
+                    type={v.view.type}
+                  />
                 </div>
               );
             }

@@ -11,6 +11,7 @@ export interface ViewProps {
   core: PieChart | BarChart | LineChart;
   datafontId: string;
   panelId: string;
+  name: string;
 }
 
 export class View extends Entity<ViewProps> {

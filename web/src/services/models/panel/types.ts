@@ -39,6 +39,19 @@ export type PieChart = {
   updatedAt: Date;
 };
 
+export type LineChart = {
+  id: string;
+  labelColumn: string;
+  valueColumn: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type LineChartProps = {
+  labelColumn: string;
+  valueColumn: string;
+};
+
 export type PieChartProps = {
   labelColumn: string;
   valueColumn: string;

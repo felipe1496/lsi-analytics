@@ -10,6 +10,8 @@ import { PanelNewViewDataFont } from './panel-new-view/pages/datafont';
 import { PanelNewViewObject } from './panel-new-view/pages/object';
 import { PanelViewStudioBarChartPage } from './panel-new-view/pages/studio/pages/bar-chart';
 import { PanelViewStudioBarChartLayout } from './panel-new-view/pages/studio/pages/bar-chart/layout';
+import { PanelViewStudioLineChartPage } from './panel-new-view/pages/studio/pages/line-chart';
+import { PanelViewStudioLineChartLayout } from './panel-new-view/pages/studio/pages/line-chart/layout';
 import { PanelViewStudioPieChartPage } from './panel-new-view/pages/studio/pages/pie-chart';
 import { PanelViewStudioPieChartLayout } from './panel-new-view/pages/studio/pages/pie-chart/layout';
 import { PanelPage } from './panel-page';
@@ -40,6 +42,12 @@ export const PanelRoutes: React.FC = () => (
           <Route
             path=":id/novo/visualizacao/studio/bar"
             element={<PanelViewStudioBarChartPage />}
+          />
+        </Route>
+        <Route element={<PanelViewStudioLineChartLayout />}>
+          <Route
+            path=":id/novo/visualizacao/studio/line"
+            element={<PanelViewStudioLineChartPage />}
           />
         </Route>
       </Route>

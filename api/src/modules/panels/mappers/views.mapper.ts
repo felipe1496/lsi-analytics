@@ -20,6 +20,7 @@ export class ViewsMapper {
   public static toDomain(view: FullRelationView) {
     return new View({
       id: view.id,
+      name: view.name,
       type: view.type,
       contentUpdate: view.contentUpdate,
       sql: view.sql,
@@ -34,6 +35,7 @@ export class ViewsMapper {
   public static toHttp(view: View) {
     return {
       id: view.id,
+      name: view.props.name,
       type: view.props.type,
       contentUpdate: view.props.contentUpdate,
       sql: view.props.sql,

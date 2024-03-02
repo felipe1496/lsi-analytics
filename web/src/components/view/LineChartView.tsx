@@ -1,13 +1,13 @@
 import React from 'react';
 
 import { EChart } from '@/lib/echarts-for-react';
-import { EBarChartData } from '@/pages/panel/panel-new-view/pages/studio/pages/bar-chart/contexts/PanelNewViewStudioBarChartProvider';
+import { ELineChartData } from '@/pages/panel/panel-new-view/pages/studio/pages/line-chart/contexts/PanelNewViewStudioLineChartProvider';
 
-interface BarChartViewProps {
-  data: EBarChartData;
+interface LineChartViewProps {
+  data: ELineChartData;
 }
 
-export const BarChartView: React.FC<BarChartViewProps> = ({ data }) => (
+export const LineChartView: React.FC<LineChartViewProps> = ({ data }) => (
   <EChart
     style={{
       width: '100%',
@@ -24,7 +24,7 @@ export const BarChartView: React.FC<BarChartViewProps> = ({ data }) => (
       series: [
         {
           data: data.series.data,
-          type: 'bar',
+          type: 'line',
         },
       ],
     }}

@@ -13,6 +13,7 @@ export const APP_ROUTES = {
       studio: {
         pie: '/painel/:id/novo/visualizacao/studio/pie',
         bar: '/painel/:id/novo/visualizacao/studio/bar',
+        line: '/painel/:id/novo/visualizacao/studio/line',
       },
     },
   },
