@@ -119,16 +119,7 @@ export class PanelsController {
     if (updatePanelDto.createViews && updatePanelDto.createViews.length > 0) {
       await Promise.all(
         updatePanelDto.createViews.map(async (c) => {
-          const {
-            core,
-            id,
-            name,
-            type,
-            contentUpdate,
-            sql,
-            panelId,
-            datafontId,
-          } = c;
+          const { core, id, name, type, contentUpdate, sql, datafontId } = c;
           switch (c.type) {
             case 'PIECHART':
               await this.prisma.view.create({
@@ -138,7 +129,7 @@ export class PanelsController {
                   type,
                   contentUpdate,
                   sql,
-                  panelId,
+                  panelId: param.id,
                   datafontId,
                   pieChart: {
                     create: core,
@@ -154,9 +145,24 @@ export class PanelsController {
                   type,
                   contentUpdate,
                   sql,
-                  panelId,
+                  panelId: param.id,
                   datafontId,
                   barChart: {
+                    create: core,
+                  },
+                },
+              });
+            case 'LINECHART':
+              await this.prisma.view.create({
+                data: {
+                  id,
+                  name,
+                  type,
+                  contentUpdate,
+                  sql,
+                  panelId: param.id,
+                  datafontId,
+                  lineChart: {
                     create: core,
                   },
                 },

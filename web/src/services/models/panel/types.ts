@@ -19,7 +19,7 @@ export type PanelProps = {
   imageURL?: string;
 };
 
-export type ViewType = 'PIECHART' | 'BARCHART';
+export type ViewType = 'PIECHART' | 'BARCHART' | 'LINECHART';
 
 export type ContentUpdate = 'DYNAMIC' | 'STATIC';
 

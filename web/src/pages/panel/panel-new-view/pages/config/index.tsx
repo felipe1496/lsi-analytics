@@ -125,6 +125,9 @@ export const PanelNewViewConfig: React.FC = () => {
                       <SelectItem value={PANEL.VIEW.BAR_CHART}>
                         Gráfico de barra
                       </SelectItem>
+                      <SelectItem value={PANEL.VIEW.LINE_CHART}>
+                        Gráfico de linha
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 )}

@@ -79,6 +79,10 @@
   .layout-page {
     @apply h-[calc(100vh-3.5rem)] p-4 md:px-12 md:py-8;
   }
+
+  .link {
+    @apply text-blue-600 hover:text-blue-500 hover:underline;
+  }
 }
 
 .bottomBar {
@@ -94,4 +98,9 @@
   position: absolute;
   bottom: -10px;
   left: 0;
+}
+
+.react-grid-placeholder {
+  background: #3b82f6 !important;
+  background-color: #3b82f6 !important;
 }

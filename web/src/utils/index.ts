@@ -99,16 +99,6 @@ export const objectsAreEqual = (objA: any, objB: any): boolean => {
   return true;
 };
 
-export const inputSetState =
-  (callback: (prop: string | null) => unknown) =>
-  (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target;
-    callback(value);
-  };
-
-export const inputValue = (value: string | null) =>
-  value === null ? '' : value;
-
 export const removeAccents = (str: string) =>
   str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 

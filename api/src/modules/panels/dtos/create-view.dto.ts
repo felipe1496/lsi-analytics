@@ -10,7 +10,7 @@ export class CreateViewDto {
   @IsString()
   name: string;
 
-  @IsIn(['PIECHART', 'BARCHART'])
+  @IsIn(['PIECHART', 'BARCHART', 'LINECHART'])
   type: ViewType;
 
   @IsIn(['STATIC', 'DYNAMIC'])
@@ -23,8 +23,8 @@ export class CreateViewDto {
   @IsObject()
   core: CreatePieChartDto | CreateBarChartDto;
 
-  @IsString()
-  panelId: string;
+  /* @IsString()
+  panelId: string; */
 
   @IsString()
   datafontId: string;

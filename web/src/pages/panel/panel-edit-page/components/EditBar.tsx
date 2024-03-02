@@ -1,4 +1,4 @@
-import { BarChart3, PieChart, Plus } from 'lucide-react';
+import { BarChart3, LineChart, PieChart, Plus } from 'lucide-react';
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -102,6 +102,22 @@ export const EditBar: React.FC<EditBarProps> = ({ data }) => {
               }
             >
               <BarChart3 />
+            </button>
+            <button
+              className={cn(
+                selectedView === PANEL.VIEW.LINE_CHART && 'rounded-sm border',
+              )}
+              onClick={() =>
+                setSelectedView((prevState) => {
+                  if (prevState === PANEL.VIEW.LINE_CHART) {
+                    return null;
+                  }
+
+                  return PANEL.VIEW.LINE_CHART;
+                })
+              }
+            >
+              <LineChart />
             </button>
           </div>
 

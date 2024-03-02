@@ -1,3 +1,4 @@
+import { ErrorMessage } from '@hookform/error-message';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { Copy } from 'lucide-react';
@@ -11,6 +12,7 @@ import {
   BreadcrumbLink,
   BreadcrumbNeutral,
 } from '@/components/breadcrumb';
+import { FieldError } from '@/components/errors/field-error';
 import { Layout } from '@/components/layout';
 import { Typography } from '@/components/typography';
 import { Button } from '@/components/ui/button';
@@ -25,6 +27,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { APP_ROUTES } from '@/constants/app-routes';
+import { REQUIRED_FIELD } from '@/constants/messages';
 import { reactQueryKeys } from '@/constants/react-query-keys';
 import { usersService } from '@/services/users';
 import { copyToClipboard } from '@/utils';
@@ -32,9 +35,9 @@ import { copyToClipboard } from '@/utils';
 import { ConfigBar } from '../components/config-bar';
 
 type FormData = {
-  name?: string;
-  email?: string;
-  birthDay?: string | null;
+  name: string;
+  email: string;
+  birthDay: string;
 };
 
 export const AccountPage: React.FC = () => {
@@ -43,7 +46,13 @@ export const AccountPage: React.FC = () => {
     queryFn: () => usersService.findByToken(),
   });
 
-  const { register, setValue, handleSubmit, watch } = useForm<FormData>({
+  const {
+    register,
+    setValue,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<FormData>({
     defaultValues: {
       name: '',
       email: '',
@@ -57,6 +66,7 @@ export const AccountPage: React.FC = () => {
 
   React.useEffect(() => {
     if (isSuccess && data) {
+      console.log('Executei');
       setValue('name', data.name);
       setValue('email', data.email);
       setValue('birthDay', dayjs(data.birthDay).format('YYYY-MM-DD'));
@@ -82,12 +92,14 @@ export const AccountPage: React.FC = () => {
   const { mutate } = useMutation({
     mutationKey: [reactQueryKeys.mutations.updateUserMutation],
     mutationFn: usersService.update,
+    onSuccess: () =>
+      toast('Usuário atualizado com sucesso', { type: 'success' }),
+    onError: () => toast('Ocorreu um erro', { type: 'error' }),
   });
 
   const onSubmit = (formData: FormData) => {
-    const _birthDay = formData.birthDay
-      ? new Date(formData.birthDay)
-      : undefined;
+    const _birthDay = dayjs(formData.birthDay).toDate();
+
     mutate({
       body: {
         email: formData.email,
@@ -149,17 +161,35 @@ export const AccountPage: React.FC = () => {
             >
               <div className="w-full">
                 <Label>Nome</Label>
-                <Input {...register('name')} />
+                <Input {...register('name', { required: REQUIRED_FIELD })} />
+                <ErrorMessage
+                  errors={errors}
+                  name="name"
+                  render={({ message }) => <FieldError message={message} />}
+                />
               </div>
 
               <div className="w-full">
                 <Label>Email</Label>
-                <Input {...register('email')} />
+                <Input {...register('email', { required: REQUIRED_FIELD })} />
+                <ErrorMessage
+                  errors={errors}
+                  name="email"
+                  render={({ message }) => <FieldError message={message} />}
+                />
               </div>
 
               <div className="w-full">
                 <Label>Data de nascimento</Label>
-                <Input type="date" {...register('birthDay')} />
+                <Input
+                  type="date"
+                  {...register('birthDay', { required: REQUIRED_FIELD })}
+                />
+                <ErrorMessage
+                  errors={errors}
+                  name="birthDay"
+                  render={({ message }) => <FieldError message={message} />}
+                />
               </div>
 
               <div className="w-full">

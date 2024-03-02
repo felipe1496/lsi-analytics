@@ -68,6 +68,7 @@ model DataFont {
 enum ViewType {
   PIECHART
   BARCHART
+  LINECHART
 }
 
 enum ViewContentUpdate {
@@ -83,6 +84,7 @@ model View {
   sql String?
   pieChart PieChart?
   barChart BarChart?
+  lineChart LineChart?
   panel Panel @relation(fields: [panelId], references: [id], onDelete: Cascade)
   panelId String
   datafont DataFont @relation(fields: [datafontId], references: [id])
@@ -111,6 +113,17 @@ model BarChart {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   @@map("BAR_CHART")
+}
+
+model LineChart {
+  id String @default(nanoid()) @id
+  labelColumn String
+  valueColumn String
+  view View @relation(fields: [viewId], references: [id], onDelete: Cascade)
+  viewId String @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@map("LINE_CHART")
 }
 
 enum FeedbackType {

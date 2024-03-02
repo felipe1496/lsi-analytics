@@ -1,4 +1,4 @@
-import { AlertTriangle } from 'lucide-react';
+import { AlertTriangle, Info, XCircle } from 'lucide-react';
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 
@@ -14,7 +14,7 @@ import { Topbar } from './Topbar';
 
 type AlertMessage = {
   message: string;
-  type: 'warning' | 'danger' | 'info';
+  type: 'warning' | 'error' | 'info';
 };
 
 interface LayoutProps {
@@ -55,19 +55,26 @@ export const Layout: React.FC<LayoutProps> = ({
     return footer ? <>{footer}</> : <Footer />;
   };
 
-  const renderAlertMessage = (_alert: AlertMessage) => {
-    switch (_alert.type) {
-      case 'warning':
-        return (
-          <div className="flex w-full items-center justify-center gap-2 bg-amber-500 py-3 text-zinc-50">
-            <AlertTriangle />
-            {_alert.message}
-          </div>
-        );
-
-      default:
-        return null;
+  const renderAlertMessage = () => {
+    if (alert) {
+      return (
+        <div
+          className={cn(
+            'flex w-full items-center justify-center gap-2 py-3 text-zinc-50',
+            alert.type === 'warning' && 'bg-amber-500',
+            alert.type === 'error' && 'bg-red-500',
+            alert.type === 'info' && 'bg-sky-500',
+          )}
+        >
+          {alert.type === 'warning' && <AlertTriangle />}
+          {alert.type === 'error' && <XCircle />}
+          {alert.type === 'info' && <Info />}
+          {alert.message}
+        </div>
+      );
     }
+
+    return null;
   };
 
   return (
@@ -78,7 +85,7 @@ export const Layout: React.FC<LayoutProps> = ({
       </Helmet>
       {loading && <OverlayLoading />}
       <div className="flex flex-col">
-        {alert && renderAlertMessage(alert)}
+        {renderAlertMessage()}
         <div className="flex">
           <Navbar />
           <div className="w-full md:ml-16">

@@ -14,10 +14,7 @@ export const BreadcrumbLink: React.FC<BreadcrumbLinkProps> = ({
   children,
   ...props
 }) => (
-  <Link
-    className="text-sm text-blue-600 hover:text-blue-500 hover:underline"
-    {...props}
-  >
+  <Link className="link text-sm" {...props}>
     {children}
   </Link>
 );

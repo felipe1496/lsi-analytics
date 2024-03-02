@@ -1,4 +1,3 @@
-import './styles/globals.css';
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 
@@ -13,6 +12,7 @@ import { PanelRoutes } from './pages/panel/routes';
 import { PanelsRoutes } from './pages/panels/routes';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
+import './styles/globals.css';
 
 const App: React.FC = () => (
   <Providers>

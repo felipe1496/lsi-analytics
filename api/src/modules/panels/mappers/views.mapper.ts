@@ -2,15 +2,18 @@ import {
   View as PrismaView,
   PieChart as PrismaPieChart,
   BarChart as PrismaBarChart,
+  LineChart as PrismaLineChart,
 } from '@prisma/client';
 import { View } from '../entities/view.entity';
 import { ItWasNotPossibleToCreateViewInstanceError } from '../errors/it-was-not-possible-to-create-view-instance.error';
 import { PieChart } from '../entities/pie-chart.entity';
 import { BarChart } from '../entities/bar-chart.entity';
+import { LineChart } from '../entities/line-chart.entity';
 
 type FullRelationView = PrismaView & {
   pieChart?: PrismaPieChart | null;
   barChart?: PrismaBarChart | null;
+  lineChart?: PrismaLineChart | null;
 };
 
 export class ViewsMapper {
@@ -64,6 +67,16 @@ export class ViewsMapper {
           createdAt: barCore.createdAt,
           updatedAt: barCore.updatedAt,
         };
+      case 'LINECHART':
+        const lineCore = view.props.core as LineChart;
+        return {
+          id: lineCore.id,
+          labelColumn: lineCore.props.labelColumn,
+          valueColumn: lineCore.props.valueColumn,
+          viewId: lineCore.props.viewId,
+          createdAt: lineCore.createdAt,
+          updatedAt: lineCore.updatedAt,
+        };
       default:
         throw new ItWasNotPossibleToCreateViewInstanceError();
     }
@@ -97,7 +110,19 @@ export class ViewsMapper {
           createdAt: barCore.createdAt,
           updatedAt: barCore.updatedAt,
         });
-
+      case 'LINECHART':
+        if (!view.lineChart) {
+          throw new ItWasNotPossibleToCreateViewInstanceError();
+        }
+        const lineCore = view.lineChart;
+        return new LineChart({
+          id: lineCore.id,
+          labelColumn: lineCore.labelColumn,
+          valueColumn: lineCore.valueColumn,
+          viewId: lineCore.viewId,
+          createdAt: lineCore.createdAt,
+          updatedAt: lineCore.updatedAt,
+        });
       default:
         throw new ItWasNotPossibleToCreateViewInstanceError();
     }
