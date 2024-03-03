@@ -201,7 +201,7 @@ export const PanelEditPage: React.FC = () => {
         >
           {newViewsPreview.map((v) => (
             <div key={v.view.id}>
-              <View data={v.echartData} type={v.view.type} />
+              <View data={v.echartData} type={v.view.type} name={v.view.name} />
             </div>
           ))}
           {data.views.map((v) => {
@@ -214,7 +214,11 @@ export const PanelEditPage: React.FC = () => {
             if (graphData) {
               return (
                 <div key={v.view.id}>
-                  <View data={graphData} type={v.view.type} />
+                  <View
+                    data={graphData}
+                    type={v.view.type}
+                    name={v.view.name}
+                  />
                 </div>
               );
             }

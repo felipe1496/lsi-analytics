@@ -19,8 +19,6 @@ interface ViewProps {
 export const View: React.FC<ViewProps> = ({ data, type, name }) => {
   let ViewComponent = null;
 
-  console.log(name);
-
   switch (type) {
     case PANEL.VIEW.PIE_CHART: {
       const _data = data as EPieChartData[];

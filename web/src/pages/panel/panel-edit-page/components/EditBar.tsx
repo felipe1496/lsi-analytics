@@ -1,7 +1,13 @@
-import { BarChart3, LineChart, PieChart, Plus } from 'lucide-react';
+import { BarChart3, CreditCard, LineChart, PieChart, Plus } from 'lucide-react';
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
@@ -13,10 +19,11 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { APP_ROUTES } from '@/constants/app-routes';
 import { PANEL } from '@/services/models/panel/constants';
-import { PanelModel, ViewType } from '@/services/models/panel/types';
+import { PanelModel } from '@/services/models/panel/types';
 import { cn } from '@/utils';
 
 import { usePanelEditContext } from '../../hooks/usePanelEditContext';
+import { ViewSelectButton } from './ViewSelectButton';
 
 interface EditBarProps {
   data: PanelModel;
@@ -25,11 +32,14 @@ interface EditBarProps {
 export const EditBar: React.FC<EditBarProps> = ({ data }) => {
   const location = useLocation();
 
-  const [selectedView, setSelectedView] = React.useState<ViewType | null>(null);
-
-  const { name, setName, description, setDescription } = usePanelEditContext();
-
-  console.log(selectedView);
+  const {
+    name,
+    setName,
+    description,
+    setDescription,
+    selectedView,
+    setSelectedView,
+  } = usePanelEditContext();
 
   return (
     <div className="flex h-full flex-col">
@@ -70,56 +80,40 @@ export const EditBar: React.FC<EditBarProps> = ({ data }) => {
           value="views"
           className="flex h-full flex-col justify-between"
         >
-          <div className="flex flex-wrap gap-4 px-4">
-            <button
-              className={cn(
-                selectedView === PANEL.VIEW.PIE_CHART && 'rounded-sm border',
-              )}
-              onClick={() =>
-                setSelectedView((prevState) => {
-                  if (prevState === PANEL.VIEW.PIE_CHART) {
-                    return null;
-                  }
+          <Accordion
+            type="multiple"
+            className="w-full px-2"
+            defaultValue={['item-1', 'item-2']}
+          >
+            <AccordionItem value="item-1">
+              <AccordionTrigger>Gráficos</AccordionTrigger>
+              <AccordionContent>
+                <div className="grid grid-cols-4 flex-wrap gap-4 px-4">
+                  <ViewSelectButton value={PANEL.VIEW.PIE_CHART}>
+                    <PieChart />
+                  </ViewSelectButton>
 
-                  return PANEL.VIEW.PIE_CHART;
-                })
-              }
-            >
-              <PieChart />
-            </button>
-            <button
-              className={cn(
-                selectedView === PANEL.VIEW.BAR_CHART && 'rounded-sm border',
-              )}
-              onClick={() =>
-                setSelectedView((prevState) => {
-                  if (prevState === PANEL.VIEW.BAR_CHART) {
-                    return null;
-                  }
+                  <ViewSelectButton value={PANEL.VIEW.BAR_CHART}>
+                    <BarChart3 />
+                  </ViewSelectButton>
 
-                  return PANEL.VIEW.BAR_CHART;
-                })
-              }
-            >
-              <BarChart3 />
-            </button>
-            <button
-              className={cn(
-                selectedView === PANEL.VIEW.LINE_CHART && 'rounded-sm border',
-              )}
-              onClick={() =>
-                setSelectedView((prevState) => {
-                  if (prevState === PANEL.VIEW.LINE_CHART) {
-                    return null;
-                  }
-
-                  return PANEL.VIEW.LINE_CHART;
-                })
-              }
-            >
-              <LineChart />
-            </button>
-          </div>
+                  <ViewSelectButton value={PANEL.VIEW.LINE_CHART}>
+                    <LineChart />
+                  </ViewSelectButton>
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="item-2">
+              <AccordionTrigger>Valores</AccordionTrigger>
+              <AccordionContent>
+                <div className="grid grid-cols-4 flex-wrap gap-4 px-4">
+                  <ViewSelectButton value="KPI">
+                    <CreditCard />
+                  </ViewSelectButton>
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
 
           <div className="border-t bg-white p-4">
             <Link

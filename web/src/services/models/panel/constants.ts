@@ -10,4 +10,10 @@ export const PANEL = {
     DINAMIC: 'DINAMIC' as ContentUpdate,
     STATIC: 'STATIC' as ContentUpdate,
   },
+  SIMPLE_VIEW_TYPE_LABEL_MAPPER: {
+    PIECHART: 'Torta',
+    BARCHART: 'Barra',
+    LINECHART: 'Linha',
+    KPI: 'KPI',
+  },
 };

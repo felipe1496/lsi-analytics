@@ -1,7 +1,7 @@
 import React from 'react';
 import { Layout } from 'react-grid-layout';
 
-import { ViewProps } from '@/services/models/panel/types';
+import { ViewProps, ViewType } from '@/services/models/panel/types';
 
 import { EBarChartData } from '../panel-new-view/pages/studio/pages/bar-chart/contexts/PanelNewViewStudioBarChartProvider';
 import { EPieChartData } from '../panel-new-view/pages/studio/pages/pie-chart/contexts/PanelNewViewStudioPieChartProvider';
@@ -30,6 +30,8 @@ type PanelContextType = {
   setName: (value: string) => void;
   description?: string | null;
   setDescription: (value?: string | null) => void;
+  selectedView: ViewType | null;
+  setSelectedView: React.Dispatch<React.SetStateAction<ViewType | null>>;
 };
 
 export const PanelEditContext = React.createContext({} as PanelContextType);
@@ -53,6 +55,7 @@ export const PanelEditProvider: React.FC<PanelProviderProps> = ({
   const [description, setDescription] = React.useState<
     string | null | undefined
   >(null);
+  const [selectedView, setSelectedView] = React.useState<ViewType | null>(null);
 
   const getCreateViews = React.useCallback(
     () =>
@@ -80,8 +83,10 @@ export const PanelEditProvider: React.FC<PanelProviderProps> = ({
       setName,
       description,
       setDescription,
+      selectedView,
+      setSelectedView,
     }),
-    [getCreateViews, layouts, newViewsPreview, name, description],
+    [newViewsPreview, layouts, getCreateViews, name, description, selectedView],
   );
 
   return (
