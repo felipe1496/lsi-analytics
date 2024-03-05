@@ -4,9 +4,7 @@ export type EBarChartData = {
   xAxis: {
     data: (string | number)[];
   };
-  series: {
-    data: (string | number)[];
-  };
+  series: { data: (string | number)[]; type: 'bar' }[];
 };
 
 type PanelNewViewStudioBarChartContextType = {
@@ -22,7 +20,7 @@ interface PanelNewViewStudioBarChartProviderProps {
   children: React.ReactNode;
 }
 
-const ECHART_INITIAL_VALUE = { xAxis: { data: [] }, series: { data: [] } };
+const ECHART_INITIAL_VALUE = { xAxis: { data: [] }, series: [] };
 
 export const PanelNewViewStudioBarChartProvider: React.FC<
   PanelNewViewStudioBarChartProviderProps

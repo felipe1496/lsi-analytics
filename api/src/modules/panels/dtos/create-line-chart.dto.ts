@@ -1,6 +1,6 @@
 import { IsArray, IsString } from 'class-validator';
 
-export class CreateBarChartDto {
+export class CreateLineChartDto {
   @IsString()
   labelColumn: string;
 

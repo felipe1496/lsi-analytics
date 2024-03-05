@@ -27,6 +27,9 @@ import { DataFontNotFoundError } from 'src/modules/datafonts/errors/datafont-not
 import { InvalidDataFontError } from 'src/modules/datafonts/errors/invalid-datafont.error';
 import { PostgresqlService } from 'src/services/databases/postgresql.service';
 import { ViewsMapper } from '../mappers/views.mapper';
+import { CreateBarChartDto } from '../dtos/create-bar-chart.dto';
+import { CreatePieChartDto } from '../dtos/create-pie-chart.dto';
+import { CreateLineChartDto } from '../dtos/create-line-chart.dto';
 
 @Controller('/panels')
 export class PanelsController {
@@ -120,8 +123,11 @@ export class PanelsController {
       await Promise.all(
         updatePanelDto.createViews.map(async (c) => {
           const { core, id, name, type, contentUpdate, sql, datafontId } = c;
+          console.log('c.type: ', c.type);
           switch (c.type) {
-            case 'PIECHART':
+            case 'PIECHART': {
+              console.log('PIECHART');
+              const _core = core as CreatePieChartDto;
               await this.prisma.view.create({
                 data: {
                   id,
@@ -132,12 +138,15 @@ export class PanelsController {
                   panelId: param.id,
                   datafontId,
                   pieChart: {
-                    create: core,
+                    create: _core,
                   },
                 },
               });
               break;
-            case 'BARCHART':
+            }
+            case 'BARCHART': {
+              console.log('BARCHART');
+              const _core = core as CreateBarChartDto;
               await this.prisma.view.create({
                 data: {
                   id,
@@ -148,11 +157,15 @@ export class PanelsController {
                   panelId: param.id,
                   datafontId,
                   barChart: {
-                    create: core,
+                    create: _core,
                   },
                 },
               });
-            case 'LINECHART':
+              break;
+            }
+            case 'LINECHART': {
+              console.log('LINECHART');
+              const _core = core as CreateLineChartDto;
               await this.prisma.view.create({
                 data: {
                   id,
@@ -163,10 +176,12 @@ export class PanelsController {
                   panelId: param.id,
                   datafontId,
                   lineChart: {
-                    create: core,
+                    create: _core,
                   },
                 },
               });
+              break;
+            }
             default:
               break;
           }

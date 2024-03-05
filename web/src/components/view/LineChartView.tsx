@@ -21,12 +21,7 @@ export const LineChartView: React.FC<LineChartViewProps> = ({ data }) => (
       yAxis: {
         type: 'value',
       },
-      series: [
-        {
-          data: data.series.data,
-          type: 'line',
-        },
-      ],
+      series: data.series,
     }}
   />
 );

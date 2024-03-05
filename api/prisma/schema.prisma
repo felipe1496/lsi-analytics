@@ -107,7 +107,7 @@ model PieChart {
 model BarChart {
   id String @default(nanoid()) @id
   labelColumn String
-  valueColumn String
+  valueColumn String[]
   view View @relation(fields: [viewId], references: [id], onDelete: Cascade)
   viewId String @unique
   createdAt DateTime @default(now())
@@ -118,7 +118,7 @@ model BarChart {
 model LineChart {
   id String @default(nanoid()) @id
   labelColumn String
-  valueColumn String
+  valueColumn String[]
   view View @relation(fields: [viewId], references: [id], onDelete: Cascade)
   viewId String @unique
   createdAt DateTime @default(now())

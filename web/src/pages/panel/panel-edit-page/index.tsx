@@ -191,6 +191,8 @@ export const PanelEditPage: React.FC = () => {
     }
   };
 
+  console.log('layout da edição: ', layouts);
+
   const render = () => {
     if (data && hasFilledLayoutWithResponse) {
       return (

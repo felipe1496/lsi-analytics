@@ -4,9 +4,7 @@ export type ELineChartData = {
   xAxis: {
     data: (string | number)[];
   };
-  series: {
-    data: (string | number)[];
-  };
+  series: { data: (string | number)[]; type: 'line' }[];
 };
 
 type PanelNewViewStudioLineChartContextType = {
@@ -22,7 +20,7 @@ interface PanelNewViewStudioLineChartProviderProps {
   children: React.ReactNode;
 }
 
-const ECHART_INITIAL_VALUE = { xAxis: { data: [] }, series: { data: [] } };
+const ECHART_INITIAL_VALUE = { xAxis: { data: [] }, series: [] };
 
 export const PanelNewViewStudioLineChartProvider: React.FC<
   PanelNewViewStudioLineChartProviderProps

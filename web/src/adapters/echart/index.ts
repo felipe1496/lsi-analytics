@@ -18,7 +18,9 @@ export class EchartAdapter {
   }: {
     queryResult: SQLResult;
     type: ViewType;
-    core: PieChartProps & { [key: string]: unknown };
+    core: (PieChartProps | BarChartProps | LineChartProps) & {
+      [key: string]: unknown;
+    };
   }) {
     switch (type) {
       case PANEL.VIEW.PIE_CHART: {
@@ -56,15 +58,17 @@ export class EchartAdapter {
       xAxis: {
         data: [],
       },
-      series: {
-        data: [],
-      },
+      series: core.valueColumn.map(() => ({ data: [], type: 'bar' })),
     };
 
     queryResult.rows.forEach((r) => {
       finalData.xAxis.data.push(r[core.labelColumn]);
-      finalData.series.data.push(r[core.valueColumn]);
+      core.valueColumn.forEach((v, index) => {
+        finalData.series[index].data.push(r[v]);
+      });
     });
+
+    console.log('finalData: ', finalData);
 
     return finalData;
   }
@@ -77,14 +81,14 @@ export class EchartAdapter {
       xAxis: {
         data: [],
       },
-      series: {
-        data: [],
-      },
+      series: core.valueColumn.map(() => ({ data: [], type: 'line' })),
     };
 
     queryResult.rows.forEach((r) => {
       finalData.xAxis.data.push(r[core.labelColumn]);
-      finalData.series.data.push(r[core.valueColumn]);
+      core.valueColumn.forEach((v, index) => {
+        finalData.series[index].data.push(r[v]);
+      });
     });
 
     return finalData;

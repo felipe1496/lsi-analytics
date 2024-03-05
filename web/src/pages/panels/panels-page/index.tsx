@@ -38,9 +38,7 @@ import { PanelRow } from './components/PanelRow';
 import { LAYOUT } from './constants';
 import { usePanelsQuery } from './hooks/usePanelsQuery';
 import { LoadingPanelsPage } from './loading';
-import { MultiSelect } from './MultiSelect';
 import { LayoutType } from './types';
-import { Multi } from './Multi';
 
 interface FormData {
   name: string;
@@ -295,8 +293,6 @@ export const PanelsPage: React.FC = () => {
       }
     >
       {render()}
-      <MultiSelect />
-      <Multi />
     </Layout>
   );
 };

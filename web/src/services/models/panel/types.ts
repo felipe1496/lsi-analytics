@@ -49,7 +49,7 @@ export type LineChart = {
 
 export type LineChartProps = {
   labelColumn: string;
-  valueColumn: string;
+  valueColumn: string[];
 };
 
 export type PieChartProps = {
@@ -59,7 +59,7 @@ export type PieChartProps = {
 
 export type BarChartProps = {
   labelColumn: string;
-  valueColumn: string;
+  valueColumn: string[];
 };
 
 export type CoreType = PieChart | BarChart;

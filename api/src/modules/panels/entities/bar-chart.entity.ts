@@ -2,7 +2,7 @@ import { Entity, PropsConstructor } from 'src/core/domain/Entity';
 
 export interface BarChartProps {
   labelColumn: string;
-  valueColumn: string;
+  valueColumn: string[];
   viewId?: string | null;
 }
 

@@ -5,6 +5,10 @@ import { toast } from 'react-toastify';
 import { twMerge } from 'tailwind-merge';
 
 import { UNEXPECTED_ERROR } from '@/constants/messages';
+import {
+  Breakpoints,
+  LayoutsType,
+} from '@/pages/panel/contexts/PanelEditProvider';
 import { UserWithoutPasswordModel } from '@/services/models/users/types';
 
 export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
@@ -117,4 +121,36 @@ export const copyToClipboard = async ({
   } catch (err) {
     onError();
   }
+};
+
+export const addViewIdToLayout = (
+  prevLayout: LayoutsType,
+  newViewId: string,
+) => {
+  const newState = { ...prevLayout };
+
+  Object.keys(newState).forEach((k) => {
+    const _k = k as Breakpoints;
+
+    let viewsInXZeroHeightSum = 0;
+
+    newState[_k].forEach((l) => {
+      if (l.x === 0) {
+        viewsInXZeroHeightSum += l.h;
+      }
+    });
+
+    newState[_k] = [
+      ...newState[_k],
+      {
+        i: newViewId,
+        x: 0,
+        y: viewsInXZeroHeightSum,
+        w: 6,
+        h: 7,
+      },
+    ];
+  });
+
+  return newState;
 };

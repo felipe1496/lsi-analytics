@@ -4,6 +4,7 @@ import { Layout } from 'react-grid-layout';
 import { ViewProps, ViewType } from '@/services/models/panel/types';
 
 import { EBarChartData } from '../panel-new-view/pages/studio/pages/bar-chart/contexts/PanelNewViewStudioBarChartProvider';
+import { ELineChartData } from '../panel-new-view/pages/studio/pages/line-chart/contexts/PanelNewViewStudioLineChartProvider';
 import { EPieChartData } from '../panel-new-view/pages/studio/pages/pie-chart/contexts/PanelNewViewStudioPieChartProvider';
 
 export type Breakpoints = 'LARGE' | 'MEDIUM' | 'SMALL';
@@ -16,7 +17,7 @@ export const BREAKPOINTS: Record<Breakpoints, Breakpoints> = {
 export type LayoutsType = Record<Breakpoints, Layout[]>;
 
 export type NewViewPreview = {
-  echartData: EPieChartData[] | EBarChartData;
+  echartData: EPieChartData[] | EBarChartData | ELineChartData;
   view: ViewProps;
 };
 

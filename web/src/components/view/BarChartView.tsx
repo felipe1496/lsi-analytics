@@ -21,12 +21,7 @@ export const BarChartView: React.FC<BarChartViewProps> = ({ data }) => (
       yAxis: {
         type: 'value',
       },
-      series: [
-        {
-          data: data.series.data,
-          type: 'bar',
-        },
-      ],
+      series: data.series,
     }}
   />
 );

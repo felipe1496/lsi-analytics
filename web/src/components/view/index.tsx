@@ -11,7 +11,7 @@ import { LineChartView } from './LineChartView';
 import { PieChartView } from './PieChartView';
 
 interface ViewProps {
-  data: EPieChartData[] | EBarChartData;
+  data: EPieChartData[] | EBarChartData | ELineChartData;
   type: ViewType;
   name: string;
 }

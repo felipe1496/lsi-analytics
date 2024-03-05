@@ -18,11 +18,11 @@ import {
   SimpleTabsTrigger,
 } from '@/components/ui/simple-tabs';
 import { APP_ROUTES } from '@/constants/app-routes';
-import { Breakpoints } from '@/pages/panel/contexts/PanelEditProvider';
 import { usePanelEditContext } from '@/pages/panel/hooks/usePanelEditContext';
 import { usePanelNewViewContext } from '@/pages/panel/panel-new-view/hooks/usePanelNewViewContext';
 import { usePanelQuery } from '@/pages/panel/panel-new-view/hooks/usePanelQuery';
 import { PieChartProps } from '@/services/models/panel/types';
+import { addViewIdToLayout } from '@/utils';
 
 import { EPieChartData } from '../contexts/PanelNewViewStudioPieChartProvider';
 import { usePanelNewViewStudioPieChartContext } from '../hooks/usePanelNewViewStudioPieChartContext';
@@ -39,7 +39,9 @@ export const EditBar: React.FC = () => {
 
   const { queryData, viewCreation } = usePanelNewViewContext();
 
-  const { setNewViewsPreview, setLayouts } = usePanelEditContext();
+  const { setNewViewsPreview, setLayouts, layouts } = usePanelEditContext();
+
+  console.log('layout durante studio: ', layouts);
 
   const { setEchartData, echartData } = usePanelNewViewStudioPieChartContext();
 
@@ -78,34 +80,7 @@ export const EditBar: React.FC = () => {
         return newState;
       });
 
-      setLayouts((prevState) => {
-        const newState = { ...prevState };
-
-        Object.keys(newState).forEach((k) => {
-          const _k = k as Breakpoints;
-
-          let higherY = 0;
-
-          newState[_k].forEach((l) => {
-            if (l.y > higherY) {
-              higherY = l.y;
-            }
-          });
-
-          newState[_k] = [
-            ...newState[_k],
-            {
-              i: createdView.id,
-              x: 0,
-              y: higherY === 0 ? higherY : higherY + 1,
-              w: 2,
-              h: 2,
-            },
-          ];
-        });
-
-        return newState;
-      });
+      setLayouts((prevState) => addViewIdToLayout(prevState, createdView.id));
 
       navigate(APP_ROUTES.panel.edit.replace(':id', data.id));
     }

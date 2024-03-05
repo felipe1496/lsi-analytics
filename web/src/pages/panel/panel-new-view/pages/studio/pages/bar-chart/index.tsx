@@ -61,12 +61,7 @@ export const PanelViewStudioBarChartPage: React.FC = () => {
             yAxis: {
               type: 'value',
             },
-            series: [
-              {
-                data: echartData.series.data,
-                type: 'bar',
-              },
-            ],
+            series: echartData.series,
           }}
         />
       );

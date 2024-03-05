@@ -61,12 +61,7 @@ export const PanelViewStudioLineChartPage: React.FC = () => {
             yAxis: {
               type: 'value',
             },
-            series: [
-              {
-                data: echartData.series.data,
-                type: 'line',
-              },
-            ],
+            series: echartData.series,
           }}
         />
       );

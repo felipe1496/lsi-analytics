@@ -4,16 +4,16 @@ import React from 'react';
 
 import { cn } from '@/utils';
 
-export const Listbox = React.forwardRef<
+export const ListBox = React.forwardRef<
   React.ElementRef<typeof HeadlessListbox>,
-  React.ComponentPropsWithoutRef<typeof HeadlessListbox>
+  Omit<React.ComponentPropsWithoutRef<typeof HeadlessListbox>, 'multiple'>
 >(({ children, ...props }) => (
-  <HeadlessListbox {...props}>
+  <HeadlessListbox multiple {...props}>
     <div className="relative mt-1">{children as React.ReactNode}</div>
   </HeadlessListbox>
 ));
 
-Listbox.displayName = HeadlessListbox.displayName;
+ListBox.displayName = HeadlessListbox.displayName;
 
 export const ListBoxTrigger = React.forwardRef<
   React.ElementRef<typeof HeadlessListbox.Button>,
@@ -24,7 +24,7 @@ export const ListBoxTrigger = React.forwardRef<
   <HeadlessListbox.Button
     {...props}
     className={cn(
-      'relative h-9 w-full cursor-pointer rounded-md border bg-white py-2 pl-3 pr-10 text-left focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm',
+      'relative min-h-[36px] w-full cursor-pointer rounded border bg-white py-2 pl-3 pr-10 text-left focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm',
       className,
     )}
   >
@@ -74,11 +74,7 @@ export const ListBoxOption = React.forwardRef<
   }
 >(({ ...props }) => (
   <HeadlessListbox.Option
-    className={({ active }: { active: boolean }) =>
-      `relative cursor-pointer select-none py-2 pl-10 pr-4 ${
-        active ? 'bg-amber-100 text-amber-900' : 'text-gray-900'
-      }`
-    }
+    className={'relative cursor-pointer select-none py-2 pl-10 pr-4'}
     {...props}
   />
 ));

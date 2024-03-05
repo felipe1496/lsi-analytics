@@ -18,18 +18,25 @@ import {
   SimpleTabsTrigger,
 } from '@/components/ui/simple-tabs';
 import { APP_ROUTES } from '@/constants/app-routes';
-import { Breakpoints } from '@/pages/panel/contexts/PanelEditProvider';
 import { usePanelEditContext } from '@/pages/panel/hooks/usePanelEditContext';
 import { usePanelNewViewContext } from '@/pages/panel/panel-new-view/hooks/usePanelNewViewContext';
 import { usePanelQuery } from '@/pages/panel/panel-new-view/hooks/usePanelQuery';
 import { BarChartProps } from '@/services/models/panel/types';
 
+import {
+  ListBox,
+  ListBoxOption,
+  ListBoxOptions,
+  ListBoxTrigger,
+} from '@/components/list-box';
+import { addViewIdToLayout } from '@/utils';
+import { CheckIcon } from 'lucide-react';
 import { ELineChartData } from '../contexts/PanelNewViewStudioLineChartProvider';
 import { usePanelNewViewStudioLineChartContext } from '../hooks/usePanelNewViewStudioLineChartContext';
 
 export const EditBar: React.FC = () => {
   const [category, setCategory] = React.useState<string | null>(null);
-  const [value, setValue] = React.useState<string | null>(null);
+  const [value, setValue] = React.useState<string[]>([]);
 
   const navigate = useNavigate();
 
@@ -78,34 +85,7 @@ export const EditBar: React.FC = () => {
         return newState;
       });
 
-      setLayouts((prevState) => {
-        const newState = { ...prevState };
-
-        Object.keys(newState).forEach((k) => {
-          const _k = k as Breakpoints;
-
-          let higherY = 0;
-
-          newState[_k].forEach((l) => {
-            if (l.y > higherY) {
-              higherY = l.y;
-            }
-          });
-
-          newState[_k] = [
-            ...newState[_k],
-            {
-              i: createdView.id,
-              x: 0,
-              y: higherY === 0 ? higherY : higherY + 1,
-              w: 2,
-              h: 2,
-            },
-          ];
-        });
-
-        return newState;
-      });
+      setLayouts((prevState) => addViewIdToLayout(prevState, createdView.id));
 
       navigate(APP_ROUTES.panel.edit.replace(':id', data.id));
     }
@@ -147,21 +127,41 @@ export const EditBar: React.FC = () => {
               </div>
               <div>
                 <Label>Selecione o valor</Label>
-                <Select onValueChange={setValue}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Valor" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {queryData?.metadata.columns.map((c) => (
-                      <SelectItem
-                        key={`${c.name}-${c.dataType}`}
+                <ListBox value={value} onChange={setValue}>
+                  <ListBoxTrigger>
+                    {value.length > 0
+                      ? value.map((v) => v).join(', ')
+                      : 'Valor'}
+                  </ListBoxTrigger>
+                  <ListBoxOptions>
+                    {queryData?.metadata.columns.map((c, index) => (
+                      <ListBoxOption
+                        key={`${c.name}-${c.dataType}-${index}`}
                         value={c.name}
                       >
-                        {c.name}
-                      </SelectItem>
+                        {({ selected }) => (
+                          <>
+                            <span
+                              className={`block truncate ${
+                                selected ? 'font-medium' : 'font-normal'
+                              }`}
+                            >
+                              {c.name}
+                            </span>
+                            {selected ? (
+                              <span className="absolute inset-y-0 left-0 flex items-center pl-3">
+                                <CheckIcon
+                                  className="h-5 w-5"
+                                  aria-hidden="true"
+                                />
+                              </span>
+                            ) : null}
+                          </>
+                        )}
+                      </ListBoxOption>
                     ))}
-                  </SelectContent>
-                </Select>
+                  </ListBoxOptions>
+                </ListBox>
               </div>
             </div>
           </SimpleTabsContent>
