@@ -26,7 +26,6 @@ export class UsersController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  @UseGuards(AuthGuard)
   public async create(@Body() createUserDto: CreateUserDto) {
     const emailAlreadyExist = await this.usersRepository.findByEmail(
       createUserDto.email,

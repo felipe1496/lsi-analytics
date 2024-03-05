@@ -9,6 +9,7 @@ import {
 import React from 'react';
 import { Layout as GridLayout } from 'react-grid-layout';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import { EchartAdapter } from '@/adapters/echart';
 import {
@@ -135,8 +136,10 @@ export const PanelEditPage: React.FC = () => {
           },
         },
         {
-          onSuccess: () =>
-            navigate(APP_ROUTES.panel.index.replace(':id', data.panel.id)),
+          onSuccess: () => {
+            toast('Painel salvo com sucesso', { type: 'success' });
+            navigate(APP_ROUTES.panel.index.replace(':id', data.panel.id));
+          },
         },
       );
     }
