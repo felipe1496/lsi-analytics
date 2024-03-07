@@ -69,6 +69,7 @@ enum ViewType {
   PIECHART
   BARCHART
   LINECHART
+  NUMBERVIEW
 }
 
 enum ViewContentUpdate {
@@ -85,6 +86,7 @@ model View {
   pieChart PieChart?
   barChart BarChart?
   lineChart LineChart?
+  numberView NumberView?
   panel Panel @relation(fields: [panelId], references: [id], onDelete: Cascade)
   panelId String
   datafont DataFont @relation(fields: [datafontId], references: [id])
@@ -104,10 +106,11 @@ model PieChart {
   updatedAt DateTime @updatedAt
   @@map("PIE_CHART")
 }
+
 model BarChart {
   id String @default(nanoid()) @id
   labelColumn String
-  valueColumn String[]
+  valueColumns String[]
   view View @relation(fields: [viewId], references: [id], onDelete: Cascade)
   viewId String @unique
   createdAt DateTime @default(now())
@@ -118,12 +121,27 @@ model BarChart {
 model LineChart {
   id String @default(nanoid()) @id
   labelColumn String
-  valueColumn String[]
+  valueColumns String[]
   view View @relation(fields: [viewId], references: [id], onDelete: Cascade)
   viewId String @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   @@map("LINE_CHART")
+}
+
+model NumberView {
+  id String @default(nanoid()) @id
+  labelColumn String
+  valueColumn String
+  subTitle String?
+  isPercentage Boolean
+  numberOfDecimaPlaces Int
+  stripeColor String
+  view View @relation(fields: [viewId], references: [id], onDelete: Cascade)
+  viewId String @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@map("NUMBER_VIEW")
 }
 
 enum FeedbackType {

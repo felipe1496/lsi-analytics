@@ -1,19 +1,22 @@
 import {
-  View as PrismaView,
-  PieChart as PrismaPieChart,
   BarChart as PrismaBarChart,
   LineChart as PrismaLineChart,
+  NumberView as PrismaNumberView,
+  PieChart as PrismaPieChart,
+  View as PrismaView,
 } from '@prisma/client';
-import { View } from '../entities/view.entity';
-import { ItWasNotPossibleToCreateViewInstanceError } from '../errors/it-was-not-possible-to-create-view-instance.error';
-import { PieChart } from '../entities/pie-chart.entity';
 import { BarChart } from '../entities/bar-chart.entity';
 import { LineChart } from '../entities/line-chart.entity';
+import { NumberView } from '../entities/number-view.entity';
+import { PieChart } from '../entities/pie-chart.entity';
+import { View } from '../entities/view.entity';
+import { ItWasNotPossibleToCreateViewInstanceError } from '../errors/it-was-not-possible-to-create-view-instance.error';
 
 type FullRelationView = PrismaView & {
   pieChart?: PrismaPieChart | null;
   barChart?: PrismaBarChart | null;
   lineChart?: PrismaLineChart | null;
+  numberView?: PrismaNumberView | null;
 };
 
 export class ViewsMapper {
@@ -64,7 +67,7 @@ export class ViewsMapper {
         return {
           id: barCore.id,
           labelColumn: barCore.props.labelColumn,
-          valueColumn: barCore.props.valueColumn,
+          valueColumns: barCore.props.valueColumns,
           viewId: barCore.props.viewId,
           createdAt: barCore.createdAt,
           updatedAt: barCore.updatedAt,
@@ -74,10 +77,24 @@ export class ViewsMapper {
         return {
           id: lineCore.id,
           labelColumn: lineCore.props.labelColumn,
-          valueColumn: lineCore.props.valueColumn,
+          valueColumns: lineCore.props.valueColumns,
           viewId: lineCore.props.viewId,
           createdAt: lineCore.createdAt,
           updatedAt: lineCore.updatedAt,
+        };
+      case 'NUMBERVIEW':
+        const numberViewCore = view.props.core as NumberView;
+        return {
+          id: numberViewCore.id,
+          labelColumn: numberViewCore.props.labelColumn,
+          valueColumn: numberViewCore.props.valueColumn,
+          subTitle: numberViewCore.props.subTitle,
+          isPercentage: numberViewCore.props.isPercentage,
+          numberOfDecimaPlaces: numberViewCore.props.numberOfDecimaPlaces,
+          stripeColor: numberViewCore.props.stripeColor,
+          viewId: numberViewCore.props.viewId,
+          createdAt: numberViewCore.createdAt,
+          updatedAt: numberViewCore.updatedAt,
         };
       default:
         throw new ItWasNotPossibleToCreateViewInstanceError();
@@ -107,7 +124,7 @@ export class ViewsMapper {
         return new BarChart({
           id: barCore.id,
           labelColumn: barCore.labelColumn,
-          valueColumn: barCore.valueColumn,
+          valueColumns: barCore.valueColumns,
           viewId: barCore.viewId,
           createdAt: barCore.createdAt,
           updatedAt: barCore.updatedAt,
@@ -120,10 +137,27 @@ export class ViewsMapper {
         return new LineChart({
           id: lineCore.id,
           labelColumn: lineCore.labelColumn,
-          valueColumn: lineCore.valueColumn,
+          valueColumns: lineCore.valueColumns,
           viewId: lineCore.viewId,
           createdAt: lineCore.createdAt,
           updatedAt: lineCore.updatedAt,
+        });
+      case 'NUMBERVIEW':
+        if (!view.numberView) {
+          throw new ItWasNotPossibleToCreateViewInstanceError();
+        }
+        const numberViewCore = view.numberView;
+        return new NumberView({
+          id: numberViewCore.id,
+          labelColumn: numberViewCore.labelColumn,
+          valueColumn: numberViewCore.valueColumn,
+          subTitle: numberViewCore.subTitle,
+          isPercentage: numberViewCore.isPercentage,
+          numberOfDecimaPlaces: numberViewCore.numberOfDecimaPlaces,
+          stripeColor: numberViewCore.stripeColor,
+          viewId: numberViewCore.viewId,
+          createdAt: numberViewCore.createdAt,
+          updatedAt: numberViewCore.updatedAt,
         });
       default:
         throw new ItWasNotPossibleToCreateViewInstanceError();

@@ -13,23 +13,24 @@ import {
 } from '@nestjs/common';
 import { CreatePanelDto } from '../dtos/create-panel.dto';
 
-import { PanelsMapper } from '../mappers/panels.mapper';
 import { Request } from 'express';
 import { AuthGuard } from 'src/guards/auth/auth.guard';
+import { PrismaService } from 'src/services/prisma/prisma.service';
 import { IdDto } from 'src/utils/dtos/id.dto';
 import { UpdatePanelDto } from '../dtos/update-panel.dto';
+import { PanelsMapper } from '../mappers/panels.mapper';
 import { PanelsRepository } from '../repositories/abstract/panels.repository';
-import { PrismaService } from 'src/services/prisma/prisma.service';
 
-import { PanelNotFoundError } from '../errors/panel-not-found.error';
-import { DataFontsRepository } from 'src/modules/datafonts/respositories/abstract/datafonts.repository';
 import { DataFontNotFoundError } from 'src/modules/datafonts/errors/datafont-not-found.error';
 import { InvalidDataFontError } from 'src/modules/datafonts/errors/invalid-datafont.error';
+import { DataFontsRepository } from 'src/modules/datafonts/respositories/abstract/datafonts.repository';
 import { PostgresqlService } from 'src/services/databases/postgresql.service';
-import { ViewsMapper } from '../mappers/views.mapper';
 import { CreateBarChartDto } from '../dtos/create-bar-chart.dto';
-import { CreatePieChartDto } from '../dtos/create-pie-chart.dto';
 import { CreateLineChartDto } from '../dtos/create-line-chart.dto';
+import { CreateNumberViewDto } from '../dtos/create-number-view';
+import { CreatePieChartDto } from '../dtos/create-pie-chart.dto';
+import { PanelNotFoundError } from '../errors/panel-not-found.error';
+import { ViewsMapper } from '../mappers/views.mapper';
 
 @Controller('/panels')
 export class PanelsController {
@@ -123,10 +124,8 @@ export class PanelsController {
       await Promise.all(
         updatePanelDto.createViews.map(async (c) => {
           const { core, id, name, type, contentUpdate, sql, datafontId } = c;
-          console.log('c.type: ', c.type);
           switch (c.type) {
             case 'PIECHART': {
-              console.log('PIECHART');
               const _core = core as CreatePieChartDto;
               await this.prisma.view.create({
                 data: {
@@ -145,7 +144,6 @@ export class PanelsController {
               break;
             }
             case 'BARCHART': {
-              console.log('BARCHART');
               const _core = core as CreateBarChartDto;
               await this.prisma.view.create({
                 data: {
@@ -164,7 +162,6 @@ export class PanelsController {
               break;
             }
             case 'LINECHART': {
-              console.log('LINECHART');
               const _core = core as CreateLineChartDto;
               await this.prisma.view.create({
                 data: {
@@ -181,6 +178,23 @@ export class PanelsController {
                 },
               });
               break;
+            }
+            case 'NUMBERVIEW': {
+              const _core = core as CreateNumberViewDto;
+              await this.prisma.view.create({
+                data: {
+                  id,
+                  name,
+                  type,
+                  contentUpdate,
+                  sql,
+                  panelId: param.id,
+                  datafontId,
+                  numberView: {
+                    create: _core,
+                  },
+                },
+              });
             }
             default:
               break;

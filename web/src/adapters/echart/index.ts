@@ -58,17 +58,15 @@ export class EchartAdapter {
       xAxis: {
         data: [],
       },
-      series: core.valueColumn.map(() => ({ data: [], type: 'bar' })),
+      series: core.valueColumns.map(() => ({ data: [], type: 'bar' })),
     };
 
     queryResult.rows.forEach((r) => {
       finalData.xAxis.data.push(r[core.labelColumn]);
-      core.valueColumn.forEach((v, index) => {
+      core.valueColumns.forEach((v, index) => {
         finalData.series[index].data.push(r[v]);
       });
     });
-
-    console.log('finalData: ', finalData);
 
     return finalData;
   }
@@ -81,12 +79,12 @@ export class EchartAdapter {
       xAxis: {
         data: [],
       },
-      series: core.valueColumn.map(() => ({ data: [], type: 'line' })),
+      series: core.valueColumns.map(() => ({ data: [], type: 'line' })),
     };
 
     queryResult.rows.forEach((r) => {
       finalData.xAxis.data.push(r[core.labelColumn]);
-      core.valueColumn.forEach((v, index) => {
+      core.valueColumns.forEach((v, index) => {
         finalData.series[index].data.push(r[v]);
       });
     });

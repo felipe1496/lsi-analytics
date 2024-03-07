@@ -54,7 +54,7 @@ export const EditBar: React.FC = () => {
     if (category && value && queryData) {
       const graphData = EchartAdapter.queryToData({
         queryResult: queryData,
-        core: { labelColumn: category, valueColumn: value },
+        core: { labelColumn: category, valueColumns: value },
         type: viewCreation.type,
       }) as EBarChartData;
 
@@ -74,7 +74,7 @@ export const EditBar: React.FC = () => {
 
       const core: BarChartProps = {
         labelColumn: category,
-        valueColumn: value,
+        valueColumns: value,
       };
 
       Object.assign(createdView, { core });

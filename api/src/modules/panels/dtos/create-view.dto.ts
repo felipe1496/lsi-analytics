@@ -1,8 +1,9 @@
 import { IsIn, IsObject, IsOptional, IsString } from 'class-validator';
-import { CreatePieChartDto } from './create-pie-chart.dto';
 import { ViewContentUpdate, ViewType } from 'src/core/domain/types/common';
 import { CreateBarChartDto } from './create-bar-chart.dto';
 import { CreateLineChartDto } from './create-line-chart.dto';
+import { CreateNumberViewDto } from './create-number-view';
+import { CreatePieChartDto } from './create-pie-chart.dto';
 
 export class CreateViewDto {
   @IsString()
@@ -11,7 +12,7 @@ export class CreateViewDto {
   @IsString()
   name: string;
 
-  @IsIn(['PIECHART', 'BARCHART', 'LINECHART'])
+  @IsIn(['PIECHART', 'BARCHART', 'LINECHART', 'NUMBERVIEW'])
   type: ViewType;
 
   @IsIn(['STATIC', 'DYNAMIC'])
@@ -22,7 +23,11 @@ export class CreateViewDto {
   sql: string;
 
   @IsObject()
-  core: CreatePieChartDto | CreateBarChartDto | CreateLineChartDto;
+  core:
+    | CreatePieChartDto
+    | CreateBarChartDto
+    | CreateLineChartDto
+    | CreateNumberViewDto;
 
   @IsString()
   datafontId: string;

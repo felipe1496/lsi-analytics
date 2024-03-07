@@ -39,9 +39,7 @@ export const EditBar: React.FC = () => {
 
   const { queryData, viewCreation } = usePanelNewViewContext();
 
-  const { setNewViewsPreview, setLayouts, layouts } = usePanelEditContext();
-
-  console.log('layout durante studio: ', layouts);
+  const { setNewViewsPreview, setLayouts } = usePanelEditContext();
 
   const { setEchartData, echartData } = usePanelNewViewStudioPieChartContext();
 

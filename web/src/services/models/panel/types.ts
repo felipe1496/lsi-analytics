@@ -26,7 +26,7 @@ export type ContentUpdate = 'DYNAMIC' | 'STATIC';
 export type BarChart = {
   id: string;
   labelColumn: string;
-  valueColumn: string;
+  valueColumns: string[];
   createdAt: Date;
   updatedAt: Date;
 };
@@ -42,14 +42,14 @@ export type PieChart = {
 export type LineChart = {
   id: string;
   labelColumn: string;
-  valueColumn: string;
+  valueColumns: string[];
   createdAt: Date;
   updatedAt: Date;
 };
 
 export type LineChartProps = {
   labelColumn: string;
-  valueColumn: string[];
+  valueColumns: string[];
 };
 
 export type PieChartProps = {
@@ -59,10 +59,10 @@ export type PieChartProps = {
 
 export type BarChartProps = {
   labelColumn: string;
-  valueColumn: string[];
+  valueColumns: string[];
 };
 
-export type CoreType = PieChart | BarChart;
+export type CoreType = PieChart | BarChart | LineChart;
 
 export type ViewModel = {
   id: string;

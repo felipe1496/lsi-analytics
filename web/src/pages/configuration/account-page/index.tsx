@@ -66,7 +66,6 @@ export const AccountPage: React.FC = () => {
 
   React.useEffect(() => {
     if (isSuccess && data) {
-      console.log('Executei');
       setValue('name', data.name);
       setValue('email', data.email);
       setValue('birthDay', dayjs(data.birthDay).format('YYYY-MM-DD'));

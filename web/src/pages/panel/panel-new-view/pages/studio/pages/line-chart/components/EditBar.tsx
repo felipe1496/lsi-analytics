@@ -1,7 +1,14 @@
+import { CheckIcon } from 'lucide-react';
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { EchartAdapter } from '@/adapters/echart';
+import {
+  ListBox,
+  ListBoxOption,
+  ListBoxOptions,
+  ListBoxTrigger,
+} from '@/components/list-box';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import {
@@ -22,15 +29,8 @@ import { usePanelEditContext } from '@/pages/panel/hooks/usePanelEditContext';
 import { usePanelNewViewContext } from '@/pages/panel/panel-new-view/hooks/usePanelNewViewContext';
 import { usePanelQuery } from '@/pages/panel/panel-new-view/hooks/usePanelQuery';
 import { BarChartProps } from '@/services/models/panel/types';
-
-import {
-  ListBox,
-  ListBoxOption,
-  ListBoxOptions,
-  ListBoxTrigger,
-} from '@/components/list-box';
 import { addViewIdToLayout } from '@/utils';
-import { CheckIcon } from 'lucide-react';
+
 import { ELineChartData } from '../contexts/PanelNewViewStudioLineChartProvider';
 import { usePanelNewViewStudioLineChartContext } from '../hooks/usePanelNewViewStudioLineChartContext';
 
@@ -54,7 +54,7 @@ export const EditBar: React.FC = () => {
     if (category && value && queryData) {
       const graphData = EchartAdapter.queryToData({
         queryResult: queryData,
-        core: { labelColumn: category, valueColumn: value },
+        core: { labelColumn: category, valueColumns: value },
         type: viewCreation.type,
       }) as ELineChartData;
 
@@ -74,7 +74,7 @@ export const EditBar: React.FC = () => {
 
       const core: BarChartProps = {
         labelColumn: category,
-        valueColumn: value,
+        valueColumns: value,
       };
 
       Object.assign(createdView, { core });

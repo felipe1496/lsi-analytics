@@ -2,7 +2,7 @@ import { Entity, PropsConstructor } from 'src/core/domain/Entity';
 
 export interface LineChartProps {
   labelColumn: string;
-  valueColumn: string[];
+  valueColumns: string[];
   viewId?: string | null;
 }
 

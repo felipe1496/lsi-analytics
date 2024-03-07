@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { JsonObject } from '@prisma/client/runtime/library';
 import { PrismaService } from 'src/services/prisma/prisma.service';
 import { PanelsMapper } from '../../mappers/panels.mapper';
 import {
@@ -10,7 +11,6 @@ import {
   PanelsRepository,
   UpdateProps,
 } from '../abstract/panels.repository';
-import { JsonObject } from '@prisma/client/runtime/library';
 
 @Injectable()
 export class PrismaPanelsRepository implements PanelsRepository {
@@ -90,6 +90,7 @@ export class PrismaPanelsRepository implements PanelsRepository {
             pieChart: true,
             barChart: true,
             lineChart: true,
+            numberView: true,
           },
         },
       },

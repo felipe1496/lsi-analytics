@@ -153,7 +153,7 @@ export const PanelNewViewConfig: React.FC = () => {
                     <Label htmlFor="STATIC">Estático</Label>
                   </div>
                   <Typography level="muted">
-                    A plataforma guarda os dados da primeira requisição e fazer
+                    A plataforma guarda os dados da primeira requisição e faz
                     uma nova requisição para atualizar é arbitrária
                   </Typography>
                   <div className="flex items-center space-x-2">
