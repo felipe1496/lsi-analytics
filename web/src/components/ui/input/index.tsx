@@ -4,6 +4,7 @@ import React from 'react';
 
 import { HTMLDivProps } from '@/types/html';
 import { cn } from '@/utils';
+import { number } from './masks';
 
 export type ErrorMessageProps = Required<
   React.ComponentProps<typeof ErrorMessage>
@@ -13,16 +14,34 @@ export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
   error?: boolean;
   rigthAdornment?: React.ReactNode | string | number | JSX.Element;
+  mask?: 'number';
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, error, rigthAdornment, ...props }, ref) => {
+  (
+    { className, type, error, rigthAdornment, mask, onKeyUp, ...props },
+    ref,
+  ) => {
     const Wrapper = rigthAdornment ? 'div' : React.Fragment;
     const wrapperProps: HTMLDivProps = {};
 
     if (rigthAdornment) {
       wrapperProps.className = 'relative';
     }
+
+    const handleKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
+      switch (mask) {
+        case 'number':
+          number(event);
+          break;
+        default:
+          break;
+      }
+
+      if (onKeyUp) {
+        onKeyUp(event);
+      }
+    };
 
     return (
       <Wrapper {...wrapperProps}>
@@ -35,6 +54,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             className,
           )}
           ref={ref}
+          onKeyUp={handleKeyUp}
           {...props}
         />
         {rigthAdornment && (

@@ -154,3 +154,11 @@ export const addViewIdToLayout = (
 
   return newState;
 };
+
+export const formatDecimalPlaces = (
+  number: number,
+  decimalPlaces: number,
+): number => {
+  const potenciaDez = 10 ** decimalPlaces;
+  return Math.round(number * potenciaDez) / potenciaDez;
+};

@@ -16,7 +16,7 @@ export const LandingPage: React.FC = () => (
               <span className="text-indigo-500">fácil e intuitiva</span>
             </h1>
 
-            <span className="text-xl text-zinc-500">
+            <span className="text-xl text-foreground">
               Plataforma focada na usabilidade do usuário
             </span>
           </div>

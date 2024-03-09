@@ -14,6 +14,7 @@ export const APP_ROUTES = {
         pie: '/painel/:id/novo/visualizacao/studio/pie',
         bar: '/painel/:id/novo/visualizacao/studio/bar',
         line: '/painel/:id/novo/visualizacao/studio/line',
+        number: '/painel/:id/novo/visualizacao/studio/number',
       },
     },
   },
@@ -29,7 +30,7 @@ export const APP_ROUTES = {
     index: '/config/conta',
     preferences: '/config/preferencias',
   },
-  misc: {
+  brand: {
     landing: '/',
   },
   docs: {

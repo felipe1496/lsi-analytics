@@ -108,7 +108,7 @@ export const PanelNewViewDataFont: React.FC = () => {
             <div className="relative">
               <Input placeholder="Busque uma fonte" className="pr-8" />
               <Search
-                className="absolute right-4 top-1/2 -translate-y-1/2 transform text-zinc-500"
+                className="absolute right-4 top-1/2 -translate-y-1/2 transform text-foreground"
                 size={18}
               />
             </div>

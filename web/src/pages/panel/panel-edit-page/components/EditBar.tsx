@@ -1,4 +1,4 @@
-import { BarChart3, CreditCard, LineChart, PieChart, Plus } from 'lucide-react';
+import { BarChart3, Binary, LineChart, PieChart, Plus } from 'lucide-react';
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -17,11 +17,11 @@ import {
   SimpleTabsTrigger,
 } from '@/components/ui/simple-tabs';
 import { Textarea } from '@/components/ui/textarea';
-import { APP_ROUTES } from '@/constants/app-routes';
 import { PANEL } from '@/services/models/panel/constants';
 import { PanelModel } from '@/services/models/panel/types';
-import { cn } from '@/utils';
 
+import { APP_ROUTES } from '@/constants/app-routes';
+import { cn } from '@/utils';
 import { usePanelEditContext } from '../../hooks/usePanelEditContext';
 import { ViewSelectButton } from './ViewSelectButton';
 
@@ -32,14 +32,8 @@ interface EditBarProps {
 export const EditBar: React.FC<EditBarProps> = ({ data }) => {
   const location = useLocation();
 
-  const {
-    name,
-    setName,
-    description,
-    setDescription,
-    selectedView,
-    setSelectedView,
-  } = usePanelEditContext();
+  const { name, setName, description, setDescription, selectedView } =
+    usePanelEditContext();
 
   return (
     <div className="flex h-full flex-col">
@@ -89,15 +83,15 @@ export const EditBar: React.FC<EditBarProps> = ({ data }) => {
               <AccordionTrigger>Gráficos</AccordionTrigger>
               <AccordionContent>
                 <div className="grid grid-cols-4 flex-wrap gap-4 px-4">
-                  <ViewSelectButton value={PANEL.VIEW.PIE_CHART}>
+                  <ViewSelectButton value={PANEL.VIEW.PIECHART}>
                     <PieChart />
                   </ViewSelectButton>
 
-                  <ViewSelectButton value={PANEL.VIEW.BAR_CHART}>
+                  <ViewSelectButton value={PANEL.VIEW.BARCHART}>
                     <BarChart3 />
                   </ViewSelectButton>
 
-                  <ViewSelectButton value={PANEL.VIEW.LINE_CHART}>
+                  <ViewSelectButton value={PANEL.VIEW.LINECHART}>
                     <LineChart />
                   </ViewSelectButton>
                 </div>
@@ -107,15 +101,15 @@ export const EditBar: React.FC<EditBarProps> = ({ data }) => {
               <AccordionTrigger>Valores</AccordionTrigger>
               <AccordionContent>
                 <div className="grid grid-cols-4 flex-wrap gap-4 px-4">
-                  <ViewSelectButton value="KPI">
-                    <CreditCard />
+                  <ViewSelectButton value={PANEL.VIEW.NUMBERVIEW}>
+                    <Binary />
                   </ViewSelectButton>
                 </div>
               </AccordionContent>
             </AccordionItem>
           </Accordion>
 
-          <div className="border-t bg-white p-4">
+          <div className="border-t p-4">
             <Link
               className={cn(
                 'flex w-full items-center justify-center gap-1 rounded-sm bg-blue-500 py-2 text-sm text-zinc-50',

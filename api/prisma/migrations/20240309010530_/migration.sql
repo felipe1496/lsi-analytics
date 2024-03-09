@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "NUMBER_VIEW" ALTER COLUMN "numberOfDecimaPlaces" DROP NOT NULL;

@@ -1,5 +1,5 @@
 import { ErrorMessage } from '@hookform/error-message';
-import Editor, { OnMount } from '@monaco-editor/react';
+import Editor, { BeforeMount, OnMount } from '@monaco-editor/react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { ChevronLeft, ChevronRight, CornerDownLeft, Sheet } from 'lucide-react';
 import React from 'react';
@@ -38,6 +38,7 @@ import { reactQueryKeys } from '@/constants/react-query-keys';
 import { dataFontsService } from '@/services/datafonts';
 import { favoriteQueriesService } from '@/services/favorite-queries';
 
+import { useTheme } from '@/hooks/useTheme';
 import { usePanelNewViewContext } from '../../hooks/usePanelNewViewContext';
 import { usePanelQuery } from '../../hooks/usePanelQuery';
 import { TYPE_STUDIO_LINK_MAPPER } from './constants';
@@ -48,6 +49,9 @@ type FormData = {
 
 export const PanelNewViewObject: React.FC = () => {
   const [schemaName, setSchemaName] = React.useState<string>('');
+  const [editorTheme, setEditorTheme] = React.useState<string | undefined>(
+    undefined,
+  );
 
   const sqlRef = React.useRef<string | undefined>();
   const textSelectionRef = React.useRef<string | undefined>();
@@ -195,6 +199,32 @@ export const PanelNewViewObject: React.FC = () => {
     return <NoData />;
   };
 
+  const { theme } = useTheme();
+
+  React.useEffect(() => {
+    const root = window.document.documentElement;
+    if (root.classList.contains('dark')) {
+      setEditorTheme('dark');
+    } else {
+      setEditorTheme(undefined);
+    }
+  }, [theme]);
+
+  const handleBoforeMount: BeforeMount = (monaco) => {
+    monaco.editor.defineTheme('dark', {
+      base: 'vs-dark',
+      inherit: true,
+      rules: [
+        { token: '', background: '1f1f1f' },
+        { token: '', background: '1f1f1f', foreground: 'd4d4d4' },
+        { token: 'string.sql', foreground: '24b47e' },
+        { token: 'comment', foreground: '666666' },
+        { token: 'predefined.sql', foreground: 'D4D4D4' },
+      ],
+      colors: { 'editor.background': '#1f1f1f' },
+    });
+  };
+
   const handleEditorDidMount: OnMount = (editor, monaco) => {
     editor.addAction({
       id: 'run-query',
@@ -232,7 +262,7 @@ export const PanelNewViewObject: React.FC = () => {
   const renderSqlResult = () => {
     if (isPending) {
       return (
-        <div className="bg-zinc-50 px-4 py-1">
+        <div className="bg-muted/40 px-4 py-1">
           <span className="text-sm font-semibold">Carregando...</span>
         </div>
       );
@@ -246,7 +276,7 @@ export const PanelNewViewObject: React.FC = () => {
               {sqlData.metadata.columns.map((c, index) => (
                 <th
                   key={`th-${c.name}-${c.dataType}-${index}`}
-                  className="border bg-zinc-200/40 p-2 font-semibold"
+                  className="border bg-muted/50 p-2 font-semibold"
                 >
                   <div className="flex gap-1">
                     <span>{c.name}</span>
@@ -315,6 +345,7 @@ export const PanelNewViewObject: React.FC = () => {
       return (
         <>
           <Editor
+            theme={editorTheme}
             height={400}
             width="100%"
             defaultLanguage="sql"
@@ -326,9 +357,10 @@ export const PanelNewViewObject: React.FC = () => {
               clearErrors('name');
               sqlRef.current = value;
             }}
+            beforeMount={handleBoforeMount}
           />
 
-          <div className="flex items-center justify-between bg-zinc-100 px-4 py-2">
+          <div className="flex items-center justify-between bg-muted px-4 py-2">
             <span className="text-sm">{`Resultados${
               sqlData ? ` (${sqlData.rows.length})` : ' (0)'
             }`}</span>
@@ -337,11 +369,7 @@ export const PanelNewViewObject: React.FC = () => {
               <Dialog>
                 <DialogTrigger asChild>
                   <button>
-                    <img
-                      src="/icons/heart-fill.svg"
-                      alt=""
-                      className="w-[20px]"
-                    />
+                    <img src="/icons/heart-fill.svg" className="w-[20px]" />
                   </button>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-[425px]">
@@ -396,7 +424,7 @@ export const PanelNewViewObject: React.FC = () => {
                 }}
               >
                 Executar{' '}
-                <span className="flex items-center text-[10px] text-sm text-zinc-200">
+                <span className="flex items-center text-[10px] text-sm text-muted-foreground">
                   Ctrl <CornerDownLeft size={14} />
                 </span>
               </Button>
@@ -477,7 +505,7 @@ export const PanelNewViewObject: React.FC = () => {
             {/* Funcionalidade despriorizada */}
             {/* {renderFavoriteQueries()} */}
 
-            <span className="text-sm">
+            <span className="text-sm text-foreground">
               Tabelas {tablesData ? `(${tablesData?.tables.length})` : '(0)'}
             </span>
 

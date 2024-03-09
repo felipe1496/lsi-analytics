@@ -132,11 +132,9 @@ model LineChart {
 model NumberView {
   id String @default(nanoid()) @id
   labelColumn String
-  valueColumn String
   subTitle String?
   isPercentage Boolean
-  numberOfDecimaPlaces Int
-  stripeColor String
+  numberOfDecimaPlaces Int?
   view View @relation(fields: [viewId], references: [id], onDelete: Cascade)
   viewId String @unique
   createdAt DateTime @default(now())

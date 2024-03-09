@@ -5,6 +5,7 @@ import { SQLResult } from '@/services/models/datafont/types';
 import { PANEL } from '@/services/models/panel/constants';
 import {
   BarChartProps,
+  GraphTypeCore,
   LineChartProps,
   PieChartProps,
   ViewType,
@@ -18,20 +19,20 @@ export class EchartAdapter {
   }: {
     queryResult: SQLResult;
     type: ViewType;
-    core: (PieChartProps | BarChartProps | LineChartProps) & {
+    core: GraphTypeCore & {
       [key: string]: unknown;
     };
   }) {
     switch (type) {
-      case PANEL.VIEW.PIE_CHART: {
+      case PANEL.VIEW.PIECHART: {
         const _core = core as PieChartProps & { [key: string]: unknown };
         return this.pieChartQueryToData(queryResult, _core);
       }
-      case PANEL.VIEW.BAR_CHART: {
+      case PANEL.VIEW.BARCHART: {
         const _core = core as BarChartProps & { [key: string]: unknown };
         return this.barChartQueryToData(queryResult, _core);
       }
-      case PANEL.VIEW.LINE_CHART: {
+      case PANEL.VIEW.LINECHART: {
         const _core = core as LineChartProps & { [key: string]: unknown };
         return this.lineChartQueryToData(queryResult, _core);
       }

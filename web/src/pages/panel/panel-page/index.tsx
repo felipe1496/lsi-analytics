@@ -116,7 +116,7 @@ export const PanelPage: React.FC = () => {
                     state={{ tab: 'views' }}
                     className="flex items-center gap-2"
                   >
-                    <Plus size={16} className="text-zinc-500" />
+                    <Plus size={16} className="text-foreground" />
                     Nova visualização
                   </Link>
                 </DropdownMenuItem>
@@ -125,7 +125,7 @@ export const PanelPage: React.FC = () => {
                     to={APP_ROUTES.panel.edit.replace(':id', id)}
                     className="flex items-center gap-2"
                   >
-                    <Settings size={16} className="text-zinc-500" />
+                    <Settings size={16} className="text-foreground" />
                     Editar painel
                   </Link>
                 </DropdownMenuItem>

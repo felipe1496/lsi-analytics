@@ -71,7 +71,7 @@ export const LoginPage: React.FC = () => {
   return (
     <AuthLayout
       className="flex items-center justify-center"
-      backButtonTo={APP_ROUTES.misc.landing}
+      backButtonTo={APP_ROUTES.brand.landing}
     >
       <form
         onSubmit={handleSubmit(onSubmit)}

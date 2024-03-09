@@ -6,8 +6,9 @@ import { ToastContainer } from 'react-toastify';
 
 import { queryClient } from '@/lib/react-query';
 
-import { TooltipProvider } from '../ui/tooltip';
 import 'react-toastify/dist/ReactToastify.css';
+import { TooltipProvider } from '../ui/tooltip';
+import { ThemeProvider } from './ThemeProvider';
 
 interface ProvidersProps {
   children: React.ReactNode;
@@ -17,8 +18,10 @@ export const Providers: React.FC<ProvidersProps> = ({ children }) => (
   <HelmetProvider>
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        {children}
-        <ToastContainer />
+        <ThemeProvider>
+          {children}
+          <ToastContainer />
+        </ThemeProvider>
       </TooltipProvider>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>

@@ -36,7 +36,7 @@ export const StepNumber: React.FC<StepNumberProps> = ({
       )}
     >
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-        {mode === 'complete' ? <Check className="text-zinc-50" /> : children}
+        {mode === 'complete' ? <Check className="text-foreground" /> : children}
       </div>
     </button>
     <div className="flex flex-col">
@@ -44,7 +44,7 @@ export const StepNumber: React.FC<StepNumberProps> = ({
         <span className="whitespace-nowrap text-sm font-semibold">{name}</span>
       )}
       {description && (
-        <span className="whitespace-nowrap text-sm text-zinc-500">
+        <span className="whitespace-nowrap text-sm text-foreground">
           {description}
         </span>
       )}

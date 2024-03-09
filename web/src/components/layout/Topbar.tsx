@@ -4,15 +4,19 @@ import {
   ChevronDown,
   LogOut,
   MessageSquareMore,
+  Moon,
   Settings,
+  Sun,
   User,
 } from 'lucide-react';
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { APP_ROUTES } from '@/constants/app-routes';
+import { useTheme } from '@/hooks/useTheme';
 import { capitalizarFirstLetter, cn, getUserInfo } from '@/utils';
 
+import { THEME } from '../providers/constants';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -34,6 +38,8 @@ export const Topbar: React.FC<TopbarProps> = ({
   const [feedbackPopoverIsOpen, setFeedbackPopoverIsOpen] =
     React.useState<boolean>(false);
 
+  const { theme, setTheme } = useTheme();
+
   const user = getUserInfo();
 
   const queryClient = useQueryClient();
@@ -44,7 +50,7 @@ export const Topbar: React.FC<TopbarProps> = ({
     Cookies.remove('accessToken');
     localStorage.removeItem('user');
     queryClient.clear();
-    navigate(APP_ROUTES.misc.landing);
+    navigate(APP_ROUTES.brand.landing);
   };
 
   const UserBoxWrapper = rightContent ? 'div' : React.Fragment;
@@ -74,7 +80,7 @@ export const Topbar: React.FC<TopbarProps> = ({
                   to={APP_ROUTES.config.index}
                   className="flex items-center gap-2"
                 >
-                  <User size={18} className="text-zinc-500" />
+                  <User size={18} className="text-foreground" />
                   {capitalizarFirstLetter(user.name)}
                 </Link>
               </DropdownMenuItem>
@@ -84,7 +90,7 @@ export const Topbar: React.FC<TopbarProps> = ({
                   to={APP_ROUTES.config.index}
                   className="flex items-center gap-2"
                 >
-                  <Settings size={16} className="text-zinc-500" />
+                  <Settings size={16} className="text-foreground" />
                   Configurações
                 </Link>
               </DropdownMenuItem>
@@ -93,10 +99,44 @@ export const Topbar: React.FC<TopbarProps> = ({
                   className="flex w-full items-center gap-2"
                   onClick={() => setFeedbackPopoverIsOpen(true)}
                 >
-                  <MessageSquareMore size={16} className="text-zinc-500" />
+                  <MessageSquareMore size={16} className="text-foreground" />
                   Feedback
                 </button>
               </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <div className="flex w-full items-center justify-center px-4 py-2">
+                <div className="flex items-center justify-between">
+                  <button
+                    onClick={() => setTheme(THEME.DARK)}
+                    className={cn(
+                      'rounded-md border px-4 py-2',
+                      theme === THEME.DARK ? 'bg-muted' : 'hover:bg-muted',
+                    )}
+                  >
+                    <Moon size={16} />
+                  </button>
+
+                  <button
+                    onClick={() => setTheme(THEME.SYSTEM)}
+                    className={cn(
+                      'mx-2 rounded-md border px-4 py-2 text-sm hover:bg-muted',
+                      theme === THEME.SYSTEM ? 'bg-muted' : 'hover:bg-muted',
+                    )}
+                  >
+                    Auto
+                  </button>
+
+                  <button
+                    onClick={() => setTheme(THEME.LIGHT)}
+                    className={cn(
+                      'rounded-md border px-4 py-2',
+                      theme === THEME.LIGHT ? 'bg-muted' : 'hover:bg-muted',
+                    )}
+                  >
+                    <Sun size={16} />
+                  </button>
+                </div>
+              </div>
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
                 <button
@@ -119,7 +159,7 @@ export const Topbar: React.FC<TopbarProps> = ({
   return (
     <header
       className={cn(
-        'b fixed z-10 flex h-14 w-full items-center border-b bg-white px-4 md:w-[calc(100vw-3rem)] md:px-12',
+        'b fixed z-10 flex h-14 w-full items-center border-b bg-background px-4 md:w-[calc(100vw-3rem)] md:px-12',
         breadcrumb ? 'justify-between' : 'justify-end',
       )}
     >

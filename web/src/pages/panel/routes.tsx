@@ -12,6 +12,8 @@ import { PanelViewStudioBarChartPage } from './panel-new-view/pages/studio/pages
 import { PanelViewStudioBarChartLayout } from './panel-new-view/pages/studio/pages/bar-chart/layout';
 import { PanelViewStudioLineChartPage } from './panel-new-view/pages/studio/pages/line-chart';
 import { PanelViewStudioLineChartLayout } from './panel-new-view/pages/studio/pages/line-chart/layout';
+import { PanelViewStudioNewViewPage } from './panel-new-view/pages/studio/pages/number-view';
+import { PanelViewStudioNumberViewLayout } from './panel-new-view/pages/studio/pages/number-view/layout';
 import { PanelViewStudioPieChartPage } from './panel-new-view/pages/studio/pages/pie-chart';
 import { PanelViewStudioPieChartLayout } from './panel-new-view/pages/studio/pages/pie-chart/layout';
 import { PanelPage } from './panel-page';
@@ -48,6 +50,12 @@ export const PanelRoutes: React.FC = () => (
           <Route
             path=":id/novo/visualizacao/studio/line"
             element={<PanelViewStudioLineChartPage />}
+          />
+        </Route>
+        <Route element={<PanelViewStudioNumberViewLayout />}>
+          <Route
+            path=":id/novo/visualizacao/studio/number"
+            element={<PanelViewStudioNewViewPage />}
           />
         </Route>
       </Route>

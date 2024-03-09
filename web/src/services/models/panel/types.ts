@@ -2,7 +2,6 @@ import { Layout } from 'react-grid-layout';
 
 import { Breakpoints } from '@/pages/panel/contexts/PanelEditProvider';
 
-import { SQLResult } from '../datafont/types';
 import { BaseModel } from '../types';
 
 export type PanelModel = BaseModel & {
@@ -19,7 +18,7 @@ export type PanelProps = {
   imageURL?: string;
 };
 
-export type ViewType = 'PIECHART' | 'BARCHART' | 'LINECHART';
+export type ViewType = 'PIECHART' | 'BARCHART' | 'LINECHART' | 'NUMBERVIEW';
 
 export type ContentUpdate = 'DYNAMIC' | 'STATIC';
 
@@ -47,6 +46,23 @@ export type LineChart = {
   updatedAt: Date;
 };
 
+export type NumberView = {
+  id: string;
+  labelColumn: string;
+  subTitle?: string | null;
+  isPercentage: boolean;
+  numberOfDecimalPlaces?: number | null;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type NumberViewProps = {
+  labelColumn: string;
+  subTitle?: string | null;
+  isPercentage: boolean;
+  numberOfDecimalPlaces?: number | null;
+};
+
 export type LineChartProps = {
   labelColumn: string;
   valueColumns: string[];
@@ -62,7 +78,9 @@ export type BarChartProps = {
   valueColumns: string[];
 };
 
-export type CoreType = PieChart | BarChart | LineChart;
+export type CoreType = PieChart | BarChart | LineChart | NumberView;
+
+export type GraphTypeCore = PieChart | BarChart | LineChart;
 
 export type ViewModel = {
   id: string;
@@ -70,7 +88,6 @@ export type ViewModel = {
   type: ViewType;
   contentUpdate: ContentUpdate;
   datafontId: string;
-  staticData?: SQLResult;
   sql: string;
   panelId: string;
   core: CoreType;
@@ -79,5 +96,5 @@ export type ViewModel = {
 };
 
 export type ViewProps = Omit<ViewModel, 'createdAt' | 'updatedAt' | 'core'> & {
-  core: PieChartProps | BarChartProps;
+  core: PieChartProps | BarChartProps | LineChartProps | NumberViewProps;
 };

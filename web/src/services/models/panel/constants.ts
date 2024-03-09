@@ -2,9 +2,10 @@ import { ContentUpdate, ViewType } from './types';
 
 export const PANEL = {
   VIEW: {
-    PIE_CHART: 'PIECHART' as ViewType,
-    BAR_CHART: 'BARCHART' as ViewType,
-    LINE_CHART: 'LINECHART' as ViewType,
+    PIECHART: 'PIECHART' as ViewType,
+    BARCHART: 'BARCHART' as ViewType,
+    LINECHART: 'LINECHART' as ViewType,
+    NUMBERVIEW: 'NUMBERVIEW' as ViewType,
   },
   CONTENT_UPDATE: {
     DINAMIC: 'DINAMIC' as ContentUpdate,
@@ -14,6 +15,6 @@ export const PANEL = {
     PIECHART: 'Torta',
     BARCHART: 'Barra',
     LINECHART: 'Linha',
-    KPI: 'KPI',
+    NUMBERVIEW: 'Número',
   },
 };

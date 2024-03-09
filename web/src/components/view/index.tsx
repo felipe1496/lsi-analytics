@@ -20,19 +20,19 @@ export const View: React.FC<ViewProps> = ({ data, type, name }) => {
   let ViewComponent = null;
 
   switch (type) {
-    case PANEL.VIEW.PIE_CHART: {
+    case PANEL.VIEW.PIECHART: {
       const _data = data as EPieChartData[];
       ViewComponent = <PieChartView data={_data} />;
       break;
     }
 
-    case PANEL.VIEW.BAR_CHART: {
+    case PANEL.VIEW.BARCHART: {
       const _data = data as EBarChartData;
       ViewComponent = <BarChartView data={_data} />;
       break;
     }
 
-    case PANEL.VIEW.LINE_CHART: {
+    case PANEL.VIEW.LINECHART: {
       const _data = data as ELineChartData;
       ViewComponent = <LineChartView data={_data} />;
       break;

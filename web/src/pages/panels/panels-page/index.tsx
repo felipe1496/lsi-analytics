@@ -178,7 +178,9 @@ export const PanelsPage: React.FC = () => {
               <Input
                 className="w-96"
                 placeholder="Buscar painel..."
-                rigthAdornment={<Search size={20} className="text-zinc-400" />}
+                rigthAdornment={
+                  <Search size={20} className="text-muted-foreground" />
+                }
                 onChange={handleChangeSearch}
               />
               <Dialog>

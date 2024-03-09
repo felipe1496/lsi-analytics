@@ -11,7 +11,7 @@ interface NoDataProps {
 export const NoData: React.FC<NoDataProps> = ({ message, className }) => (
   <div
     className={cn(
-      'flex flex-col items-center justify-center gap-2 text-zinc-400',
+      'flex flex-col items-center justify-center gap-2 text-muted-foreground',
       className,
     )}
   >

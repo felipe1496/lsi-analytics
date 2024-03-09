@@ -21,7 +21,7 @@ import { APP_ROUTES } from '@/constants/app-routes';
 import { usePanelEditContext } from '@/pages/panel/hooks/usePanelEditContext';
 import { usePanelNewViewContext } from '@/pages/panel/panel-new-view/hooks/usePanelNewViewContext';
 import { usePanelQuery } from '@/pages/panel/panel-new-view/hooks/usePanelQuery';
-import { PieChartProps } from '@/services/models/panel/types';
+import { GraphTypeCore, PieChartProps } from '@/services/models/panel/types';
 import { addViewIdToLayout } from '@/utils';
 
 import { EPieChartData } from '../contexts/PanelNewViewStudioPieChartProvider';
@@ -47,7 +47,7 @@ export const EditBar: React.FC = () => {
     if (category && value && queryData) {
       const graphData = EchartAdapter.queryToData({
         queryResult: queryData,
-        core: { labelColumn: category, valueColumn: value },
+        core: { labelColumn: category, valueColumn: value } as GraphTypeCore,
         type: viewCreation.type,
       }) as EPieChartData[];
 
@@ -74,7 +74,7 @@ export const EditBar: React.FC = () => {
 
       setNewViewsPreview((prevState) => {
         const newState = [...prevState];
-        newState.push({ echartData, view: createdView });
+        newState.push({ coreData: echartData, view: createdView });
         return newState;
       });
 
@@ -103,7 +103,7 @@ export const EditBar: React.FC = () => {
               <div>
                 <Label>Selecione a categoria</Label>
                 <Select onValueChange={setCategory}>
-                  <SelectTrigger className="">
+                  <SelectTrigger>
                     <SelectValue placeholder="Categoria" />
                   </SelectTrigger>
                   <SelectContent>

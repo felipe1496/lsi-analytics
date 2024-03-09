@@ -28,7 +28,7 @@ import { APP_ROUTES } from '@/constants/app-routes';
 import { usePanelEditContext } from '@/pages/panel/hooks/usePanelEditContext';
 import { usePanelNewViewContext } from '@/pages/panel/panel-new-view/hooks/usePanelNewViewContext';
 import { usePanelQuery } from '@/pages/panel/panel-new-view/hooks/usePanelQuery';
-import { BarChartProps } from '@/services/models/panel/types';
+import { BarChartProps, GraphTypeCore } from '@/services/models/panel/types';
 import { addViewIdToLayout } from '@/utils';
 
 import { ELineChartData } from '../contexts/PanelNewViewStudioLineChartProvider';
@@ -54,7 +54,7 @@ export const EditBar: React.FC = () => {
     if (category && value && queryData) {
       const graphData = EchartAdapter.queryToData({
         queryResult: queryData,
-        core: { labelColumn: category, valueColumns: value },
+        core: { labelColumn: category, valueColumns: value } as GraphTypeCore,
         type: viewCreation.type,
       }) as ELineChartData;
 
@@ -81,7 +81,7 @@ export const EditBar: React.FC = () => {
 
       setNewViewsPreview((prevState) => {
         const newState = [...prevState];
-        newState.push({ echartData, view: createdView });
+        newState.push({ coreData: echartData, view: createdView });
         return newState;
       });
 
@@ -110,7 +110,7 @@ export const EditBar: React.FC = () => {
               <div>
                 <Label>Selecione a categoria</Label>
                 <Select onValueChange={setCategory}>
-                  <SelectTrigger className="">
+                  <SelectTrigger>
                     <SelectValue placeholder="Categoria" />
                   </SelectTrigger>
                   <SelectContent>

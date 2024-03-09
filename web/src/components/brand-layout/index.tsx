@@ -35,8 +35,8 @@ export const BrandLayout: React.FC<BrandLayoutProps> = ({
         <title>{title}</title>
         <meta name="description" content={description} />
       </Helmet>
-      <main className="relative">
-        <div className="flex h-12 w-full items-center justify-center border-b bg-amber-50 px-12 text-sm">
+      <main className="relative text-zinc-800">
+        <div className="flex h-12 w-full items-center justify-center bg-amber-50 px-12 text-sm">
           ⭐ — Marque LSI Analytics no Github e ajude outras pessoas a descobrir
           nosso produto!
         </div>
@@ -78,13 +78,16 @@ export const BrandLayout: React.FC<BrandLayoutProps> = ({
             <Link
               to={EXTERNAL_ROUTES.domain.github}
               target="blank"
-              className="rounded-md border p-1 hover:bg-zinc-100"
+              className="rounded-md border border-zinc-200 p-1 hover:bg-zinc-100"
             >
               <Github />
             </Link>
-            <Button variant="outline" asChild>
-              <Link to={APP_ROUTES.auth.login}>Entrar</Link>
-            </Button>
+            <Link
+              to={APP_ROUTES.auth.login}
+              className="flex h-9 items-center justify-center rounded border border-zinc-200 px-4"
+            >
+              Entrar
+            </Link>
             <Button asChild>
               <Link to={APP_ROUTES.auth.register}>Tentar agora</Link>
             </Button>

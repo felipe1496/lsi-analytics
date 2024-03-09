@@ -39,6 +39,7 @@ import { ResponsiveGridLayout } from '@/lib/echarts-for-react';
 import { panelsService } from '@/services/panels';
 import { objectsAreEqual } from '@/utils';
 
+import { GraphTypeCore } from '@/services/models/panel/types';
 import { BREAKPOINTS, Breakpoints } from '../contexts/PanelEditProvider';
 import { useSavePanelMutation } from '../hooks/mutations/useSavePanelMutation';
 import { usePanelEditContext } from '../hooks/usePanelEditContext';
@@ -204,14 +205,14 @@ export const PanelEditPage: React.FC = () => {
         >
           {newViewsPreview.map((v) => (
             <div key={v.view.id}>
-              <View data={v.echartData} type={v.view.type} name={v.view.name} />
+              <View data={v.coreData} type={v.view.type} name={v.view.name} />
             </div>
           ))}
           {data.views.map((v) => {
             const graphData = EchartAdapter.queryToData({
               queryResult: v.queryResult,
               type: v.view.type,
-              core: v.view.core,
+              core: v.view.core as GraphTypeCore,
             });
 
             if (graphData) {
@@ -312,7 +313,7 @@ export const PanelEditPage: React.FC = () => {
                   <Link
                     to={APP_ROUTES.panel.audit.replace(':id', data.panel.id)}
                   >
-                    <History className="text-zinc-600" />
+                    <History className="text-muted-foreground" />
                   </Link>
                 </Button>
               </TooltipTrigger>

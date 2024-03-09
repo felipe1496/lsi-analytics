@@ -17,7 +17,7 @@ export const BREAKPOINTS: Record<Breakpoints, Breakpoints> = {
 export type LayoutsType = Record<Breakpoints, Layout[]>;
 
 export type NewViewPreview = {
-  echartData: EPieChartData[] | EBarChartData | ELineChartData;
+  coreData: EPieChartData[] | EBarChartData | ELineChartData;
   view: ViewProps;
 };
 

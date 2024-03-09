@@ -87,11 +87,9 @@ export class ViewsMapper {
         return {
           id: numberViewCore.id,
           labelColumn: numberViewCore.props.labelColumn,
-          valueColumn: numberViewCore.props.valueColumn,
           subTitle: numberViewCore.props.subTitle,
           isPercentage: numberViewCore.props.isPercentage,
           numberOfDecimaPlaces: numberViewCore.props.numberOfDecimaPlaces,
-          stripeColor: numberViewCore.props.stripeColor,
           viewId: numberViewCore.props.viewId,
           createdAt: numberViewCore.createdAt,
           updatedAt: numberViewCore.updatedAt,
@@ -150,11 +148,9 @@ export class ViewsMapper {
         return new NumberView({
           id: numberViewCore.id,
           labelColumn: numberViewCore.labelColumn,
-          valueColumn: numberViewCore.valueColumn,
           subTitle: numberViewCore.subTitle,
           isPercentage: numberViewCore.isPercentage,
           numberOfDecimaPlaces: numberViewCore.numberOfDecimaPlaces,
-          stripeColor: numberViewCore.stripeColor,
           viewId: numberViewCore.viewId,
           createdAt: numberViewCore.createdAt,
           updatedAt: numberViewCore.updatedAt,

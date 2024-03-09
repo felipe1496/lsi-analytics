@@ -26,14 +26,14 @@ export const AuthLayout: React.FC<AuthLayoutProps> = ({
     )}
     <div className={cn('w-1/2', className)}>{children}</div>
     <div
-      className="flex h-screen w-1/2 flex-col items-center justify-center text-zinc-50"
+      className="flex h-screen w-1/2 flex-col items-center justify-center text-foreground"
       style={{
         backgroundImage: 'url(images/blured.jpg)',
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
       }}
     >
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 text-zinc-50">
         {INFO.map((i, index) => (
           <div key={`${i.title}-${i.message}-${index}`}>
             {index !== 0 && (
@@ -46,7 +46,7 @@ export const AuthLayout: React.FC<AuthLayoutProps> = ({
 
               <div className="flex flex-col">
                 <span>{i.title}</span>
-                <span className="text-sm text-zinc-300">{i.message}</span>
+                <span className="text-sm">{i.message}</span>
               </div>
             </div>
           </div>

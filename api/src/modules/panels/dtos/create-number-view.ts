@@ -1,11 +1,8 @@
-import { IsBoolean, IsHexColor, IsNumber, IsString } from 'class-validator';
+import { IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateNumberViewDto {
   @IsString()
   labelColumn: string;
-
-  @IsString()
-  valueColumn: string;
 
   @IsString()
   subTitle: string;
@@ -14,9 +11,6 @@ export class CreateNumberViewDto {
   isPercentage: boolean;
 
   @IsNumber()
-  numberOfDecimaPlaces: number;
-
-  @IsString()
-  @IsHexColor()
-  stripeColor: string;
+  @IsOptional()
+  numberOfDecimaPlaces?: number;
 }

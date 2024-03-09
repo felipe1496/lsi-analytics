@@ -119,14 +119,17 @@ export const PanelNewViewConfig: React.FC = () => {
                       <SelectValue placeholder="Visualização" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value={PANEL.VIEW.PIE_CHART}>
+                      <SelectItem value={PANEL.VIEW.PIECHART}>
                         Gráfico de torta
                       </SelectItem>
-                      <SelectItem value={PANEL.VIEW.BAR_CHART}>
+                      <SelectItem value={PANEL.VIEW.BARCHART}>
                         Gráfico de barra
                       </SelectItem>
-                      <SelectItem value={PANEL.VIEW.LINE_CHART}>
+                      <SelectItem value={PANEL.VIEW.LINECHART}>
                         Gráfico de linha
+                      </SelectItem>
+                      <SelectItem value={PANEL.VIEW.NUMBERVIEW}>
+                        Visualização de número
                       </SelectItem>
                     </SelectContent>
                   </Select>

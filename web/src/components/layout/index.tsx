@@ -60,7 +60,7 @@ export const Layout: React.FC<LayoutProps> = ({
       return (
         <div
           className={cn(
-            'flex w-full items-center justify-center gap-2 py-3 text-zinc-50',
+            'flex w-full items-center justify-center gap-2 py-3 text-foreground',
             alert.type === 'warning' && 'bg-amber-500',
             alert.type === 'error' && 'bg-red-500',
             alert.type === 'info' && 'bg-sky-500',

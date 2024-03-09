@@ -2,7 +2,7 @@ import { Github, Linkedin } from 'lucide-react';
 import React from 'react';
 
 export const Footer: React.FC = () => (
-  <footer className="flex items-center justify-center bg-zinc-900 py-12 text-zinc-50">
+  <footer className="flex items-center justify-center bg-zinc-900 py-12 text-foreground">
     <div className="grid w-[1280px] grid-cols-4">
       <div className="flex flex-col gap-4">
         <div className="flex items-center gap-2">

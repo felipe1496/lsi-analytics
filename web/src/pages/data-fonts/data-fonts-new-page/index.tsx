@@ -138,7 +138,8 @@ export const DataFontsNewPage: React.FC = () => {
                           }}
                           className={cn(
                             'flex h-48 flex-col items-center justify-center gap-8 rounded-sm bg-white shadow-sm',
-                            isSelected && 'relative bg-slate-700 text-zinc-50',
+                            isSelected &&
+                              'relative bg-slate-700 text-foreground',
                           )}
                         >
                           <div className="rounded-full bg-zinc-50 p-4">

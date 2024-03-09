@@ -8,7 +8,7 @@ import { Separator } from '../ui/separator';
 import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
 
 export const Navbar: React.FC = () => (
-  <nav className="fixed z-10 hidden min-h-screen w-16 flex-col items-center gap-6 bg-zinc-800 py-4 md:flex">
+  <nav className="fixed z-10 hidden min-h-screen w-16 flex-col items-center gap-6 bg-zinc-800 py-4 dark:border-r dark:bg-zinc-950 md:flex">
     <Link to={APP_ROUTES.panels.index}>
       <img src="/logo.svg" className="w-8" />
     </Link>
@@ -22,7 +22,7 @@ export const Navbar: React.FC = () => (
       <TooltipContent side="right">Início</TooltipContent>
     </Tooltip>
 
-    <Separator className="w-8" />
+    <Separator className="w-8 bg-zinc-50" />
 
     <Tooltip delayDuration={0}>
       <TooltipTrigger>
