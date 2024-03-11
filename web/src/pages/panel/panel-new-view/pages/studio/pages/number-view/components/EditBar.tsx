@@ -18,12 +18,18 @@ import {
   SimpleTabsList,
   SimpleTabsTrigger,
 } from '@/components/ui/simple-tabs';
+import { APP_ROUTES } from '@/constants/app-routes';
 import { usePanelEditContext } from '@/pages/panel/hooks/usePanelEditContext';
 import { usePanelNewViewContext } from '@/pages/panel/panel-new-view/hooks/usePanelNewViewContext';
 import { usePanelQuery } from '@/pages/panel/panel-new-view/hooks/usePanelQuery';
-import { cn } from '@/utils';
-
 import { NumberViewProps } from '@/services/models/panel/types';
+import {
+  addViewIdToLayout,
+  cn,
+  getNumberViewValue,
+  numberViewFormattedValue,
+} from '@/utils';
+
 import { usePanelNewViewStudioNumberViewContext } from '../hooks/usePanelNewViewStudioNumberViewContext';
 
 export const EditBar: React.FC = () => {
@@ -38,6 +44,7 @@ export const EditBar: React.FC = () => {
   const { setNewViewsPreview, setLayouts } = usePanelEditContext();
 
   const {
+    number,
     setNumber,
     numberOfDecimalPlaces,
     setNumberOfDecimalPlaces,
@@ -51,24 +58,24 @@ export const EditBar: React.FC = () => {
     isPercentage,
   } = usePanelNewViewStudioNumberViewContext();
 
-  const getNumberValue = React.useCallback(() => {
+  /* const getNumberValue = React.useCallback(() => {
     let numberValue = null;
 
     if (queryData && queryData.rows[0] && category) {
       const record = queryData.rows[0];
       numberValue = record[category];
-      console.log('Primeiro valor: ', record);
     }
 
     setNumber(numberValue);
-  }, [queryData, setNumber, category]);
+  }, [queryData, setNumber, category]); */
 
   React.useEffect(() => {
-    getNumberValue();
-  }, [category, getNumberValue]);
+    /* getNumberValue(); */
+    setNumber(getNumberViewValue({ queryData, category }));
+  }, [category, queryData, setNumber]);
 
   const handleCreate = () => {
-    if (category && queryData && data) {
+    if (category && queryData && data && number !== null) {
       const createdView = { ...viewCreation };
 
       const core: NumberViewProps = {
@@ -80,17 +87,25 @@ export const EditBar: React.FC = () => {
 
       Object.assign(createdView, { core });
 
-      console.log('createdView: ', createdView);
-
-      /* setNewViewsPreview((prevState) => {
+      setNewViewsPreview((prevState) => {
         const newState = [...prevState];
-        newState.push({ coreData: echartData, view: createdView });
+        newState.push({
+          toViewData: {
+            formattedValue: numberViewFormattedValue({
+              number,
+              numberOfDecimalPlaces,
+              isPercentage,
+            }),
+            subTitle,
+          },
+          view: createdView,
+        });
         return newState;
       });
 
       setLayouts((prevState) => addViewIdToLayout(prevState, createdView.id));
 
-      navigate(APP_ROUTES.panel.edit.replace(':id', data.id)); */
+      navigate(APP_ROUTES.panel.edit.replace(':id', data.id));
     }
   };
 

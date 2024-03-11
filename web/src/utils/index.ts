@@ -9,6 +9,7 @@ import {
   Breakpoints,
   LayoutsType,
 } from '@/pages/panel/contexts/PanelEditProvider';
+import { SQLResult } from '@/services/models/datafont/types';
 import { UserWithoutPasswordModel } from '@/services/models/users/types';
 
 export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
@@ -161,4 +162,48 @@ export const formatDecimalPlaces = (
 ): number => {
   const potenciaDez = 10 ** decimalPlaces;
   return Math.round(number * potenciaDez) / potenciaDez;
+};
+
+export const numberViewFormattedValue = ({
+  number,
+  numberOfDecimalPlaces,
+  isPercentage,
+}: {
+  number?: number | null;
+  numberOfDecimalPlaces?: number | null;
+  isPercentage?: boolean;
+}) => {
+  let finalNumber = 'NaN';
+
+  if (number) {
+    finalNumber = number.toString();
+    if (numberOfDecimalPlaces !== null && numberOfDecimalPlaces !== undefined) {
+      finalNumber = formatDecimalPlaces(
+        number,
+        numberOfDecimalPlaces,
+      ).toString();
+    }
+    if (isPercentage) {
+      finalNumber += '%';
+    }
+  }
+
+  return finalNumber;
+};
+
+export const getNumberViewValue = ({
+  queryData,
+  category,
+}: {
+  queryData?: SQLResult | null;
+  category?: string | null;
+}) => {
+  let numberValue = null;
+
+  if (queryData && queryData.rows[0] && category) {
+    const record = queryData.rows[0];
+    numberValue = record[category];
+  }
+
+  return numberValue;
 };

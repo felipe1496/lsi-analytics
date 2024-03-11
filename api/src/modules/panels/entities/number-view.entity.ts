@@ -4,7 +4,7 @@ export interface NumberViewChartProps {
   labelColumn: string;
   subTitle?: string | null;
   isPercentage: boolean;
-  numberOfDecimaPlaces?: number | null;
+  numberOfDecimalPlaces?: number | null;
   viewId: string;
 }
 

@@ -12,5 +12,5 @@ export class CreateNumberViewDto {
 
   @IsNumber()
   @IsOptional()
-  numberOfDecimaPlaces?: number;
+  numberOfDecimalPlaces?: number;
 }

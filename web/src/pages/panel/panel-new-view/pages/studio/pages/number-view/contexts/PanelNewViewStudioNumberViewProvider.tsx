@@ -2,6 +2,11 @@ import React from 'react';
 
 import { NumberViewProps } from '@/services/models/panel/types';
 
+export type NumberViewPreview = {
+  formattedValue: string;
+  subTitle?: string | null;
+};
+
 type PanelNewViewStudioNumberViewContextType = {
   numberViewCreation: NumberViewProps;
   setNumberViewCreation: React.Dispatch<React.SetStateAction<NumberViewProps>>;

@@ -81,7 +81,7 @@ export const EditBar: React.FC = () => {
 
       setNewViewsPreview((prevState) => {
         const newState = [...prevState];
-        newState.push({ coreData: echartData, view: createdView });
+        newState.push({ toViewData: echartData, view: createdView });
         return newState;
       });
 

@@ -12,7 +12,7 @@ import { NotFoundPage } from '@/components/not-found-page';
 import { APP_ROUTES } from '@/constants/app-routes';
 import { usePanelNewViewContext } from '@/pages/panel/panel-new-view/hooks/usePanelNewViewContext';
 import { usePanelQuery } from '@/pages/panel/panel-new-view/hooks/usePanelQuery';
-import { formatDecimalPlaces } from '@/utils';
+import { numberViewFormattedValue } from '@/utils';
 
 import { EditBar } from './components/EditBar';
 import { usePanelNewViewStudioNumberViewContext } from './hooks/usePanelNewViewStudioNumberViewContext';
@@ -26,16 +26,6 @@ export const PanelViewStudioNewViewPage: React.FC = () => {
     usePanelNewViewStudioNumberViewContext();
 
   const { data, error } = usePanelQuery({ id });
-
-  const numberFormattedValue = () => {
-    if (number) {
-      if (numberOfDecimalPlaces !== null) {
-        return formatDecimalPlaces(number, numberOfDecimalPlaces);
-      }
-      return number;
-    }
-    return 'NaN';
-  };
 
   const renderBreadbrumb = () => {
     if (data && id) {
@@ -63,7 +53,11 @@ export const PanelViewStudioNewViewPage: React.FC = () => {
         <div className="flex h-full flex-col items-center justify-center">
           <div className="flex flex-col">
             <span className="text-6xl font-semibold">
-              {numberFormattedValue() + (isPercentage ? '%' : '')}
+              {numberViewFormattedValue({
+                number,
+                numberOfDecimalPlaces,
+                isPercentage,
+              })}
             </span>
             <span className="text-2xl font-semibold">{subTitle}</span>
           </div>

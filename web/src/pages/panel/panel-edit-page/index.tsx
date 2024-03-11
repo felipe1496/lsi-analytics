@@ -205,7 +205,7 @@ export const PanelEditPage: React.FC = () => {
         >
           {newViewsPreview.map((v) => (
             <div key={v.view.id}>
-              <View data={v.coreData} type={v.view.type} name={v.view.name} />
+              <View data={v.toViewData} type={v.view.type} name={v.view.name} />
             </div>
           ))}
           {data.views.map((v) => {

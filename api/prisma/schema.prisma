@@ -134,7 +134,7 @@ model NumberView {
   labelColumn String
   subTitle String?
   isPercentage Boolean
-  numberOfDecimaPlaces Int?
+  numberOfDecimalPlaces Int?
   view View @relation(fields: [viewId], references: [id], onDelete: Cascade)
   viewId String @unique
   createdAt DateTime @default(now())

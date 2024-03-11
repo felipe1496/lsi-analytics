@@ -5,6 +5,7 @@ import { ViewProps, ViewType } from '@/services/models/panel/types';
 
 import { EBarChartData } from '../panel-new-view/pages/studio/pages/bar-chart/contexts/PanelNewViewStudioBarChartProvider';
 import { ELineChartData } from '../panel-new-view/pages/studio/pages/line-chart/contexts/PanelNewViewStudioLineChartProvider';
+import { NumberViewPreview } from '../panel-new-view/pages/studio/pages/number-view/contexts/PanelNewViewStudioNumberViewProvider';
 import { EPieChartData } from '../panel-new-view/pages/studio/pages/pie-chart/contexts/PanelNewViewStudioPieChartProvider';
 
 export type Breakpoints = 'LARGE' | 'MEDIUM' | 'SMALL';
@@ -17,7 +18,11 @@ export const BREAKPOINTS: Record<Breakpoints, Breakpoints> = {
 export type LayoutsType = Record<Breakpoints, Layout[]>;
 
 export type NewViewPreview = {
-  coreData: EPieChartData[] | EBarChartData | ELineChartData;
+  toViewData:
+    | EPieChartData[]
+    | EBarChartData
+    | ELineChartData
+    | NumberViewPreview;
   view: ViewProps;
 };
 
