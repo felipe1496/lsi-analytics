@@ -12,7 +12,7 @@ export class CreateViewDto {
   @IsString()
   name: string;
 
-  @IsIn(['PIECHART', 'BARCHART', 'LINECHART', 'NUMBERVIEW'])
+  @IsIn(['PIECHART', 'BARCHART', 'LINECHART', 'NUMBERVIEW', 'SELECTFILTER'])
   type: ViewType;
 
   @IsIn(['STATIC', 'DYNAMIC'])

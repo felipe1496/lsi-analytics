@@ -131,6 +131,9 @@ export const PanelNewViewConfig: React.FC = () => {
                       <SelectItem value={PANEL.VIEW.NUMBERVIEW}>
                         Visualização de número
                       </SelectItem>
+                      <SelectItem value={PANEL.VIEW.SELECTFILTER}>
+                        Filtro de seleção
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 )}

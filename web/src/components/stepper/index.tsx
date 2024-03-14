@@ -1,7 +1,7 @@
 import { Check } from 'lucide-react';
 import React from 'react';
 
-import { HTMLButtonProps } from '@/types/html';
+import { HTMLButtonProps, HTMLDivProps } from '@/types/html';
 import { cn } from '@/utils';
 
 import { Separator } from '../ui/separator';
@@ -30,8 +30,8 @@ export const StepNumber: React.FC<StepNumberProps> = ({
       }}
       className={cn(
         'relative flex h-8 w-8 shrink-0 items-center justify-center rounded-full',
-        mode === 'complete' && 'bg-blue-500',
-        mode === 'current' && 'border-2 border-blue-500',
+        mode === 'complete' && 'bg-purple-500',
+        mode === 'current' && 'border-2 border-purple-500',
         mode === 'incomplete' && 'border-2 bg-white',
       )}
     >
@@ -52,16 +52,14 @@ export const StepNumber: React.FC<StepNumberProps> = ({
   </div>
 );
 
-interface StepperProps {
-  children?: React.ReactNode;
-}
+interface StepperProps extends HTMLDivProps {}
 
-export const Stepper: React.FC<StepperProps> = ({ children }) => {
+export const Stepper: React.FC<StepperProps> = ({ children, className }) => {
   const steps = React.Children.toArray(children);
   const { length } = steps;
 
   return (
-    <div className="flex w-full items-center justify-between">
+    <div className={cn('flex w-full items-center justify-between', className)}>
       {steps.map((s, index) => (
         <div
           className={cn('flex items-center', index !== length - 1 && 'w-full')}

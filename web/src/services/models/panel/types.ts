@@ -18,7 +18,12 @@ export type PanelProps = {
   imageURL?: string;
 };
 
-export type ViewType = 'PIECHART' | 'BARCHART' | 'LINECHART' | 'NUMBERVIEW';
+export type ViewType =
+  | 'PIECHART'
+  | 'BARCHART'
+  | 'LINECHART'
+  | 'NUMBERVIEW'
+  | 'SELECTFILTER';
 
 export type ContentUpdate = 'DYNAMIC' | 'STATIC';
 
@@ -56,6 +61,17 @@ export type NumberView = {
   updatedAt: Date;
 };
 
+export type SelectFilter = {
+  id: string;
+  labelColumn: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type SelectFilterProps = {
+  labelColumn: string;
+};
+
 export type NumberViewProps = {
   labelColumn: string;
   subTitle?: string | null;
@@ -78,7 +94,12 @@ export type BarChartProps = {
   valueColumns: string[];
 };
 
-export type CoreType = PieChart | BarChart | LineChart | NumberView;
+export type CoreType =
+  | PieChart
+  | BarChart
+  | LineChart
+  | NumberView
+  | SelectFilterProps;
 
 export type GraphTypeCore = PieChart | BarChart | LineChart;
 

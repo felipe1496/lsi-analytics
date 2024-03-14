@@ -16,6 +16,7 @@ import { PanelViewStudioNewViewPage } from './panel-new-view/pages/studio/pages/
 import { PanelViewStudioNumberViewLayout } from './panel-new-view/pages/studio/pages/number-view/layout';
 import { PanelViewStudioPieChartPage } from './panel-new-view/pages/studio/pages/pie-chart';
 import { PanelViewStudioPieChartLayout } from './panel-new-view/pages/studio/pages/pie-chart/layout';
+import { PanelViewStudioSelectFilterPage } from './panel-new-view/pages/studio/pages/select-filter';
 import { PanelPage } from './panel-page';
 
 export const PanelRoutes: React.FC = () => (
@@ -58,6 +59,10 @@ export const PanelRoutes: React.FC = () => (
             element={<PanelViewStudioNewViewPage />}
           />
         </Route>
+        <Route
+          path=":id/novo/visualizacao/studio/select"
+          element={<PanelViewStudioSelectFilterPage />}
+        />
       </Route>
     </Route>
   </Routes>

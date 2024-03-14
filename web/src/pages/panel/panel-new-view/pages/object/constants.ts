@@ -6,4 +6,5 @@ export const TYPE_STUDIO_LINK_MAPPER: Record<ViewType, string> = {
   BARCHART: APP_ROUTES.panel.new.studio.bar,
   LINECHART: APP_ROUTES.panel.new.studio.line,
   NUMBERVIEW: APP_ROUTES.panel.new.studio.number,
+  SELECTFILTER: APP_ROUTES.panel.new.studio.select,
 };

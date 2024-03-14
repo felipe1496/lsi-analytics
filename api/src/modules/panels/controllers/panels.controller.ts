@@ -29,6 +29,7 @@ import { CreateBarChartDto } from '../dtos/create-bar-chart.dto';
 import { CreateLineChartDto } from '../dtos/create-line-chart.dto';
 import { CreateNumberViewDto } from '../dtos/create-number-view';
 import { CreatePieChartDto } from '../dtos/create-pie-chart.dto';
+import { CreateSelectFilterDto } from '../dtos/create-select-filter.dto';
 import { PanelNotFoundError } from '../errors/panel-not-found.error';
 import { ViewsMapper } from '../mappers/views.mapper';
 
@@ -191,6 +192,23 @@ export class PanelsController {
                   panelId: param.id,
                   datafontId,
                   numberView: {
+                    create: _core,
+                  },
+                },
+              });
+            }
+            case 'SELECTFILTER': {
+              const _core = core as CreateSelectFilterDto;
+              await this.prisma.view.create({
+                data: {
+                  id,
+                  name,
+                  type,
+                  contentUpdate,
+                  sql,
+                  panelId: param.id,
+                  datafontId,
+                  selectFilter: {
                     create: _core,
                   },
                 },

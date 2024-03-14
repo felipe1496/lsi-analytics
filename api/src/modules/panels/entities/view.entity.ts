@@ -4,12 +4,13 @@ import { BarChart } from './bar-chart.entity';
 import { LineChart } from './line-chart.entity';
 import { NumberView } from './number-view.entity';
 import { PieChart } from './pie-chart.entity';
+import { SelectFilter } from './select-filter';
 
 export interface ViewProps {
   type: ViewType;
   contentUpdate: ViewContentUpdate;
   sql?: string | null;
-  core: PieChart | BarChart | LineChart | NumberView;
+  core: PieChart | BarChart | LineChart | NumberView | SelectFilter;
   datafontId: string;
   panelId: string;
   name: string;

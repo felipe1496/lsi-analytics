@@ -207,3 +207,17 @@ export const getNumberViewValue = ({
 
   return numberValue;
 };
+
+export const getSelectFilterData = ({
+  queryData,
+  category,
+}: {
+  queryData?: SQLResult | null;
+  category?: string | null;
+}) => {
+  if (queryData && category) {
+    return queryData.rows.map((qd) => qd[category]);
+  }
+
+  return [];
+};

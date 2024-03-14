@@ -9,6 +9,7 @@ import { BarChart } from '../entities/bar-chart.entity';
 import { LineChart } from '../entities/line-chart.entity';
 import { NumberView } from '../entities/number-view.entity';
 import { PieChart } from '../entities/pie-chart.entity';
+import { SelectFilter } from '../entities/select-filter';
 import { View } from '../entities/view.entity';
 import { ItWasNotPossibleToCreateViewInstanceError } from '../errors/it-was-not-possible-to-create-view-instance.error';
 
@@ -93,6 +94,15 @@ export class ViewsMapper {
           viewId: numberViewCore.props.viewId,
           createdAt: numberViewCore.createdAt,
           updatedAt: numberViewCore.updatedAt,
+        };
+      case 'SELECTFILTER':
+        const selectFilterCore = view.props.core as SelectFilter;
+        return {
+          id: selectFilterCore.id,
+          labelColumn: selectFilterCore.props.labelColumn,
+          viewId: selectFilterCore.props.viewId,
+          createdAt: selectFilterCore.createdAt,
+          updatedAt: selectFilterCore.updatedAt,
         };
       default:
         throw new ItWasNotPossibleToCreateViewInstanceError();

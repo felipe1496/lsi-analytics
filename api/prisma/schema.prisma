@@ -70,6 +70,7 @@ enum ViewType {
   BARCHART
   LINECHART
   NUMBERVIEW
+  SELECTFILTER
 }
 
 enum ViewContentUpdate {
@@ -87,6 +88,7 @@ model View {
   barChart BarChart?
   lineChart LineChart?
   numberView NumberView?
+  selectFilter SelectFilter?
   panel Panel @relation(fields: [panelId], references: [id], onDelete: Cascade)
   panelId String
   datafont DataFont @relation(fields: [datafontId], references: [id])
@@ -140,6 +142,16 @@ model NumberView {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   @@map("NUMBER_VIEW")
+}
+
+model SelectFilter {
+  id String @default(nanoid()) @id
+  labelColumn String
+  view View @relation(fields: [viewId], references: [id], onDelete: Cascade)
+  viewId String @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@map("SELECT_FILTER")
 }
 
 enum FeedbackType {

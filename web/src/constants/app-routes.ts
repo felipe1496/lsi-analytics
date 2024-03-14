@@ -15,6 +15,7 @@ export const APP_ROUTES = {
         bar: '/painel/:id/novo/visualizacao/studio/bar',
         line: '/painel/:id/novo/visualizacao/studio/line',
         number: '/painel/:id/novo/visualizacao/studio/number',
+        select: '/painel/:id/novo/visualizacao/studio/select',
       },
     },
   },

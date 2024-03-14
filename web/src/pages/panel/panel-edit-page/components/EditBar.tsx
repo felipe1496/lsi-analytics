@@ -1,4 +1,11 @@
-import { BarChart3, Binary, LineChart, PieChart, Plus } from 'lucide-react';
+import {
+  BarChart3,
+  Binary,
+  LineChart,
+  List,
+  PieChart,
+  Plus,
+} from 'lucide-react';
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -17,11 +24,11 @@ import {
   SimpleTabsTrigger,
 } from '@/components/ui/simple-tabs';
 import { Textarea } from '@/components/ui/textarea';
+import { APP_ROUTES } from '@/constants/app-routes';
 import { PANEL } from '@/services/models/panel/constants';
 import { PanelModel } from '@/services/models/panel/types';
-
-import { APP_ROUTES } from '@/constants/app-routes';
 import { cn } from '@/utils';
+
 import { usePanelEditContext } from '../../hooks/usePanelEditContext';
 import { ViewSelectButton } from './ViewSelectButton';
 
@@ -37,7 +44,9 @@ export const EditBar: React.FC<EditBarProps> = ({ data }) => {
 
   return (
     <div className="flex h-full flex-col">
-      <span className="p-4 text-lg font-semibold">Editar painel</span>
+      <div className="flex justify-between p-4">
+        <span className="text-lg font-semibold">Editar painel</span>
+      </div>
 
       <SimpleTabs
         defaultValue={location.state?.tab ?? 'general'}
@@ -77,7 +86,7 @@ export const EditBar: React.FC<EditBarProps> = ({ data }) => {
           <Accordion
             type="multiple"
             className="w-full px-2"
-            defaultValue={['item-1', 'item-2']}
+            defaultValue={['item-1', 'item-2', 'item-3']}
           >
             <AccordionItem value="item-1">
               <AccordionTrigger>Gráficos</AccordionTrigger>
@@ -103,6 +112,16 @@ export const EditBar: React.FC<EditBarProps> = ({ data }) => {
                 <div className="grid grid-cols-4 flex-wrap gap-4 px-4">
                   <ViewSelectButton value={PANEL.VIEW.NUMBERVIEW}>
                     <Binary />
+                  </ViewSelectButton>
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="item-3">
+              <AccordionTrigger>Filtros</AccordionTrigger>
+              <AccordionContent>
+                <div className="grid grid-cols-4 flex-wrap gap-4 px-4">
+                  <ViewSelectButton value="SELECTFILTER">
+                    <List />
                   </ViewSelectButton>
                 </div>
               </AccordionContent>

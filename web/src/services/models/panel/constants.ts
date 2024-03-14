@@ -6,6 +6,7 @@ export const PANEL = {
     BARCHART: 'BARCHART' as ViewType,
     LINECHART: 'LINECHART' as ViewType,
     NUMBERVIEW: 'NUMBERVIEW' as ViewType,
+    SELECTFILTER: 'SELECTFILTER' as ViewType,
   },
   CONTENT_UPDATE: {
     DINAMIC: 'DINAMIC' as ContentUpdate,
@@ -16,5 +17,6 @@ export const PANEL = {
     BARCHART: 'Barra',
     LINECHART: 'Linha',
     NUMBERVIEW: 'Número',
+    SELECTFILTER: 'Seleção',
   },
 };
