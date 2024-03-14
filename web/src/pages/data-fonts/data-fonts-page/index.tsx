@@ -244,7 +244,7 @@ export const DataFontsPage: React.FC = () => {
               <Button
                 type="submit"
                 variant="outline"
-                className="gap-1 rounded-full border-blue-500 text-blue-500 hover:bg-blue-100 hover:text-blue-500"
+                className="gap-1 rounded-full border-blue-500 text-blue-500 hover:bg-blue-100 hover:text-blue-500 dark:hover:bg-blue-950"
                 asChild
               >
                 <Link to={APP_ROUTES.dataFont.new}>

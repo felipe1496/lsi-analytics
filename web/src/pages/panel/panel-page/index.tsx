@@ -28,7 +28,16 @@ import { reactQueryKeys } from '@/constants/react-query-keys';
 import { ResponsiveGridLayout } from '@/lib/echarts-for-react';
 import { panelsService } from '@/services/panels';
 
+import { SQLResult } from '@/services/models/datafont/types';
+import { PANEL } from '@/services/models/panel/constants';
+import {
+  GraphTypeCore,
+  NumberView,
+  ViewModel,
+} from '@/services/models/panel/types';
+import { getNumberViewValue, numberViewFormattedValue } from '@/utils';
 import { Breakpoints } from '../contexts/PanelEditProvider';
+import { NumberViewPresentation } from '../panel-new-view/pages/studio/pages/number-view/contexts/PanelNewViewStudioNumberViewProvider';
 import { PanelPageLoading } from './loading';
 
 export const PanelPage: React.FC = () => {
@@ -71,75 +80,43 @@ export const PanelPage: React.FC = () => {
     return {};
   };
 
-  if (data) {
-    return (
-      <Layout
-        title={data.panel.name}
-        breadcrumb={
-          <Breadcrumb>
-            <BreadcrumbHome />
-            <BreadcrumbLink to={APP_ROUTES.panels.index}>
-              Paineis
-            </BreadcrumbLink>
-            <BreadcrumbNeutral>{data.panel.name}</BreadcrumbNeutral>
-          </Breadcrumb>
-        }
-        className="layout-page"
-      >
-        <div className="flex items-center justify-between">
-          <div className="flex flex-col gap-1">
-            <h1 className="text-2xl font-semibold">{data.panel.name}</h1>
-            {data.panel.description && (
-              <Typography level="muted">{data.panel.description}</Typography>
-            )}
-          </div>
-          <div className="flex items-center gap-4">
-            <Button variant="outline" className="gap-2 rounded-full">
-              <Share2 size={18} />
-              Compartilhar
-            </Button>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="outline"
-                  color="danger"
-                  size="icon"
-                  className="rounded-full"
-                >
-                  <Settings />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="mr-6">
-                <DropdownMenuItem asChild>
-                  <Link
-                    to={APP_ROUTES.panel.edit.replace(':id', id)}
-                    state={{ tab: 'views' }}
-                    className="flex items-center gap-2"
-                  >
-                    <Plus size={16} className="text-foreground" />
-                    Nova visualização
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link
-                    to={APP_ROUTES.panel.edit.replace(':id', id)}
-                    className="flex items-center gap-2"
-                  >
-                    <Settings size={16} className="text-foreground" />
-                    Editar painel
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem asChild>
-                  <button className="group flex w-full items-center gap-2 text-red-500">
-                    <Trash2 size={18} className="group-hover:text-red-500" />
-                    <span className="group-hover:text-red-500">Excluir</span>
-                  </button>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-        </div>
+  const getViewData = (v: { queryResult: SQLResult; view: ViewModel }) => {
+    switch (v.view.type) {
+      case PANEL.VIEW.BARCHART:
+      case PANEL.VIEW.PIECHART:
+      case PANEL.VIEW.LINECHART:
+        return EchartAdapter.queryToData({
+          queryResult: v.queryResult,
+          type: v.view.type,
+          core: v.view.core as GraphTypeCore,
+        });
+
+      case PANEL.VIEW.NUMBERVIEW: {
+        const core = v.view.core as NumberView;
+        const number = getNumberViewValue({
+          queryData: v.queryResult,
+          category: core.labelColumn,
+        });
+        const numData: NumberViewPresentation = {
+          formattedValue: numberViewFormattedValue({
+            number,
+            numberOfDecimalPlaces: core.numberOfDecimalPlaces,
+            isPercentage: core.isPercentage,
+          }),
+          subTitle: core.subTitle,
+        };
+
+        return numData;
+      }
+
+      default:
+        return null;
+    }
+  };
+
+  const render = () => {
+    if (data) {
+      const renderViews = () => (
         <ResponsiveGridLayout
           className="layout"
           layouts={layoutToStatic(data.panel.layout)}
@@ -148,20 +125,12 @@ export const PanelPage: React.FC = () => {
           rowHeight={30}
         >
           {data.views.map((v) => {
-            const graphData = EchartAdapter.queryToData({
-              queryResult: v.queryResult,
-              type: v.view.type,
-              core: v.view.core,
-            });
+            const vData = getViewData(v);
 
-            if (graphData) {
+            if (vData) {
               return (
                 <div key={v.view.id}>
-                  <View
-                    name={v.view.name}
-                    data={graphData}
-                    type={v.view.type}
-                  />
+                  <View name={v.view.name} data={vData} type={v.view.type} />
                 </div>
               );
             }
@@ -169,9 +138,85 @@ export const PanelPage: React.FC = () => {
             return null;
           })}
         </ResponsiveGridLayout>
-      </Layout>
-    );
-  }
+      );
 
-  return null;
+      return (
+        <>
+          <div className="flex items-center justify-between">
+            <div className="flex flex-col gap-1">
+              <h1 className="text-2xl font-semibold">{data.panel.name}</h1>
+              {data.panel.description && (
+                <Typography level="muted">{data.panel.description}</Typography>
+              )}
+            </div>
+            <div className="flex items-center gap-4">
+              <Button variant="outline" className="gap-2 rounded-full">
+                <Share2 size={18} />
+                Compartilhar
+              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="outline"
+                    color="danger"
+                    size="icon"
+                    className="rounded-full"
+                  >
+                    <Settings />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="mr-6">
+                  <DropdownMenuItem asChild>
+                    <Link
+                      to={APP_ROUTES.panel.edit.replace(':id', id)}
+                      state={{ tab: 'views' }}
+                      className="flex items-center gap-2"
+                    >
+                      <Plus size={16} className="text-foreground" />
+                      Nova visualização
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link
+                      to={APP_ROUTES.panel.edit.replace(':id', id)}
+                      className="flex items-center gap-2"
+                    >
+                      <Settings size={16} className="text-foreground" />
+                      Editar painel
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <button className="group flex w-full items-center gap-2 text-red-500">
+                      <Trash2 size={18} className="group-hover:text-red-500" />
+                      <span className="group-hover:text-red-500">Excluir</span>
+                    </button>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          </div>
+          {renderViews()}
+        </>
+      );
+    }
+
+    return null;
+  };
+
+  return (
+    <Layout
+      title={data && data.panel.name}
+      breadcrumb={
+        <Breadcrumb>
+          <BreadcrumbHome />
+          <BreadcrumbLink to={APP_ROUTES.panels.index}>Paineis</BreadcrumbLink>
+          {data && <BreadcrumbNeutral>{data.panel.name}</BreadcrumbNeutral>}
+        </Breadcrumb>
+      }
+      className="layout-page"
+    >
+      {render()}
+    </Layout>
+  );
 };

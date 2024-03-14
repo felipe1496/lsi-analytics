@@ -21,7 +21,7 @@ interface LayoutProps {
   children?: React.ReactNode;
   className?: string;
   breadcrumb?: React.ReactNode;
-  title?: string;
+  title?: string | null;
   description?: string;
   leftBar?: React.ReactNode;
   rightBar?: React.ReactNode;

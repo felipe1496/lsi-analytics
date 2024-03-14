@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { NumberViewPreview } from '@/pages/panel/panel-new-view/pages/studio/pages/number-view/contexts/PanelNewViewStudioNumberViewProvider';
+import { NumberViewPresentation } from '@/pages/panel/panel-new-view/pages/studio/pages/number-view/contexts/PanelNewViewStudioNumberViewProvider';
 
 interface NumberViewProps {
-  data: NumberViewPreview;
+  data: NumberViewPresentation;
 }
 
 export const NumberView: React.FC<NumberViewProps> = ({ data }) => (

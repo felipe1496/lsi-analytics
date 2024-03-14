@@ -21,7 +21,11 @@ export const NavBar: React.FC = () => (
       <Link to={APP_ROUTES.docs.index} className="flex w-full font-medium">
         Visão geral
       </Link>
-      <Accordion type="multiple" className="w-full">
+      <Accordion
+        type="multiple"
+        className="w-full"
+        defaultValue={['item-1', 'item-2', 'item-3']}
+      >
         <AccordionItem value="item-1">
           <AccordionTrigger>Começando</AccordionTrigger>
           <AccordionContent asChild>

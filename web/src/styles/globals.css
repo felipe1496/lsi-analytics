@@ -85,7 +85,7 @@
   }
 }
 
-.bottomBar {
+/* .bottomBar {
   position: relative;
 }
 
@@ -98,7 +98,7 @@
   position: absolute;
   bottom: -10px;
   left: 0;
-}
+} */
 
 .react-grid-placeholder {
   background: #3b82f6 !important;

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { EBarChartData } from '@/pages/panel/panel-new-view/pages/studio/pages/bar-chart/contexts/PanelNewViewStudioBarChartProvider';
 import { ELineChartData } from '@/pages/panel/panel-new-view/pages/studio/pages/line-chart/contexts/PanelNewViewStudioLineChartProvider';
-import { NumberViewPreview } from '@/pages/panel/panel-new-view/pages/studio/pages/number-view/contexts/PanelNewViewStudioNumberViewProvider';
+import { NumberViewPresentation } from '@/pages/panel/panel-new-view/pages/studio/pages/number-view/contexts/PanelNewViewStudioNumberViewProvider';
 import { EPieChartData } from '@/pages/panel/panel-new-view/pages/studio/pages/pie-chart/contexts/PanelNewViewStudioPieChartProvider';
 import { PANEL } from '@/services/models/panel/constants';
 import { ViewType } from '@/services/models/panel/types';
@@ -13,7 +13,11 @@ import { NumberView } from './NumberView';
 import { PieChartView } from './PieChartView';
 
 interface ViewProps {
-  data: EPieChartData[] | EBarChartData | ELineChartData | NumberViewPreview;
+  data:
+    | EPieChartData[]
+    | EBarChartData
+    | ELineChartData
+    | NumberViewPresentation;
   type: ViewType;
   name: string;
 }
@@ -41,7 +45,7 @@ export const View: React.FC<ViewProps> = ({ data, type, name }) => {
     }
 
     case PANEL.VIEW.NUMBERVIEW: {
-      const _data = data as NumberViewPreview;
+      const _data = data as NumberViewPresentation;
       ViewComponent = <NumberView data={_data} />;
       break;
     }

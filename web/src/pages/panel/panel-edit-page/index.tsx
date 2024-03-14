@@ -37,12 +37,23 @@ import { APP_ROUTES } from '@/constants/app-routes';
 import { reactQueryKeys } from '@/constants/react-query-keys';
 import { ResponsiveGridLayout } from '@/lib/echarts-for-react';
 import { panelsService } from '@/services/panels';
-import { objectsAreEqual } from '@/utils';
+import {
+  getNumberViewValue,
+  numberViewFormattedValue,
+  objectsAreEqual,
+} from '@/utils';
 
-import { GraphTypeCore } from '@/services/models/panel/types';
+import { SQLResult } from '@/services/models/datafont/types';
+import { PANEL } from '@/services/models/panel/constants';
+import {
+  GraphTypeCore,
+  NumberView,
+  ViewModel,
+} from '@/services/models/panel/types';
 import { BREAKPOINTS, Breakpoints } from '../contexts/PanelEditProvider';
 import { useSavePanelMutation } from '../hooks/mutations/useSavePanelMutation';
 import { usePanelEditContext } from '../hooks/usePanelEditContext';
+import { NumberViewPresentation } from '../panel-new-view/pages/studio/pages/number-view/contexts/PanelNewViewStudioNumberViewProvider';
 import { PanelPageLoading } from '../panel-page/loading';
 import { EditBar } from './components/EditBar';
 
@@ -192,6 +203,40 @@ export const PanelEditPage: React.FC = () => {
     }
   };
 
+  const getViewData = (v: { queryResult: SQLResult; view: ViewModel }) => {
+    switch (v.view.type) {
+      case PANEL.VIEW.BARCHART:
+      case PANEL.VIEW.PIECHART:
+      case PANEL.VIEW.LINECHART:
+        return EchartAdapter.queryToData({
+          queryResult: v.queryResult,
+          type: v.view.type,
+          core: v.view.core as GraphTypeCore,
+        });
+
+      case PANEL.VIEW.NUMBERVIEW: {
+        const core = v.view.core as NumberView;
+        const number = getNumberViewValue({
+          queryData: v.queryResult,
+          category: core.labelColumn,
+        });
+        const numData: NumberViewPresentation = {
+          formattedValue: numberViewFormattedValue({
+            number,
+            numberOfDecimalPlaces: core.numberOfDecimalPlaces,
+            isPercentage: core.isPercentage,
+          }),
+          subTitle: core.subTitle,
+        };
+
+        return numData;
+      }
+
+      default:
+        return null;
+    }
+  };
+
   const render = () => {
     if (data && hasFilledLayoutWithResponse) {
       return (
@@ -209,20 +254,12 @@ export const PanelEditPage: React.FC = () => {
             </div>
           ))}
           {data.views.map((v) => {
-            const graphData = EchartAdapter.queryToData({
-              queryResult: v.queryResult,
-              type: v.view.type,
-              core: v.view.core as GraphTypeCore,
-            });
+            const vData = getViewData(v);
 
-            if (graphData) {
+            if (vData) {
               return (
                 <div key={v.view.id}>
-                  <View
-                    data={graphData}
-                    type={v.view.type}
-                    name={v.view.name}
-                  />
+                  <View data={vData} type={v.view.type} name={v.view.name} />
                 </div>
               );
             }
