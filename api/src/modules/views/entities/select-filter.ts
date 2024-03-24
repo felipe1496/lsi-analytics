@@ -2,6 +2,7 @@ import { Entity, PropsConstructor } from 'src/core/domain/Entity';
 
 export interface SelectFilterProps {
   labelColumn: string;
+  filterViews: string[];
   viewId: string;
 }
 

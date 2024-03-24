@@ -58,19 +58,7 @@ export const EditBar: React.FC = () => {
     isPercentage,
   } = usePanelNewViewStudioNumberViewContext();
 
-  /* const getNumberValue = React.useCallback(() => {
-    let numberValue = null;
-
-    if (queryData && queryData.rows[0] && category) {
-      const record = queryData.rows[0];
-      numberValue = record[category];
-    }
-
-    setNumber(numberValue);
-  }, [queryData, setNumber, category]); */
-
   React.useEffect(() => {
-    /* getNumberValue(); */
     setNumber(getNumberViewValue({ queryData, category }));
   }, [category, queryData, setNumber]);
 

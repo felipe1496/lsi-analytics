@@ -1,5 +1,5 @@
 import { Entity, PropsConstructor } from 'src/core/domain/Entity';
-import { View } from './view.entity';
+import { View } from 'src/modules/views/entities/view.entity';
 
 export interface PanelProps {
   name: string;

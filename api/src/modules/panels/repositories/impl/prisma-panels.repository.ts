@@ -91,6 +91,7 @@ export class PrismaPanelsRepository implements PanelsRepository {
             barChart: true,
             lineChart: true,
             numberView: true,
+            selectFilter: true,
           },
         },
       },

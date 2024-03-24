@@ -31,7 +31,7 @@ import { CreateNumberViewDto } from '../dtos/create-number-view';
 import { CreatePieChartDto } from '../dtos/create-pie-chart.dto';
 import { CreateSelectFilterDto } from '../dtos/create-select-filter.dto';
 import { PanelNotFoundError } from '../errors/panel-not-found.error';
-import { ViewsMapper } from '../mappers/views.mapper';
+import { CoreViewsMapper } from '../../views/mappers/core-views.mapper';
 
 @Controller('/panels')
 export class PanelsController {
@@ -280,7 +280,7 @@ export class PanelsController {
         });
 
         const queryResult = await postgresqlService.query(v.props.sql);
-        const view = ViewsMapper.toHttp(v);
+        const view = CoreViewsMapper.toHttp(v);
 
         return { queryResult, view };
       }),
@@ -290,5 +290,20 @@ export class PanelsController {
       panel: PanelsMapper.toHTTP(panel),
       views,
     };
+  }
+
+  @Get('/:id/views')
+  @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.OK)
+  public async findChartViewsInfo(
+    @Req() request: Request,
+    @Param() param: IdDto,
+  ) {
+    const panel = await this.panelsRepository.findChartViews({
+      id: param.id,
+      userId: request.userId,
+    });
+
+    return panel;
   }
 }

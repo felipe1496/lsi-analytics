@@ -30,6 +30,10 @@ export type FindChartViews = {
   userId: string;
 };
 
+export type FindViewsProps = {
+  panelId: string;
+};
+
 export abstract class PanelsRepository {
   public abstract create(props: CreatePanelProps): Promise<Panel>;
   public abstract find(props: FindPanelProps): Promise<Panel | null>;

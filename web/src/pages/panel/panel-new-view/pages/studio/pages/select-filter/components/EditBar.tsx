@@ -1,3 +1,6 @@
+import React from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import {
@@ -13,31 +16,55 @@ import {
   SimpleTabsList,
   SimpleTabsTrigger,
 } from '@/components/ui/simple-tabs';
+import { APP_ROUTES } from '@/constants/app-routes';
+import { usePanelEditContext } from '@/pages/panel/hooks/usePanelEditContext';
 import { usePanelNewViewContext } from '@/pages/panel/panel-new-view/hooks/usePanelNewViewContext';
 import { usePanelQuery } from '@/pages/panel/panel-new-view/hooks/usePanelQuery';
-import { getSelectFilterData } from '@/utils';
-import React from 'react';
-import { useParams } from 'react-router-dom';
+import { SelectFilterProps } from '@/services/models/panel/types';
+import { addViewIdToLayout } from '@/utils';
+
 import { useSelectFilterStore } from '../hooks/useSelectFilterStore';
 
 export const EditBar: React.FC = () => {
-  const [category, setCategory] = React.useState<string | null>(null);
-
   const { id } = useParams();
+
+  const navigate = useNavigate();
 
   const { data } = usePanelQuery({ id });
 
+  const { setNewViewsPreview, setLayouts } = usePanelEditContext();
+
   const { queryData, viewCreation } = usePanelNewViewContext();
 
-  const { setSelectData, selectData } = useSelectFilterStore();
+  const { setCategory, category } = useSelectFilterStore();
 
-  const handleCreate = () => {};
+  const handleCreate = () => {
+    if (category && queryData && data) {
+      const createdView = { ...viewCreation };
 
-  console.log('selectData: ', selectData);
+      const core: SelectFilterProps = {
+        labelColumn: category,
+      };
 
-  React.useEffect(() => {
-    setSelectData(getSelectFilterData({ queryData, category }));
-  }, [category, queryData, setSelectData]);
+      Object.assign(createdView, { core });
+
+      setNewViewsPreview((prevState) => {
+        const newState = [...prevState];
+        newState.push({
+          toViewData: {
+            queryData,
+            labelColumn: category,
+          },
+          view: createdView,
+        });
+        return newState;
+      });
+
+      setLayouts((prevState) => addViewIdToLayout(prevState, createdView.id));
+
+      navigate(APP_ROUTES.panel.edit.replace(':id', data.id));
+    }
+  };
 
   return (
     <div className="flex h-full flex-col">
@@ -52,7 +79,7 @@ export const EditBar: React.FC = () => {
           <div className="flex flex-col gap-4 p-4">
             <div>
               <Label>Selecione a categoria</Label>
-              <Select onValueChange={setCategory}>
+              <Select value={category} onValueChange={setCategory}>
                 <SelectTrigger>
                   <SelectValue placeholder="Categoria" />
                 </SelectTrigger>

@@ -10,7 +10,7 @@ export interface ViewProps {
   type: ViewType;
   contentUpdate: ViewContentUpdate;
   sql?: string | null;
-  core: PieChart | BarChart | LineChart | NumberView | SelectFilter;
+  core?: PieChart | BarChart | LineChart | NumberView | SelectFilter | null;
   datafontId: string;
   panelId: string;
   name: string;

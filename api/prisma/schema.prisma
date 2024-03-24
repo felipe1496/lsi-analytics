@@ -147,6 +147,7 @@ model NumberView {
 model SelectFilter {
   id String @default(nanoid()) @id
   labelColumn String
+  filterViews String[]
   view View @relation(fields: [viewId], references: [id], onDelete: Cascade)
   viewId String @unique
   createdAt DateTime @default(now())

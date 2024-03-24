@@ -10,6 +10,7 @@ import { PanelsModule } from './modules/panels/panels.module';
 import { DataFontsModule } from './modules/datafonts/datafonts.module';
 import { FeedbackModule } from './modules/feedbacks/feedbacks.module';
 import { FavoriteQueriesModule } from './modules/favorite-queries/favorite-queries.module';
+import { ViewsModule } from './modules/views/views.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { FavoriteQueriesModule } from './modules/favorite-queries/favorite-queri
     DataFontsModule,
     FeedbackModule,
     FavoriteQueriesModule,
+    ViewsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

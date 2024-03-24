@@ -1,12 +1,15 @@
 import {
-  Panel as PrismaPanel,
-  View as PrismaView,
-  PieChart as PrismaPieChart,
   BarChart as PrismaBarChart,
+  LineChart as PrismaLineChart,
+  NumberView as PrismaNumberView,
+  Panel as PrismaPanel,
+  PieChart as PrismaPieChart,
+  SelectFilter as PrismaSelectFilter,
+  View as PrismaView,
 } from '@prisma/client';
 import { Panel } from '../entities/panel.entity';
 
-import { ViewsMapper } from './views.mapper';
+import { CoreViewsMapper } from '../../views/mappers/core-views.mapper';
 
 export class PanelsMapper {
   public static toDomain(
@@ -14,6 +17,9 @@ export class PanelsMapper {
       views?: (PrismaView & {
         pieChart?: PrismaPieChart | null;
         barChart?: PrismaBarChart | null;
+        lineChart?: PrismaLineChart | null;
+        numberView?: PrismaNumberView | null;
+        selectFilter?: PrismaSelectFilter | null;
       })[];
     },
   ) {
@@ -30,7 +36,7 @@ export class PanelsMapper {
 
     const panelViews = panel.views
       ? panel.views.map((v) => {
-          const view = ViewsMapper.toDomain(v);
+          const view = CoreViewsMapper.toDomain(v);
           return view;
         })
       : undefined;

@@ -6,9 +6,9 @@ import { cn } from '@/utils';
 
 export const ListBox = React.forwardRef<
   React.ElementRef<typeof HeadlessListbox>,
-  Omit<React.ComponentPropsWithoutRef<typeof HeadlessListbox>, 'multiple'>
+  React.ComponentPropsWithoutRef<typeof HeadlessListbox>
 >(({ children, ...props }) => (
-  <HeadlessListbox multiple {...props}>
+  <HeadlessListbox {...props}>
     <div className="relative mt-1">{children as React.ReactNode}</div>
   </HeadlessListbox>
 ));

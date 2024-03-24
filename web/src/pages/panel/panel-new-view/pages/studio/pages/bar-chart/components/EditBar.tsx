@@ -128,7 +128,7 @@ export const EditBar: React.FC = () => {
 
               <div>
                 <Label>Selecione o valor</Label>
-                <ListBox value={value} onChange={setValue}>
+                <ListBox value={value} onChange={setValue} multiple>
                   <ListBoxTrigger>
                     {value.length > 0
                       ? value.map((v) => v).join(', ')

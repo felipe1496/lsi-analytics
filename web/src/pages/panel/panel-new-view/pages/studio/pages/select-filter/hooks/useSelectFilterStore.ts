@@ -1,18 +1,31 @@
 import { create } from 'zustand';
 
+import { SQLResult } from '@/services/models/datafont/types';
+
+export type SelectFilterPresentation = {
+  queryData: SQLResult;
+  labelColumn: string;
+};
+
 type States = {
-  selectData: (string | number)[];
+  selectedOption: unknown;
+  category: string;
 };
 
 type Actions = {
-  setSelectData: (selectData: (string | number)[]) => void;
+  setSelectedOption: (selectedOption: unknown) => void;
+  setCategory: (category: string) => void;
+  reset: () => void;
 };
 
 const INITIAL_STATE: States = {
-  selectData: [],
+  selectedOption: null,
+  category: '',
 };
 
 export const useSelectFilterStore = create<States & Actions>((set) => ({
   ...INITIAL_STATE,
-  setSelectData: (selectData) => set({ selectData }),
+  setSelectedOption: (selectedOption) => set({ selectedOption }),
+  setCategory: (category) => set({ category }),
+  reset: () => set(INITIAL_STATE),
 }));

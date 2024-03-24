@@ -3,6 +3,7 @@ import {
   LineChart as PrismaLineChart,
   NumberView as PrismaNumberView,
   PieChart as PrismaPieChart,
+  SelectFilter as PrismaSelectFilter,
   View as PrismaView,
 } from '@prisma/client';
 import { BarChart } from '../entities/bar-chart.entity';
@@ -11,16 +12,17 @@ import { NumberView } from '../entities/number-view.entity';
 import { PieChart } from '../entities/pie-chart.entity';
 import { SelectFilter } from '../entities/select-filter';
 import { View } from '../entities/view.entity';
-import { ItWasNotPossibleToCreateViewInstanceError } from '../errors/it-was-not-possible-to-create-view-instance.error';
+import { ItWasNotPossibleToCreateViewInstanceError } from '../../panels/errors/it-was-not-possible-to-create-view-instance.error';
 
-type FullRelationView = PrismaView & {
+export type FullRelationView = PrismaView & {
   pieChart?: PrismaPieChart | null;
   barChart?: PrismaBarChart | null;
   lineChart?: PrismaLineChart | null;
   numberView?: PrismaNumberView | null;
+  selectFilter?: PrismaSelectFilter | null;
 };
 
-export class ViewsMapper {
+export class CoreViewsMapper {
   public static toDomain(view: FullRelationView) {
     return new View({
       id: view.id,
@@ -100,6 +102,7 @@ export class ViewsMapper {
         return {
           id: selectFilterCore.id,
           labelColumn: selectFilterCore.props.labelColumn,
+          filterViews: selectFilterCore.props.filterViews,
           viewId: selectFilterCore.props.viewId,
           createdAt: selectFilterCore.createdAt,
           updatedAt: selectFilterCore.updatedAt,
@@ -165,6 +168,20 @@ export class ViewsMapper {
           createdAt: numberViewCore.createdAt,
           updatedAt: numberViewCore.updatedAt,
         });
+      case 'SELECTFILTER': {
+        if (!view.selectFilter) {
+          throw new ItWasNotPossibleToCreateViewInstanceError();
+        }
+        const selectFilterCore = view.selectFilter;
+        return new SelectFilter({
+          id: selectFilterCore.id,
+          labelColumn: selectFilterCore.labelColumn,
+          filterViews: selectFilterCore.filterViews,
+          viewId: selectFilterCore.viewId,
+          createdAt: selectFilterCore.createdAt,
+          updatedAt: selectFilterCore.updatedAt,
+        });
+      }
       default:
         throw new ItWasNotPossibleToCreateViewInstanceError();
     }

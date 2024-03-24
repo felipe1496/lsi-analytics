@@ -4,12 +4,22 @@ import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
 import { twMerge } from 'tailwind-merge';
 
+import { EchartAdapter } from '@/adapters/echart';
 import { UNEXPECTED_ERROR } from '@/constants/messages';
 import {
   Breakpoints,
   LayoutsType,
 } from '@/pages/panel/contexts/PanelEditProvider';
+import { NumberViewPresentation } from '@/pages/panel/panel-new-view/pages/studio/pages/number-view/contexts/PanelNewViewStudioNumberViewProvider';
+import { SelectFilterPresentation } from '@/pages/panel/panel-new-view/pages/studio/pages/select-filter/hooks/useSelectFilterStore';
 import { SQLResult } from '@/services/models/datafont/types';
+import { PANEL } from '@/services/models/panel/constants';
+import {
+  GraphTypeCore,
+  NumberView,
+  SelectFilter,
+  ViewModel,
+} from '@/services/models/panel/types';
 import { UserWithoutPasswordModel } from '@/services/models/users/types';
 
 export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
@@ -220,4 +230,47 @@ export const getSelectFilterData = ({
   }
 
   return [];
+};
+
+export const getViewData = (v: { queryResult: SQLResult; view: ViewModel }) => {
+  switch (v.view.type) {
+    case PANEL.VIEW.BARCHART:
+    case PANEL.VIEW.PIECHART:
+    case PANEL.VIEW.LINECHART:
+      return EchartAdapter.queryToData({
+        queryResult: v.queryResult,
+        type: v.view.type,
+        core: v.view.core as GraphTypeCore,
+      });
+
+    case PANEL.VIEW.NUMBERVIEW: {
+      const core = v.view.core as NumberView;
+      const number = getNumberViewValue({
+        queryData: v.queryResult,
+        category: core.labelColumn,
+      });
+      const numData: NumberViewPresentation = {
+        formattedValue: numberViewFormattedValue({
+          number,
+          numberOfDecimalPlaces: core.numberOfDecimalPlaces,
+          isPercentage: core.isPercentage,
+        }),
+        subTitle: core.subTitle,
+      };
+
+      return numData;
+    }
+
+    case PANEL.VIEW.SELECTFILTER: {
+      const core = v.view.core as SelectFilter;
+      const selectData: SelectFilterPresentation = {
+        queryData: v.queryResult,
+        labelColumn: core.labelColumn,
+      };
+      return selectData;
+    }
+
+    default:
+      return null;
+  }
 };

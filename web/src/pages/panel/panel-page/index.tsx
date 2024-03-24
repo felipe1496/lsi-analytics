@@ -4,7 +4,6 @@ import React from 'react';
 import { Layout as GridLayout } from 'react-grid-layout';
 import { Link, useParams } from 'react-router-dom';
 
-import { EchartAdapter } from '@/adapters/echart';
 import {
   Breadcrumb,
   BreadcrumbHome,
@@ -28,16 +27,8 @@ import { reactQueryKeys } from '@/constants/react-query-keys';
 import { ResponsiveGridLayout } from '@/lib/echarts-for-react';
 import { panelsService } from '@/services/panels';
 
-import { SQLResult } from '@/services/models/datafont/types';
-import { PANEL } from '@/services/models/panel/constants';
-import {
-  GraphTypeCore,
-  NumberView,
-  ViewModel,
-} from '@/services/models/panel/types';
-import { getNumberViewValue, numberViewFormattedValue } from '@/utils';
+import { getViewData } from '@/utils';
 import { Breakpoints } from '../contexts/PanelEditProvider';
-import { NumberViewPresentation } from '../panel-new-view/pages/studio/pages/number-view/contexts/PanelNewViewStudioNumberViewProvider';
 import { PanelPageLoading } from './loading';
 
 export const PanelPage: React.FC = () => {
@@ -80,7 +71,7 @@ export const PanelPage: React.FC = () => {
     return {};
   };
 
-  const getViewData = (v: { queryResult: SQLResult; view: ViewModel }) => {
+  /* const getViewData = (v: { queryResult: SQLResult; view: ViewModel }) => {
     switch (v.view.type) {
       case PANEL.VIEW.BARCHART:
       case PANEL.VIEW.PIECHART:
@@ -109,10 +100,19 @@ export const PanelPage: React.FC = () => {
         return numData;
       }
 
+      case PANEL.VIEW.SELECTFILTER: {
+        const core = v.view.core as SelectFilter;
+        const selectData: SelectFilterPresentation = {
+          queryData: v.queryResult,
+          labelColumn: core.labelColumn,
+        };
+        return selectData;
+      }
+
       default:
         return null;
     }
-  };
+  }; */
 
   const render = () => {
     if (data) {

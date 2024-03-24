@@ -4,6 +4,7 @@ import { CreateBarChartDto } from './create-bar-chart.dto';
 import { CreateLineChartDto } from './create-line-chart.dto';
 import { CreateNumberViewDto } from './create-number-view';
 import { CreatePieChartDto } from './create-pie-chart.dto';
+import { CreateSelectFilterDto } from './create-select-filter.dto';
 
 export class CreateViewDto {
   @IsString()
@@ -27,7 +28,8 @@ export class CreateViewDto {
     | CreatePieChartDto
     | CreateBarChartDto
     | CreateLineChartDto
-    | CreateNumberViewDto;
+    | CreateNumberViewDto
+    | CreateSelectFilterDto;
 
   @IsString()
   datafontId: string;

@@ -11,7 +11,6 @@ import { Layout as GridLayout } from 'react-grid-layout';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { EchartAdapter } from '@/adapters/echart';
 import {
   Breadcrumb,
   BreadcrumbHome,
@@ -37,23 +36,11 @@ import { APP_ROUTES } from '@/constants/app-routes';
 import { reactQueryKeys } from '@/constants/react-query-keys';
 import { ResponsiveGridLayout } from '@/lib/echarts-for-react';
 import { panelsService } from '@/services/panels';
-import {
-  getNumberViewValue,
-  numberViewFormattedValue,
-  objectsAreEqual,
-} from '@/utils';
+import { getViewData, objectsAreEqual } from '@/utils';
 
-import { SQLResult } from '@/services/models/datafont/types';
-import { PANEL } from '@/services/models/panel/constants';
-import {
-  GraphTypeCore,
-  NumberView,
-  ViewModel,
-} from '@/services/models/panel/types';
 import { BREAKPOINTS, Breakpoints } from '../contexts/PanelEditProvider';
 import { useSavePanelMutation } from '../hooks/mutations/useSavePanelMutation';
 import { usePanelEditContext } from '../hooks/usePanelEditContext';
-import { NumberViewPresentation } from '../panel-new-view/pages/studio/pages/number-view/contexts/PanelNewViewStudioNumberViewProvider';
 import { PanelPageLoading } from '../panel-page/loading';
 import { EditBar } from './components/EditBar';
 
@@ -203,7 +190,7 @@ export const PanelEditPage: React.FC = () => {
     }
   };
 
-  const getViewData = (v: { queryResult: SQLResult; view: ViewModel }) => {
+  /* const getViewData = (v: { queryResult: SQLResult; view: ViewModel }) => {
     switch (v.view.type) {
       case PANEL.VIEW.BARCHART:
       case PANEL.VIEW.PIECHART:
@@ -235,7 +222,7 @@ export const PanelEditPage: React.FC = () => {
       default:
         return null;
     }
-  };
+  }; */
 
   const render = () => {
     if (data && hasFilledLayoutWithResponse) {
