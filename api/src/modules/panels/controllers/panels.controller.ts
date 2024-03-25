@@ -8,6 +8,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -32,6 +33,9 @@ import { CreatePieChartDto } from '../dtos/create-pie-chart.dto';
 import { CreateSelectFilterDto } from '../dtos/create-select-filter.dto';
 import { PanelNotFoundError } from '../errors/panel-not-found.error';
 import { CoreViewsMapper } from '../../views/mappers/core-views.mapper';
+import { ApplyFilterError } from '../errors/apply-filter.error';
+import { ViewsRepository } from 'src/modules/views/repositories/abstract/views.repository';
+import { FilterNotFoundError } from '../errors/filter-not-found.error';
 
 @Controller('/panels')
 export class PanelsController {
@@ -39,6 +43,7 @@ export class PanelsController {
     private panelsRepository: PanelsRepository,
     private prisma: PrismaService,
     private datafontRepository: DataFontsRepository,
+    private viewsRepository: ViewsRepository,
   ) {}
 
   @Post()
@@ -247,7 +252,72 @@ export class PanelsController {
   @Get('/:id/chart-views')
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
-  public async findChartViews(@Req() request: Request, @Param() param: IdDto) {
+  public async findChartViews(
+    @Req() request: Request,
+    @Param() param: IdDto,
+    @Query('filter') filter?: string,
+  ) {
+    const viewId_condition: Record<
+      string,
+      {
+        sql: string;
+        filters: { labelColumn: string; value: string | number }[];
+      }
+    > = {};
+
+    if (filter) {
+      const splittedFilter = filter?.split(' and ');
+      const selectFilterObjects = splittedFilter.map((sf) => {
+        const splittedSf = sf.split(' ');
+        if (splittedSf.length !== 2) {
+          throw new ApplyFilterError();
+        }
+        const id = splittedSf[0];
+        const value = splittedSf[1];
+
+        return {
+          id,
+          value,
+        };
+      });
+      const selectFiltersDB = await this.viewsRepository.findManySelectFilters({
+        ids: selectFilterObjects.map((sfo) => sfo.id),
+      });
+
+      selectFilterObjects.forEach((sfo) => {
+        const selectFilterDB = selectFiltersDB.find(
+          (sfDB) => sfDB.id === sfo.id,
+        );
+        if (!selectFilterDB) {
+          throw new FilterNotFoundError();
+        }
+
+        selectFilterDB.props.filterViews.forEach((id) => {
+          const filter = {
+            labelColumn: selectFilterDB.props.labelColumn,
+            value: sfo.value,
+          };
+          const condition = ` and "${selectFilterDB.props.labelColumn}" = ${sfo.value}`;
+          if (viewId_condition[id]) {
+            viewId_condition[id].sql += condition;
+            if (viewId_condition[id].filters) {
+              viewId_condition[id].filters = [
+                ...viewId_condition[id].filters,
+                filter,
+              ];
+            } else {
+              viewId_condition[id].filters = [filter];
+            }
+          } else {
+            viewId_condition[id] = {
+              sql: condition,
+              filters: [filter],
+            };
+          }
+        });
+      });
+    }
+
     const panel = await this.panelsRepository.findChartViews({
       id: param.id,
       userId: request.userId,
@@ -278,11 +348,22 @@ export class PanelsController {
         const postgresqlService = new PostgresqlService({
           accessKey: datafont.props.accessKey,
         });
+        console.log(
+          'viewId_condition[v.id as string]: ',
+          viewId_condition[v.id as string],
+        );
 
-        const queryResult = await postgresqlService.query(v.props.sql);
+        const queryResult = await postgresqlService.query(
+          v.props.sql,
+          viewId_condition[v.id as string],
+        );
         const view = CoreViewsMapper.toHttp(v);
 
-        return { queryResult, view };
+        const filters = viewId_condition[v.id as string]
+          ? viewId_condition[v.id as string].filters
+          : [];
+
+        return { queryResult, view, filters };
       }),
     );
 

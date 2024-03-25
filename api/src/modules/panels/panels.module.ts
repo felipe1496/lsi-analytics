@@ -4,6 +4,8 @@ import { PrismaDataFontsRepository } from '../datafonts/respositories/impl/prism
 import { PanelsController } from './controllers/panels.controller';
 import { PanelsRepository } from './repositories/abstract/panels.repository';
 import { PrismaPanelsRepository } from './repositories/impl/prisma-panels.repository';
+import { ViewsRepository } from '../views/repositories/abstract/views.repository';
+import { PrismaViewsRepository } from '../views/repositories/impl/prisma-views.repository';
 
 @Module({
   controllers: [PanelsController],
@@ -16,6 +18,10 @@ import { PrismaPanelsRepository } from './repositories/impl/prisma-panels.reposi
     {
       provide: DataFontsRepository,
       useClass: PrismaDataFontsRepository,
+    },
+    {
+      provide: ViewsRepository,
+      useClass: PrismaViewsRepository,
     },
   ],
 })

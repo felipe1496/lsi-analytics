@@ -8,6 +8,7 @@ export const reactQueryKeys = {
     findPanelChartViews: 'findPanelChartViews',
     findUserByToken: 'findUserByToken',
     findAllFavoriteQueriesQuery: 'findAllFavoriteQueriesQuery',
+    findAllViews: 'findAllViews',
   },
   mutations: {
     createUserMutation: 'createUserMutation',

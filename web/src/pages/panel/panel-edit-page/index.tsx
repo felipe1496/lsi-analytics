@@ -263,7 +263,7 @@ export const PanelEditPage: React.FC = () => {
   if (data) {
     return (
       <Layout
-        loading={savePanelIsPending}
+        blockUIisloading={savePanelIsPending}
         title="Editar"
         footer={null}
         className="min-h-layout-page"

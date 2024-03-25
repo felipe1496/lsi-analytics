@@ -28,7 +28,7 @@ interface LayoutProps {
   rightContent?: React.ReactNode;
   alert?: AlertMessage;
   footer?: string | React.ReactNode | null;
-  loading?: boolean;
+  blockUIisloading?: boolean;
 }
 
 export const Layout: React.FC<LayoutProps> = ({
@@ -42,7 +42,7 @@ export const Layout: React.FC<LayoutProps> = ({
   rightContent,
   alert,
   footer,
-  loading = false,
+  blockUIisloading = false,
 }) => {
   const title = _title ? `${_title} | LSI Analytics` : 'LSI Analytics';
   const description = _description ?? APP_DESCRIPTION;
@@ -83,12 +83,12 @@ export const Layout: React.FC<LayoutProps> = ({
         <title>{title}</title>
         <meta name="description" content={description} />
       </Helmet>
-      {loading && <OverlayLoading />}
+      {blockUIisloading && <OverlayLoading />}
       <div className="flex flex-col">
         {renderAlertMessage()}
-        <div className="flex">
+        <div className="flex flex-col">
           <Navbar />
-          <div className="w-full md:ml-16">
+          <div className="md:ml-16">
             <Topbar breadcrumb={breadcrumb} rightContent={rightContent} />
             {leftBar && <LeftBar>{leftBar}</LeftBar>}
             <main

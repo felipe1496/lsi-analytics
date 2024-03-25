@@ -19,10 +19,22 @@ export class PostgresqlService implements OnDemandDatabase {
     this.pgClient = new Client({ connectionString: accessKey });
   }
 
-  public async query(sql: string) {
+  public async query(
+    sql: string,
+    condition?: {
+      sql: string;
+      filters: { labelColumn: string; value: string | number }[];
+    },
+  ) {
     try {
       await this.pgClient.connect();
-      const result = await this.pgClient.query(sql);
+      const _sql = condition
+        ? `SELECT * FROM (${this.removeEndSemicolon(
+            sql,
+          )}) AS subquery_alias WHERE 1=1${condition.sql}`
+        : this.removeEndSemicolon(sql);
+      console.log('sql executado: ', sql);
+      const result = await this.pgClient.query(_sql);
       const columnsMetadata: { name: string; dataType: ColumnType }[] = [];
       result.fields.forEach((r) => {
         const typeNameAlreadyPushed = columnsMetadata.find(
@@ -93,5 +105,13 @@ export class PostgresqlService implements OnDemandDatabase {
       return 'UNDEFINED';
     }
     return dataType;
+  }
+
+  private removeEndSemicolon(sql: string) {
+    if (sql[sql.length - 1] === ';') {
+      return sql.slice(0, -1);
+    }
+
+    return sql;
   }
 }

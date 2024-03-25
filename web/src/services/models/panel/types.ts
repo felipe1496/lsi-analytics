@@ -64,12 +64,14 @@ export type NumberView = {
 export type SelectFilter = {
   id: string;
   labelColumn: string;
+  filterViews: string[];
   createdAt: Date;
   updatedAt: Date;
 };
 
 export type SelectFilterProps = {
   labelColumn: string;
+  filterViews: string[];
 };
 
 export type NumberViewProps = {
@@ -99,7 +101,7 @@ export type CoreType =
   | BarChart
   | LineChart
   | NumberView
-  | SelectFilterProps;
+  | SelectFilter;
 
 export type GraphTypeCore = PieChart | BarChart | LineChart;
 

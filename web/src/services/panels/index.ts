@@ -28,7 +28,11 @@ type FindPanelChartViewsProps = GetRequest<{ id: string }>;
 
 type FindPanelChartViewsResponse = {
   panel: PanelModel;
-  views: { queryResult: SQLResult; view: ViewModel }[];
+  views: {
+    queryResult: SQLResult;
+    view: ViewModel;
+    filters: { labelColumn: string; value: string | number }[];
+  }[];
 };
 
 class PanelsService {
@@ -77,6 +81,7 @@ class PanelsService {
   }
 
   public async findPanelChartViews(props: FindPanelChartViewsProps) {
+    console.log('aaaa: ', props.config?.params);
     const response = await api.get<FindPanelChartViewsResponse>(
       `/panels/${props.path.id}/chart-views`,
       props.config,

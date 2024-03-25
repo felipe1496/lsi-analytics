@@ -1,7 +1,11 @@
+import { useQuery } from '@tanstack/react-query';
+import { BarChart3, Binary, Folder, LineChart, PieChart } from 'lucide-react';
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import { Loader } from '@/components/loader';
 import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import {
   Select,
@@ -17,13 +21,20 @@ import {
   SimpleTabsTrigger,
 } from '@/components/ui/simple-tabs';
 import { APP_ROUTES } from '@/constants/app-routes';
+import { reactQueryKeys } from '@/constants/react-query-keys';
 import { usePanelEditContext } from '@/pages/panel/hooks/usePanelEditContext';
 import { usePanelNewViewContext } from '@/pages/panel/panel-new-view/hooks/usePanelNewViewContext';
 import { usePanelQuery } from '@/pages/panel/panel-new-view/hooks/usePanelQuery';
-import { SelectFilterProps } from '@/services/models/panel/types';
+import { PANEL } from '@/services/models/panel/constants';
+import { SelectFilterProps, ViewType } from '@/services/models/panel/types';
+import { viewsService } from '@/services/views';
 import { addViewIdToLayout } from '@/utils';
 
 import { useSelectFilterStore } from '../hooks/useSelectFilterStore';
+
+export const ILLEGAL_VIEW_TYPES_TO_APPLY_FILTER: ViewType[] = [
+  PANEL.VIEW.SELECTFILTER,
+];
 
 export const EditBar: React.FC = () => {
   const { id } = useParams();
@@ -36,7 +47,29 @@ export const EditBar: React.FC = () => {
 
   const { queryData, viewCreation } = usePanelNewViewContext();
 
-  const { setCategory, category } = useSelectFilterStore();
+  const {
+    setCategory,
+    category,
+    filterViewAlreadyAdded,
+    addFilterView,
+    removeFilterView,
+    filterViews,
+  } = useSelectFilterStore();
+
+  const { data: viewsData, isLoading: viewsIsLoading } = useQuery({
+    queryKey: [reactQueryKeys.queries.findAllViews, id],
+    queryFn: () =>
+      viewsService.findAll({
+        config: {
+          params: {
+            panelId: id,
+          },
+        },
+      }),
+  });
+
+  console.log('viewsData: ', viewsData);
+  console.log('filterViews: ', filterViews);
 
   const handleCreate = () => {
     if (category && queryData && data) {
@@ -44,6 +77,7 @@ export const EditBar: React.FC = () => {
 
       const core: SelectFilterProps = {
         labelColumn: category,
+        filterViews,
       };
 
       Object.assign(createdView, { core });
@@ -64,6 +98,65 @@ export const EditBar: React.FC = () => {
 
       navigate(APP_ROUTES.panel.edit.replace(':id', data.id));
     }
+  };
+
+  const renderViews = () => {
+    if (viewsIsLoading) {
+      return <Loader size="medium" />;
+    }
+
+    if (viewsData) {
+      return viewsData.views.map((v, index) => {
+        if (!ILLEGAL_VIEW_TYPES_TO_APPLY_FILTER.includes(v.type)) {
+          let Icon = Folder;
+          switch (v.type) {
+            case PANEL.VIEW.PIECHART:
+              Icon = PieChart;
+              break;
+            case PANEL.VIEW.BARCHART:
+              Icon = BarChart3;
+              break;
+            case PANEL.VIEW.LINECHART:
+              Icon = LineChart;
+              break;
+            case PANEL.VIEW.NUMBERVIEW:
+              Icon = Binary;
+              break;
+            default:
+              break;
+          }
+          return (
+            <button
+              key={`${v.id}-${index}`}
+              className="flex w-full items-center justify-between"
+              onClick={() => {
+                if (filterViewAlreadyAdded(v.id)) {
+                  removeFilterView(v.id);
+                } else {
+                  addFilterView(v.id);
+                }
+              }}
+            >
+              <div className="flex items-center justify-center gap-4">
+                <div className="rounded border p-4">
+                  <Icon />
+                </div>
+                <div className="flex flex-col items-start text-left">
+                  <span className="text-sm font-semibold">{v.name}</span>
+                  <span className="text-xs text-muted-foreground">
+                    {PANEL.SIMPLE_VIEW_TYPE_LABEL_MAPPER[v.type]}
+                  </span>
+                </div>
+              </div>
+              <Checkbox checked={filterViewAlreadyAdded(v.id)} />
+            </button>
+          );
+        }
+        return null;
+      });
+    }
+
+    return null;
   };
 
   return (
@@ -91,6 +184,13 @@ export const EditBar: React.FC = () => {
                   ))}
                 </SelectContent>
               </Select>
+            </div>
+
+            <div>
+              <Label>Aplicar para as views</Label>
+              <div className="flex flex-col items-center justify-center gap-2">
+                {renderViews()}
+              </div>
             </div>
           </div>
         </SimpleTabsContent>

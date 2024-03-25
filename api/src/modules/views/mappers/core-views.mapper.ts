@@ -23,6 +23,17 @@ export type FullRelationView = PrismaView & {
 };
 
 export class CoreViewsMapper {
+  public static selectFilterToDomain(selectFilter: PrismaSelectFilter) {
+    return new SelectFilter({
+      id: selectFilter.id,
+      labelColumn: selectFilter.labelColumn,
+      filterViews: selectFilter.filterViews,
+      viewId: selectFilter.viewId,
+      createdAt: selectFilter.createdAt,
+      updatedAt: selectFilter.updatedAt,
+    });
+  }
+
   public static toDomain(view: FullRelationView) {
     return new View({
       id: view.id,
@@ -173,14 +184,7 @@ export class CoreViewsMapper {
           throw new ItWasNotPossibleToCreateViewInstanceError();
         }
         const selectFilterCore = view.selectFilter;
-        return new SelectFilter({
-          id: selectFilterCore.id,
-          labelColumn: selectFilterCore.labelColumn,
-          filterViews: selectFilterCore.filterViews,
-          viewId: selectFilterCore.viewId,
-          createdAt: selectFilterCore.createdAt,
-          updatedAt: selectFilterCore.updatedAt,
-        });
+        return this.selectFilterToDomain(selectFilterCore);
       }
       default:
         throw new ItWasNotPossibleToCreateViewInstanceError();

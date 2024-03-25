@@ -11,6 +11,7 @@ import {
   BreadcrumbNeutral,
 } from '@/components/breadcrumb';
 import { Layout } from '@/components/layout';
+import { Loader } from '@/components/loader';
 import { NotFoundPage } from '@/components/not-found-page';
 import { Typography } from '@/components/typography';
 import { Button } from '@/components/ui/button';
@@ -25,23 +26,57 @@ import { View } from '@/components/view';
 import { APP_ROUTES } from '@/constants/app-routes';
 import { reactQueryKeys } from '@/constants/react-query-keys';
 import { ResponsiveGridLayout } from '@/lib/echarts-for-react';
+import { PANEL } from '@/services/models/panel/constants';
+import { SelectFilter } from '@/services/models/panel/types';
 import { panelsService } from '@/services/panels';
-
 import { getViewData } from '@/utils';
+
 import { Breakpoints } from '../contexts/PanelEditProvider';
 import { PanelPageLoading } from './loading';
 
 export const PanelPage: React.FC = () => {
+  const filters = React.useRef<{ id: string; value: string | number }[]>([]);
+
   const { id } = useParams();
 
-  const { data, error, isLoading } = useQuery({
+  const filtersToURL = () => {
+    console.log('executei: ');
+    let filterURL = '';
+
+    if (filters.current.length > 0) {
+      filters.current.forEach((f, index) => {
+        const value = typeof f.value === 'string' ? `'${f.value}'` : f.value;
+        if (index === 0) {
+          filterURL = `${f.id} ${value}`;
+        } else {
+          filterURL += ` and ${f.id} ${value}`;
+        }
+      });
+    }
+
+    if (!filterURL) {
+      return undefined;
+    }
+
+    return filterURL;
+  };
+
+  const { data, error, isLoading, refetch, isFetching } = useQuery({
     queryKey: [reactQueryKeys.queries.findPanelChartViews, id],
     queryFn: () => {
       if (id) {
-        return panelsService.findPanelChartViews({ path: { id } });
+        return panelsService.findPanelChartViews({
+          path: { id },
+          config: {
+            params: {
+              filter: filtersToURL(),
+            },
+          },
+        });
       }
       return null;
     },
+    refetchOnWindowFocus: false,
   });
 
   if (isLoading) {
@@ -71,73 +106,85 @@ export const PanelPage: React.FC = () => {
     return {};
   };
 
-  /* const getViewData = (v: { queryResult: SQLResult; view: ViewModel }) => {
-    switch (v.view.type) {
-      case PANEL.VIEW.BARCHART:
-      case PANEL.VIEW.PIECHART:
-      case PANEL.VIEW.LINECHART:
-        return EchartAdapter.queryToData({
-          queryResult: v.queryResult,
-          type: v.view.type,
-          core: v.view.core as GraphTypeCore,
-        });
-
-      case PANEL.VIEW.NUMBERVIEW: {
-        const core = v.view.core as NumberView;
-        const number = getNumberViewValue({
-          queryData: v.queryResult,
-          category: core.labelColumn,
-        });
-        const numData: NumberViewPresentation = {
-          formattedValue: numberViewFormattedValue({
-            number,
-            numberOfDecimalPlaces: core.numberOfDecimalPlaces,
-            isPercentage: core.isPercentage,
-          }),
-          subTitle: core.subTitle,
-        };
-
-        return numData;
-      }
-
-      case PANEL.VIEW.SELECTFILTER: {
-        const core = v.view.core as SelectFilter;
-        const selectData: SelectFilterPresentation = {
-          queryData: v.queryResult,
-          labelColumn: core.labelColumn,
-        };
-        return selectData;
-      }
-
-      default:
-        return null;
-    }
-  }; */
-
   const render = () => {
     if (data) {
       const renderViews = () => (
-        <ResponsiveGridLayout
-          className="layout"
-          layouts={layoutToStatic(data.panel.layout)}
-          breakpoints={{ LARGE: 1200, MEDIUM: 996, SMALL: 768 }}
-          cols={{ LARGE: 12, MEDIUM: 10, SMALL: 6 }}
-          rowHeight={30}
-        >
-          {data.views.map((v) => {
-            const vData = getViewData(v);
+        <>
+          {isFetching && (
+            <div className="absolute left-1/2 top-1/2 z-10">
+              <Loader size="medium" />
+            </div>
+          )}
+          <ResponsiveGridLayout
+            className="layout"
+            layouts={layoutToStatic(data.panel.layout)}
+            breakpoints={{ LARGE: 1200, MEDIUM: 996, SMALL: 768 }}
+            cols={{ LARGE: 12, MEDIUM: 10, SMALL: 6 }}
+            rowHeight={30}
+          >
+            {data.views.map((v) => {
+              const vData = getViewData(v);
 
-            if (vData) {
-              return (
-                <div key={v.view.id}>
-                  <View name={v.view.name} data={vData} type={v.view.type} />
-                </div>
-              );
-            }
+              console.log('v: ', v);
 
-            return null;
-          })}
-        </ResponsiveGridLayout>
+              if (vData) {
+                switch (v.view.type) {
+                  case PANEL.VIEW.SELECTFILTER: {
+                    const _core = v.view.core as SelectFilter;
+                    return (
+                      <div key={v.view.id}>
+                        <View
+                          name={v.view.name}
+                          data={vData}
+                          type={v.view.type}
+                          onChange={(value) => {
+                            if (value === null) {
+                              filters.current = filters.current.filter(
+                                (f) => f.id !== _core.id,
+                              );
+                            } else {
+                              const isAlreadyFilteringIdx =
+                                filters.current.findIndex(
+                                  (f) => f.id === _core.id,
+                                );
+                              if (isAlreadyFilteringIdx === -1) {
+                                filters.current = [
+                                  ...filters.current,
+                                  { id: _core.id, value },
+                                ];
+                              } else {
+                                filters.current[isAlreadyFilteringIdx] = {
+                                  id: _core.id,
+                                  value,
+                                };
+                              }
+                            }
+
+                            refetch();
+                          }}
+                        />
+                      </div>
+                    );
+                  }
+
+                  default:
+                    return (
+                      <div key={v.view.id}>
+                        <View
+                          filters={v.filters}
+                          name={v.view.name}
+                          data={vData}
+                          type={v.view.type}
+                        />
+                      </div>
+                    );
+                }
+              }
+
+              return null;
+            })}
+          </ResponsiveGridLayout>
+        </>
       );
 
       return (
