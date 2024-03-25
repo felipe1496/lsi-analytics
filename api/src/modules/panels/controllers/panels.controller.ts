@@ -197,10 +197,14 @@ export class PanelsController {
                   panelId: param.id,
                   datafontId,
                   numberView: {
-                    create: _core,
+                    create: {
+                      ..._core,
+                      numberOfDecimalPlaces: _core.numberOfDecimalPlaces,
+                    },
                   },
                 },
               });
+              break;
             }
             case 'SELECTFILTER': {
               const _core = core as CreateSelectFilterDto;
@@ -218,6 +222,7 @@ export class PanelsController {
                   },
                 },
               });
+              break;
             }
             default:
               break;
@@ -348,10 +353,6 @@ export class PanelsController {
         const postgresqlService = new PostgresqlService({
           accessKey: datafont.props.accessKey,
         });
-        console.log(
-          'viewId_condition[v.id as string]: ',
-          viewId_condition[v.id as string],
-        );
 
         const queryResult = await postgresqlService.query(
           v.props.sql,

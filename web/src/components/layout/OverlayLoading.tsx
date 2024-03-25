@@ -13,7 +13,7 @@ export const OverlayLoading: React.FC<OverlayLoadingProps> = ({
 }) => (
   <div
     className={cn(
-      'absolute z-50 flex h-full w-full items-center justify-center border-4 border-red-500 bg-white bg-opacity-50',
+      'absolute z-50 flex h-full w-full items-center justify-center bg-white bg-opacity-50',
       size === 'screen' && 'fixed left-0 top-0',
     )}
   >

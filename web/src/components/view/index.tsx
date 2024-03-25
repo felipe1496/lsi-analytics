@@ -80,9 +80,9 @@ export const View: React.FC<ViewProps> = ({
       <div className="flex w-full justify-between border-b p-2">
         <strong className="ml-4 font-semibold">{name}</strong>
         {filters.length > 0 && (
-          <div className="flex items-center justify-center rounded-full bg-purple-100 px-2">
-            <ListFilter className="text-purple-500" size={12} />
-            {filters.length}
+          <div className="flex items-center justify-center rounded-full bg-zinc-600 px-2 dark:bg-zinc-950">
+            <ListFilter className="text-purple-100" size={12} />
+            <span className="text-zinc-50">{filters.length}</span>
           </div>
         )}
       </div>
