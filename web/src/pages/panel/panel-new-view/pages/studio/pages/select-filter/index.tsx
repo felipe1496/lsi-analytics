@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { CheckIcon } from 'lucide-react';
 import React from 'react';
 import { useParams } from 'react-router-dom';
@@ -57,7 +58,8 @@ export const PanelViewStudioSelectFilterPage: React.FC = () => {
 
   const renderTrigger = () => {
     if (selectedOption && category) {
-      return selectedOption[category];
+      const _selectedOption = selectedOption as any;
+      return _selectedOption[category];
     }
     return <span>Categoria</span>;
   };

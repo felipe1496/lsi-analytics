@@ -46,7 +46,7 @@ export const PanelNewViewDataFont: React.FC = () => {
 
   const { data: dataFontsData } = useQuery({
     queryKey: [reactQueryKeys.queries.findAllDataFontsQuery],
-    queryFn: dataFontsService.findAll,
+    queryFn: () => dataFontsService.findAll(),
   });
 
   const { data, error } = usePanelQuery({ id });
